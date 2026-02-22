@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign Up - Agile Energy</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f6f8;
+    color: #1f2937;
+    line-height: 1.5;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.disclaimer-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* space between box and text */
+    margin-bottom: 25px;
+    font-size: 14px;
+    color: #045174;
+    cursor: pointer;
+}
+
+.disclaimer-container input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    appearance: none; /* remove default style */
+    border: 2px solid #2563eb;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s;
+    position: relative;
+}
+
+.disclaimer-container input[type="checkbox"]::after {
+    content: '';
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.disclaimer-container input[type="checkbox"]:checked {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.disclaimer-container input[type="checkbox"]:checked::after {
+    content: '✓'; /* checkmark */
+}
+
+.disclaimer-container label {
+    cursor: pointer;
+    margin: 0;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 40px;
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.logo { width: 155px; }
+nav a { margin-left: 24px; text-decoration: none; color: #1f2937; font-weight: 500; font-size: 15px; transition: color 0.2s; }
+nav a:hover { color: #045174; }
+nav a.btn-login {
+    background-color:#F07154;
+    color: #19123A;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    margin-left: 24px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+nav a.btn-login:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+header nav { display: flex; align-items: center; }
+
+/* HERO */
+.signup-hero {
+    background: linear-gradient(rgba(25,18,58,0.75), rgba(25,18,58,0.75)), url('{{ url_for("static", filename="images/solar image.jpeg") }}');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 120px 40px 80px;
+    position: relative;
+    text-align: center;
+}
+
+.signup-hero h1 {
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.signup-hero h1::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #F07154;
+    margin: 12px auto 0;
+    border-radius: 2px;
+}
+
+.signup-hero p {
+    font-size: 18px;
+    max-width: 700px;
+    margin: 0 auto;
+    opacity: 0.85;
+    line-height: 1.6;
+}
+
+/* Floating Circles */
+.bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.06;
+    z-index: 0;
+}
+.circle1 { width: 300px; height: 300px; background: #045174; top: 10%; left: -50px; }
+.circle2 { width: 400px; height: 400px; background: #F07154; bottom: -100px; right: -100px; }
+
+/* FORM */
+.signup-form-section {
+    max-width: 600px;
+    margin: -60px auto 100px;
+    background-color: #fff;
+    border-radius: 18px;
+    padding: 50px 40px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+    position: relative;
+    z-index: 1;
+}
+
+.signup-form-section h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #19123A;
+    margin-bottom: 32px;
+    position: relative;
+}
+
+.signup-form-section h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #F07154;
+    margin: 12px auto 0;
+    border-radius: 2px;
+}
+
+.signup-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #045174;
+}
+
+.signup-form input {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.signup-form button {
+    width: 100%;
+    padding: 16px 20px;
+    background-color: #F07154;
+    color: #19123A;
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.signup-form button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+
+@media(max-width: 900px) {
+    .signup-hero { padding: 100px 24px 60px; }
+    .signup-form-section { margin: -40px 24px 80px; padding: 40px 24px; }
+}
+
+</style>
+</head>
+<body>
+
+<header>
+    <a href="/"><img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Logo" class="logo"></a>
+    <nav>
+        <a href="{{ url_for('case_studies') }}">Case Studies</a>
+        <a href="{{ url_for('learn_more') }}">Learn More</a>
+        <a href="{{ url_for('sign_up') }}">Sign Up</a>
+        <a href="/login" class="btn-login">Login</a>
+    </nav>
+</header>
+
+<section class="signup-hero">
+    <div class="bg-circle circle1"></div>
+    <div class="bg-circle circle2"></div>
+    <h1>Join Now</h1>
+    <p>Sign up today to get your personalised PPA rate.</p>
+</section>
+
+<section class="signup-form-section">
+    <h2>Create Your Account</h2>
+    <form class="signup-form" method="POST" action="{{ url_for('sign_up') }}" enctype="multipart/form-data" onsubmit="return validatePasswords()">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone">
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password</label>
+        <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            minlength="8"
+            autocomplete="new-password"
+        >
+
+        <label for="confirm_password">Confirm Password</label>
+        <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            required
+            minlength="8"
+            autocomplete="new-password"
+        >
+        <small style="display:block; margin-top:-12px; margin-bottom:16px; color:#6b7280;">
+            Must be at least 8 characters
+        </small>
+
+        <!-- Error message -->
+        <p id="error" style="color:#F07154; display:none; margin-bottom:16px;">
+            Passwords must match and be at least 8 characters long.
+        </p>
+
+        <label for="company">Company Name</label>
+        <input type="text" id="company" name="company" required>
+
+        <label for="address">Company Address</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="abn">Company ABN</label>
+        <input type="text" id="abn" name="abn" required>
+
+        <label for="logo">Company Logo</label>
+        <input type="file" id="logo" name="logo" accept="image/*">
+
+        <div class="disclaimer-container">
+            <input type="checkbox" id="disclaimer" name="disclaimer" required>
+            <label for="disclaimer">Disclaimer: By signing up you agree to our terms and conditions.</label>
+        </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+</section>
+
+<script>
+function validatePasswords() {
+    const pass = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm_password").value;
+    const error = document.getElementById("error");
+
+    if (pass !== confirm || pass.length < 8) {
+        error.style.display = "block";
+        return false; // stops the form from submitting
+    }
+
+    error.style.display = "none";
+    return true; // allows the form to submit
+}
+</script>
+</body>
+</html>

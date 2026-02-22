@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        /* Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5; /* Neutral professional grey */
+            color: #333;
+            position: relative;
+            padding-top: 100px; /* space for sticky header */
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background-color: #fff;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .header-logo { width: 155px; height: auto; }
+        nav a {
+            margin-left: 24px;
+            text-decoration: none;
+            color: #19123A;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #045174; }
+        nav a.btn-login {
+            background-color: #F07154;
+            color: #19123A;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-left: 24px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        nav a.btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        header nav { display: flex; align-items: center; }
+
+        /* Container */
+        .login-container {
+            background: #fff;
+            padding: 45px 35px;
+            border-radius: 12px;
+            width: 360px;
+            max-width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 35px;
+            color: #1f2937;
+        }
+
+        /* Floating label wrapper */
+        .form-group {
+            position: relative;
+            margin-top: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f9fafb;
+            transition: border 0.2s, background 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            background: #fff;
+            outline: none;
+        }
+
+        /* Fix autofill background in Chrome/Safari */
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px #f9fafb inset !important;
+            -webkit-text-fill-color: #1f2937 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        label {
+            position: absolute;
+            left: 14px;
+            top: 16px;
+            color: #6b7280;
+            font-size: 14px;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            background: #fff;
+            padding: 0 5px;
+        }
+
+        input:focus + label,
+        input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 10px;
+            font-size: 12px;
+            color: #2563eb;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 35px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #1e40af;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .error {
+            color: #b91c1c;
+            margin-top: 12px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Logo top right for login (optional) */
+        .login-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 200px;
+            height: auto;
+        }
+
+        @media(max-width: 400px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            .login-logo {
+                width: 120px;
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="/"><img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Logo" class="header-logo"></a>
+    <nav>
+        <a href="{{ url_for('case_studies') }}">Case Studies</a>
+        <a href="{{ url_for('learn_more') }}">Learn More</a>
+        <a href="{{ url_for('sign_up') }}">Sign Up</a>
+        <a href="/login" class="btn-login">Login</a>
+    </nav>
+</header>
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        <div class="form-group">
+            <input type="email" name="email" placeholder=" " required>
+            <label>Email</label>
+        </div>
+
+        <div class="form-group">
+            <input type="password" name="password" placeholder=" " required>
+            <label>Password</label>
+        </div>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+</body>
+</html>

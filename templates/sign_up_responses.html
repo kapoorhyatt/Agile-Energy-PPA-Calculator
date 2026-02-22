@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up Responses</title>
+    <style>
+        /* Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #1f2937;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 16px 40px;
+        }
+
+        .logo {
+            width: 155px;
+            height: auto;
+        }
+
+        nav a {
+            margin-left: 24px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        nav a:hover { color: #045174; }
+
+        nav a.btn-login {
+            background-color: #F07154;
+            color: #19123A;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* DASHBOARD */
+        .dashboard-container {
+            background: #fff;
+            padding: 50px 40px;
+            border-radius: 16px;
+            max-width: 1200px;
+            margin: 40px auto 0 auto; /* space from header */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #1e3a8a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        tr:hover {
+            background-color: #e0f2fe;
+        }
+
+        .company-logo {
+            max-width: 100px;
+            max-height: 50px;
+            object-fit: contain;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        @media(max-width: 768px) {
+            table {
+                font-size: 12px;
+            }
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav {
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+            nav a {
+                margin-left: 0;
+                margin-right: 16px;
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Logo" class="logo">
+        <nav>
+            <a href="{{ url_for('case_studies') }}">Case Studies</a>
+            <a href="{{ url_for('learn_more') }}">Learn More</a>
+            <a href="{{ url_for('sign_up') }}">Sign Up</a>
+            <a href="/login" class="btn-login">Login</a>
+        </nav>
+    </header>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard-container">
+        <h2>Sign Up Responses</h2>
+
+        {% if submissions %}
+        <table>
+            <tr>
+                <th>Date & Time</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Company</th>
+                <th>ABN</th>
+                <th>Address</th>
+                <th>Company Logo</th>
+            </tr>
+
+            {% for id, s in submissions.items() %}
+            <tr>
+                <td>{{ s.submitted_at }}</td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.email }}</td>
+                <td>{{ s.phone }}</td>
+                <td>{{ s.company }}</td>
+                <td>{{ s.abn }}</td>
+                <td>{{ s.address }}</td>
+                <td>
+                    {% if s.logo_filename %}
+                        <img 
+                            src="{{ url_for('static', filename='uploads/' + s.logo_filename) }}" 
+                            class="company-logo"
+                            alt="Company Logo">
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>No sign ups yet.</p>
+        {% endif %}
+    </div>
+
+</body>

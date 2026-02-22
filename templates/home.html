@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Agile Energy</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f6f8;
+            color: #1f2937;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background-color: #fff;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { width: 155px; height: auto; }
+
+        nav a {
+            margin-left: 24px;
+            text-decoration: none;
+            color: #1f2937;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #045174; }
+
+        /* HERO */
+.hero {
+    position: relative;
+    min-height: clamp(520px, 70vh, 820px); /* scales with viewport height */
+    overflow: visible;
+}
+
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* fills hero area without stretching */
+    z-index: 0;        /* behind text/buttons */
+}
+
+/* Dark overlay for video readability */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45); /* adjust opacity as needed */
+    z-index: 0;
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 1;        /* keeps text/buttons on top */
+    max-width: 1100px;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertical centering */
+    text-align: center;
+    padding: 60px 40px clamp(120px, 18vh, 220px); /* same padding as before */
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: white; /* make text visible over video */
+    text-shadow: 0 4px 20px rgba(0,0,0,0.35); /* optional for extra contrast */
+}
+
+.hero p {
+    font-size: 18px;
+    font-weight: 400;
+    max-width: 700px;
+    margin: 0 auto 28px;
+    opacity: 0.95;
+    color: white; /* make text visible over video */
+    text-shadow: 0 4px 20px rgba(0,0,0,0.35); /* optional */
+}
+
+/* Feature cards overlapping hero */
+.hero-feature-row {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 65%);
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+    z-index: 5;
+}
+
+    .hero-feature-row .feature-box {
+    background-color: white;
+    max-width: 340px;
+    border-radius: 16px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+    }
+
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background-color: #F07154;
+            color: #19123A;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.6);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        /* MAIN */
+        main {
+            padding: 80px 40px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-top: clamp(160px, 20vh, 260px);
+        }
+
+        /* Section background bands */
+        .section-band {
+            padding: 60px 0;
+        }
+        .section-band.light { background-color: #f5f6f8; }
+        .section-band.dark { background-color: #19123A; color: white; }
+
+        /* Boxes under hero */
+        .boxes {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 80px;
+        }
+
+        .box {
+            flex: 1 1 30%;
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+            padding: 50px 30px;
+            min-height: 480px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .box:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+        }
+
+        .box-icon {
+            font-size: 48px;
+            color: #F07154;
+            margin-bottom: 20px;
+        }
+
+        .box-icon:hover {
+            transform: scale(1.2);
+            transition: transform 0.3s;
+        }
+
+        .box h2 {
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: #19123A;
+            position: relative;
+        }
+
+        .box h2::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: #F07154;
+            margin: 12px auto 0;
+            border-radius: 2px;
+        }
+
+        .box p {
+            font-size: 16px;
+            color: #1f2937;
+            opacity: 0.85;
+            line-height: 1.6;
+        }
+
+        @media(max-width: 900px) {
+            .boxes {
+                flex-direction: column;
+            }
+        }
+
+.funding-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;   /* keep everything centred */
+    gap: 12px;                 /* gap between text and first logo */
+    margin: 40px auto 24px;
+    font-size: 16px;
+    opacity: 0.95;
+    background-color: #ffffff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 80%;
+    min-width: 280px;
+    flex-wrap: wrap;
+}
+
+.funding-strip span {
+    margin-right: 12px;  /* keep a nice gap after the text */
+}
+
+.funding-strip img {
+    height: 6vw;          /* scale with screen width */
+    max-height: 50px;
+    min-height: 30px;
+    opacity: 0.95;
+    margin-left: 0px;     /* smaller gap between logos */
+}
+
+@media (max-width: 900px) {
+    .funding-strip {
+        max-width: 90%;  /* take up more of the screen width on tablets */
+        padding: 14px 16px;
+    }
+    .funding-strip img {
+        height: 7vw;     /* slightly larger relative scaling */
+    }
+}
+
+@media (max-width: 500px) {
+    .funding-strip {
+        max-width: 95%;  /* almost full width on mobiles */
+        padding: 12px 10px;
+    }
+    .funding-strip img {
+        height: 8vw;     /* bigger relative scaling for tiny screens */
+    }
+}
+
+
+        /* Section wrapper */
+.info-box-section {
+    padding: 80px 40px;
+    background: #f5f6f8; /* light band */
+    text-align: center;
+}
+
+/* Section title */
+.info-box-section .section-title {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 50px;
+    color: #19123A;
+}
+
+/* Grid layout for boxes */
+.info-box-grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns per row */
+    grid-auto-rows: auto;                 /* rows adjust to content */
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+
+/* Individual box styling */
+.info-box {
+    background: white;
+    border-radius: 20px;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Hover effect */
+.info-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.15);
+}
+
+/* Icon style */
+.info-box i {
+    font-size: 36px;
+    color: #F07154;
+    margin-bottom: 16px;
+}
+
+/* Text inside box */
+.info-box p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #1f2937;
+}
+
+
+/* Make it responsive: single column on mobile */
+@media(max-width: 900px) {
+    .info-box-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .info-box-grid .info-box {
+        grid-column: auto;
+    }
+}
+
+
+
+
+        /* Feature row: horizontal image + text boxes */
+        .feature-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 80px;
+        }
+        .feature-box {
+            flex: 1 1 30%;
+            background-color: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: row;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .feature-box img {
+            width: 40%;
+            object-fit: cover;
+        }
+        .feature-box-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #19123A; /* dark navy */
+        }
+        .feature-box-content h3 { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+        .feature-box-content p { font-size: 15px; color: #1f2937; opacity: 0.85; line-height: 1.5; }
+
+        .feature-box-icon {
+    font-size: 48px;
+    color: #F07154;
+    margin-right: 16px; /* space between icon and text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px; 
+    height: 70px;
+    background-color: #045174; /* sticker background */
+    border-radius: 50%; /* make it round */
+    flex-shrink: 0;
+    margin-bottom: 16px;
+}
+
+
+.feature-box,
+.info-card,
+.bottom-box,
+.feature-box-outline,
+.deep-box {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-box:hover,
+.info-card:hover,
+.bottom-box:hover,
+.feature-box-outline:hover,
+.deep-box:hover {
+    transform: translateY(-6px); /* lift up */
+    box-shadow: 0 12px 36px rgba(0,0,0,0.15); /* stronger shadow */
+}
+
+.feature-box-icon:hover {
+    transform: scale(1.2);
+    transition: transform 0.3s;
+}
+
+.deep-row-section {
+    margin-bottom: 40px; /* space below the title and above next section */
+    text-align: center;
+}
+
+.deep-row-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #19123A;
+    margin-bottom: 32px; /* space between title and the boxes */
+}
+        /* Deep row: vertical gradient boxes */
+        .deep-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 80px;
+        }
+        .deep-box {
+            flex: 1 1 30%;
+            background: #F07154;
+            border-radius: 20px;
+            padding: 30px 20px;
+            color: white;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .deep-box:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.2);
+        }
+        .deep-box h2 { font-size: 24px; font-weight: 600; margin-bottom: 16px; }
+        .deep-box p { font-size: 16px; line-height: 1.6; }
+
+        /* BIG HORIZONTAL BOX */
+        .big-box {
+            width: 100%;
+            background-color: #045174;
+            color: white;
+            border-radius: 14px;
+            padding: 60px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .big-box h1 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        /* ICON / TRUST / INFO ROW */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 70px;
+        }
+        .info-card {
+            flex: 1 1 30%;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 36px 20px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .info-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+        .info-card p { font-size: 15px; color: #1f2937; opacity: 0.85; }
+
+/* HERO FEATURE ROW RESPONSIVE FIX */
+@media(max-width: 1200px) {
+    .hero-feature-row {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 32px;
+        bottom: -180px; /* smaller overlap for mid-size screens */
+    }
+}
+
+@media(max-width: 900px) {
+    /* Remove overlap completely, stack under hero text */
+    .hero-feature-row {
+        position: static;      /* no absolute */
+        transform: none;
+        margin-top: 40px;      /* space after hero text */
+        gap: 24px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-feature-row .feature-box {
+        max-width: 90%;
+        width: 100%;
+        padding: 24px 16px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-feature-row .feature-box-icon {
+        margin-bottom: 16px;
+    }
+
+    /* Adjust hero text */
+    .hero h1 {
+        font-size: 32px;
+        line-height: 1.3;
+    }
+    .hero p {
+        font-size: 15px;
+        max-width: 90%;
+        margin: 0 auto 16px;
+    }
+
+    /* Stack hero buttons */
+    .hero-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+}
+
+/* VERY SMALL SCREENS */
+@media(max-width: 500px) {
+    .hero h1 {
+        font-size: 26px;
+    }
+    .hero p {
+        font-size: 14px;
+    }
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-secondary {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    .hero-feature-row .feature-box {
+        padding: 16px 12px;
+    }
+}
+/* Add arrow overlay on bottom-box hover */
+.bottom-box {
+    position: relative; /* allow absolute child positioning */
+    overflow: hidden;   /* hide arrow when not hovered */
+}
+.deep-box {
+    position: relative; /* for arrow positioning */
+}
+
+.deep-arrow {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    font-size: 24px;
+    color: white;
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+    text-decoration: none;
+}
+
+.deep-box:hover .deep-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+.deep-arrow:hover {
+    transform: translateX(8px);
+}
+
+        /* NAV LINKS (standard) */
+        nav a:not(.btn-login) {
+            margin-left: 24px;
+            text-decoration: none;
+            color: #1f2937;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 6px 0;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        nav a:not(.btn-login):hover {
+            color: #045174;
+            transform: translateY(-2px);
+        }
+
+        nav a:hover { color: #045174; }
+        nav a.btn-login {
+            background-color:#F07154;
+            color: #19123A;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-left: 24px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        nav a.btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        header nav { display: flex; align-items: center; }
+
+.feature-section {
+    background-color: #ffffff;
+    padding: 80px 60px;
+    width: 80vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    max-width: none;
+    margin-bottom: 32px;
+}
+
+.feature-container {
+    display: flex;
+    flex-direction: column;      /* vertical stack of boxes */
+    gap: 40px;                   /* space between each box */
+}
+
+.feature-box-outline-horizontal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid #19123A; /* black outline */
+    border-radius: 20px;
+    padding: 40px;
+    gap: 80px;                  /* space between text and image */
+    background-color: white;
+}
+
+.feature-box-text {
+    flex: 1;               
+}
+
+.feature-box-text h2 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.feature-box-text p {
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: 0.85;
+    margin-bottom: 24px; /* space below the paragraph */
+}
+
+.feature-box-text .btn-primary {
+    display: inline-block;
+    margin-top: 0; /* optional, ensures no extra spacing */
+}
+
+.feature-box-image {
+    flex: 1;                    /* image takes up same space */
+}
+
+.feature-box-image img {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+/* Responsive: stack text + image on small screens */
+@media(max-width: 900px) {
+    .feature-box-outline-horizontal {
+        flex-direction: column;
+    }
+    .feature-box-image {
+        width: 100%;
+    }
+}
+
+.hero-feature-row .feature-box {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px;
+}
+
+.hero-feature-row .feature-box-icon {
+    margin-bottom: 16px;
+}
+
+.hero-feature-row .feature-box-content h3,
+.info-box-section .section-title,
+.deep-row-title,
+.feature-box-text h2,
+.big-box h1 {
+    color: #F07154;
+}
+
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Logo" class="logo">
+    <nav>
+        <a href="{{ url_for('case_studies') }}">Case Studies</a>
+        <a href="{{ url_for('learn_more') }}">Learn More</a>
+        <a href="{{ url_for('sign_up') }}">Sign Up</a>
+        <a href="/login" class="btn-login">Login</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <!-- Video background -->
+    <video autoplay muted loop playsinline class="hero-video">
+        <source src="{{ url_for('static', filename='Vid.mp4') }}" type="video/mp4">
+    </video>
+
+    <!-- Dark overlay for readability -->
+    <div class="hero-overlay"></div>
+
+    <!-- Hero text and buttons -->
+    <div class="hero-inner">
+        <h1>Your self-service Power Purchase Agreements (PPA) platform</h1>
+        <p>Calculate your PPA rate in minutes</p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('sign_up') }}" class="btn-primary">Get Started</a>
+            <div class="btn-secondary phone-box">1800 512 194</div>
+        </div>
+    </div>
+
+<!-- Floating feature boxes -->
+    <div class="hero-feature-row">
+        <div class="feature-box">
+            <div class="feature-box-icon"><i class="fas fa-calculator"></i></div>
+            <div class="feature-box-content">
+                <h3>Generate a PPA offer</h3>
+                <p>Get a PPA rates for your site</p>
+            </div>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-box-icon"><i class="fas fa-book-open"></i></div>
+            <div class="feature-box-content">
+                <h3>Learn about the Agile PPA</h3>
+                <p> Understand how it works</p>
+            </div>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-box-icon"><i class="fas fa-handshake"></i></div>
+            <div class="feature-box-content">
+                <h3>Win for You and Your Client</h3>
+                <p>Deliver customer savings and protect your margin.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main>
+<!-- Funding / Trust Logos -->
+<div class="funding-strip">
+    <span>Funded by:</span>
+    <img src="{{ url_for('static', filename='images/Five-V-Logo.png') }}" alt="Five V logo">
+    <img src="{{ url_for('static', filename='images/cefc-logo.png') }}" alt="CEFC logo">
+</div>
+
+<section class="info-box-section">
+    <h2 class="section-title">Why use the Agile Energy PPA Calculator?</h2>
+    <div class="info-box-grid">
+        <div class="info-box">
+            <i class="fas fa-bolt"></i>
+            <p>Get a fast, indicative PPA rate based on your actual energy usage</p>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-dollar-sign"></i>
+            <p>Understand potential savings compared to current grid pricing</p>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-check-circle"></i>
+            <p>See if your site is suitable before engaging in a full assessment</p>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-ban"></i>
+            <p>No obligation and no impact on your existing energy contracts</p>
+        </div>
+        <div class="info-box">
+            <i class="fas fa-project-diagram"></i>
+            <p>Built using real commercial PPA pricing logic from active projects</p>
+        </div>
+        <div class="info-box">
+        <i class="fas fa-lightbulb"></i>
+        <p>Quickly see how much your site could save with a PPA.</p>
+    </div>
+</div>
+</section>
+
+
+
+<section class="deep-row-section">
+    <h2 class="deep-row-title">How PPA Works: From Single Site to Portfolio</h2>
+    <div class="deep-row">
+        <div class="deep-box">
+            <h2>Commercial & Industrial (STC)</h2>
+            <p>For standard C&I systems where STCs are embedded into pricing and approvals are streamlined.</p>
+             <a href="{{ url_for('case_studies') }}#commercial-industrial" class="deep-arrow">
+             <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        <div class="deep-box">
+            <h2>Large-Scale Systems (MW+)</h2>
+            <p>For single-site, high-capacity systems with bespoke pricing and institutional investment review.</p>
+                <a href="{{ url_for('case_studies') }}#large-scale" class="deep-arrow">
+                <i class="fas fa-arrow-right"></i>
+                </a>
+        
+
+        </div>
+        <div class="deep-box">
+            <h2>Portfolio Deployments</h2>
+            <p>For multi-site rollouts with blended pricing, group-level credit assessment, and scalable delivery.Learn for a large (MW+) project</p>
+                <a href="{{ url_for('case_studies') }}#portfolio" class="deep-arrow">
+                 <i class="fas fa-arrow-right"></i>
+                </a>
+        </div>
+    </div>
+</section>
+
+  
+
+       <!-- Info / Trust Row -->
+<section class="feature-section">
+    <div class="feature-container">
+        <!-- Box 1 -->
+        <div class="feature-box-outline-horizontal">
+            <div class="feature-box-text">
+                <h2>Solar Made Simple</h2>
+                <p>Power your business with a simple PPA. Use our tool to see if a PPA could work for your site.</p>
+                <a href="{{ url_for('sign_up') }}" class="btn-primary" style="margin-top:16px;">Sign Up</a>
+            </div>
+            <div class="feature-box-image">
+                <img src="{{ url_for('static', filename='images/Partner Image.png') }}" alt="Trusted Partners">
+            </div>
+        </div>
+
+        <!-- Box 2 -->
+        <div class="feature-box-outline-horizontal">
+            <div class="feature-box-text">
+                <h2>Why Agile Energy</h2>
+                <p>Discover why we’re trusted by hundreds of businesses across Australia.</p>
+                <a href="aboutus" class="btn-primary" style="margin-top:16px;">About Us</a>
+            </div>
+            <div class="feature-box-image">
+                <img src="{{ url_for('static', filename='images/laptop.jpg') }}" alt="Transparent Modelling">
+            </div>
+        </div>
+
+        <!-- Box 3 -->
+        <div class="feature-box-outline-horizontal">
+            <div class="feature-box-text">
+                <h2>How it works</h2>
+                <p>Understand PPAs and our calculation process.</p>
+                <a href="{{ url_for('learn_more') }}#about" class="btn-primary" style="margin-top:16px;"> Learn More </a>
+            </div>
+            <div class="feature-box-image">
+                <img src="{{ url_for('static', filename='images/commercial.jpg') }}" alt="Commercial Ready">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- Big horizontal box: Quick Calculator Info -->
+    <div class="big-box">
+        <h1>Agile Energy Calculator</h1>
+        <p style="font-size: 18px; max-width: 800px; margin: 0 auto 24px; opacity: 0.95;">
+                Quickly see your site’s potential PPA rates. Just enter your system details in our simple form, and we’ll calculate projected energy output, costs, and possible savings — all in one place.
+        </p>
+        <div class="hero-buttons">
+            <a href="/calculator" class="btn-primary">Try the Calculator</a>
+            <a href="{{ url_for('learn_more') }}" class="btn-secondary"> Learn How It Works </a>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

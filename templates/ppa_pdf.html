@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PPA – Client Summary</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 25px;
+        color: #19123A;
+        font-size: 11pt;
+        line-height: 1.3;
+        background-color: #fff;
+    }
+
+    /* HEADER: Logos + Credibility + Title */
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .logos img {
+        max-height: 50px;
+    }
+    .credibility {
+        font-size: 9pt;
+        color: #045174;
+        font-weight: 600;
+        margin-top: 5px;
+        text-align: center;
+        width: 100%;
+    }
+
+    /* TITLE */
+    h1 {
+        text-align: center;
+        font-size: 18pt;
+        margin: 5px 0 10px 0;
+        background: linear-gradient(90deg, #045174, #F07154);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+        text-align: center;
+        font-size: 10pt;
+        color: #19123A;
+        margin-bottom: 20px;
+    }
+
+    /* SECTIONS */
+    section {
+        margin-bottom: 12px;
+    }
+    h2 {
+        font-size: 12pt;
+        margin-bottom: 5px;
+        color: #F07154;
+        border-bottom: 1px solid #F1BFA9;
+        padding-bottom: 2px;
+    }
+
+    /* CLIENT & SYSTEM INFO */
+    .client-system {
+        display: flex;
+        justify-content: space-between;
+        font-size: 10pt;
+    }
+    .client-system div {
+        width: 48%;
+    }
+    .client-system strong {
+        color: #045174;
+    }
+
+    /* ENERGY PRICING */
+    .pricing-box {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+    .pricing-box .term {
+        flex: 1;
+        text-align: center;
+        background-color: #F6B836;
+        padding: 10px 0;
+        font-weight: 600;
+        color: #19123A;
+    }
+    .pricing-box .rate {
+        flex: 1;
+        text-align: center;
+        padding: 15px 0;
+        font-size: 16pt;
+        font-weight: 700;
+        color: #045174;
+        background-color: #F1BFA9;
+    }
+
+    .callout {
+        padding: 6px 10px;
+        background-color: #F6B836;
+        border-left: 4px solid #045174;
+        font-size: 10pt;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+
+    /* BENEFITS / INCLUSIONS */
+    .benefits, .inclusions {
+        display: flex;
+        justify-content: space-between;
+        font-size: 10pt;
+        margin-top: 5px;
+    }
+    .benefits ul, .inclusions ul {
+        width: 48%;
+        padding-left: 18px;
+        margin: 0;
+    }
+    li {
+        margin-bottom: 4px;
+    }
+
+    /* ENVIRONMENTAL IMPACT */
+    .impact {
+        margin-top: 8px;
+        font-size: 10pt;
+        display: flex;
+        justify-content: space-between;
+    }
+    .impact div {
+        width: 48%;
+    }
+
+    /* FOOTER */
+    footer {
+        font-size: 8pt;
+        color: #555;
+        border-top: 1px solid #ccc;
+        padding-top: 5px;
+        margin-top: 10px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Energy Logo">
+    <img src="{{ url_for('static', filename='uploads/placeholder.png') }}" alt="Partner Logo">
+</header>
+<div class="credibility">Locally funded by 5V and CEFC</div>
+
+<h1>Power Purchase Agreement (PPA)</h1>
+<div class="subtitle">Board-ready summary of your solar project proposal</div>
+
+<section>
+    <h2>Client & System Overview</h2>
+    <div class="client-system">
+        <div class="client-info">
+            <p><strong>Client:</strong> {{ business_name }}</p>
+            <p><strong>Site / Address:</strong> {{ address }}</p>
+            <p><strong>Prepared By:</strong> Agile Energy</p>
+            <p><strong>Date:</strong> {{ now.strftime("%d %B %Y") }}</p>
+        </div>
+        <div class="system-info">
+            <p><strong>Solar PV Size (kW):</strong> {{ system_size or '–' }}</p>
+            <p><strong>Battery (kWh):</strong> {{ battery_size or '–' }}</p>
+            <p><strong>Annual Generation (kWh):</strong> {{ generation or '–' }}</p>
+            <p><strong>Location:</strong> {{ system_location or '–' }}</p>
+            <p><strong>PPA Terms:</strong> 7,10,12,15,20,25 years</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2>Energy Pricing Snapshot</h2>
+    <div class="pricing-box">
+        {% for term in [7,10,12,15,20,25] %}
+        <div class="term">{{ term }} yrs</div>
+        {% endfor %}
+        {% for _ in [7,10,12,15,20,25] %}
+        <div class="rate">–</div>
+        {% endfor %}
+    </div>
+    <div class="callout">Rates are indicative and based on final project inputs</div>
+</section>
+
+<section>
+    <div class="benefits">
+        <ul>
+            <strong>Why This PPA Works</strong>
+            <li>No upfront capital</li>
+            <li>Fixed discounted pricing</li>
+            <li>Risk transferred to Agile</li>
+            <li>Price certainty</li>
+        </ul>
+        <ul class="inclusions">
+            <strong>Included at No Cost</strong>
+            <li>Maintenance</li>
+            <li>Monitoring</li>
+            <li>Insurance</li>
+            <li>Component replacements</li>
+            <li>Performance guarantees</li>
+        </ul>
+    </div>
+</section>
+
+<section class="impact">
+    <div><strong>Annual CO₂-e Reduction:</strong> {{ co2_reduction or '–' }} tonnes</div>
+    <div><strong>Equivalent:</strong> {{ co2_equivalence or '–' }}</div>
+</section>
+
+<footer>
+Prepared by Agile Energy • {{ now.strftime("%d %B %Y") }} • Next Steps: Review proposal & confirm project inputs
+</footer>
+
+</body>
+</html>

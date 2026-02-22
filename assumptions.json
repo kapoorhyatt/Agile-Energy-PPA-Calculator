@@ -1,0 +1,9 @@
+{
+    "demo@ppa.com": {
+        "construction_period": 6.0,
+        "unlevered_IRR": 0.165,
+        "site": 1.0,
+        "PPA_meter_cost": 1200.0,
+        "generation_derate": 0.05
+    }
+}

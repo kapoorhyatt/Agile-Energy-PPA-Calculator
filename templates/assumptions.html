@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Assumptions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #1f2937;
+            padding: 30px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 26px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 6px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #eee;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        input {
+            width: 80px;
+            padding: 4px 6px;
+            font-size: 13px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            display: block;
+            margin: 15px auto 0 auto;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1e40af;
+        }
+
+        @media(max-width: 900px) {
+            input {
+                width: 60px;
+            }
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Assumptions</h1>
+
+    <form method="POST">
+        <table>
+            {% set first_company = assumptions | dictsort | first | last %}
+            {% set keys = first_company.keys() %}
+
+            <tr>
+                <th>Company</th>
+                {% for key in keys %}
+                    <th>{{ key.replace("_", " ").title() }}</th>
+                {% endfor %}
+            </tr>
+
+            {% for company, data in assumptions.items() %}
+            <tr>
+                <td>{{ company }}</td>
+                {% for key in keys %}
+                    <td>
+                        <input
+                            type="text"
+                            name="{{ company }}_{{ key }}"
+                            value="{{ data[key] }}"
+                        >
+                    </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+
+        <button type="submit">Save Assumptions</button>
+    </form>
+</body>
+</html>

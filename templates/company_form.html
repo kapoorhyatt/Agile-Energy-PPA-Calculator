@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Demo Company Calculator</title>
+    <style>
+* {
+    box-sizing: border-box;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 48px;
+    background-color: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    width: 155px;
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+}
+
+header nav a {
+    margin-left: 28px;
+    text-decoration: none;
+    color: #1f2937;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+header nav a:hover {
+    color: #045174;
+}
+
+header nav a.btn-login {
+    background-color: #F07154;
+    color: #19123A;
+    padding: 10px 26px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* PAGE */
+body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: linear-gradient(180deg, #f5f6f8 0%, #eef0f3 100%);
+    margin: 0;
+}
+
+/* FORM WRAPPER */
+.form-container {
+    background: #fff;
+    max-width: 700px;
+    margin: 110px auto 120px;
+    padding: 48px 40px;
+    border-radius: 16px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.12);
+}
+
+/* TITLE */
+h2 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: #19123A;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+h2::after {
+    content: "";
+    width: 70px;
+    height: 4px;
+    background: #F07154;
+    display: block;
+    margin: 14px auto 0;
+    border-radius: 2px;
+}
+
+/* SECTION CARDS */
+.form-section {
+    background: #f9fafb;
+    padding: 28px 32px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    border: 1px solid #e5e7eb;
+}
+
+.form-section h3 {
+    margin: 0 0 18px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #19123A;
+}
+
+/* LABELS */
+label {
+    display: block;
+    margin-top: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* INPUTS */
+input, select {
+    width: 100%;
+    margin-top: 6px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+    background: #fff;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #045174;
+    box-shadow: 0 0 0 3px rgba(4,81,116,0.15);
+}
+
+.readonly {
+    background-color: #eef2f7;
+    font-weight: 600;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    margin-top: 40px;
+    padding: 16px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #F07154, #e35d40);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(240,113,84,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 36px rgba(240,113,84,0.45);
+}
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+    .form-container {
+        padding: 32px 24px;
+        margin-top: 90px;
+    }
+}
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="/"><img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Logo" class="logo"></a>
+    <nav>
+        <a href="{{ url_for('case_studies') }}">Case Studies</a>
+        <a href="{{ url_for('learn_more') }}">Learn More</a>
+        <a href="{{ url_for('sign_up') }}">Sign Up</a>
+        <a href="/login" class="btn-login">Login</a>
+    </nav>
+</header>
+
+<div class="form-container">
+    <h2>Demo Company Calculator</h2>
+
+    <form method="POST" action="/calculator">
+
+        <!-- Project Info -->
+        <div class="form-section">
+            <h3>Project Info</h3>
+            <label>Project Name</label>
+            <input type="text" name="project_name" required placeholder="Enter project name">
+
+            <label>Customer Name</label>
+            <input type="text" name="customer_name" required placeholder="Enter customer name">
+        </div>
+
+        <!-- System Info -->
+        <div class="form-section">
+            <h3>System Info</h3>
+            <label>System Size (kW)</label>
+            <input type="number" id="system_size" name="system_size" step="0.01" oninput="calculateYield()" required>
+
+            <label>Battery Size (kWh)</label>
+            <input type="number" id="battery_size" name="battery_size" step="0.01">
+
+            <label>Generation (MWh)</label>
+            <input type="number" id="generation" name="generation" step="0.01" oninput="calculateYield()" required>
+
+            <label>Yield</label>
+            <input type="number" id="yield" name="yield" class="readonly" readonly>
+        </div>
+
+        <!-- Address -->
+        <div class="form-section">
+            <h3>Address</h3>
+            <label>Suburb</label>
+            <input type="text" id="suburb" name="suburb" required>
+
+            <label>State</label>
+            <select id="state" name="state" required>
+                <option value="">Select a state</option>
+                <option value="NSW">NSW</option>
+                <option value="VIC">VIC</option>
+                <option value="QLD">QLD</option>
+                <option value="SA">SA</option>
+                <option value="WA">WA</option>
+                <option value="TAS">TAS</option>
+                <option value="ACT">ACT</option>
+                <option value="NT">NT</option>
+            </select>
+        </div>
+
+        <!-- Costs -->
+        <div class="form-section">
+            <h3>Costs</h3>
+            <label>Net Capex</label>
+            <input type="number" id="net_capex" name="net_capex" step="0.01" oninput="calculateTotalCapex()" required>
+
+            <label>Commissions</label>
+            <input type="number" id="commissions" name="commissions" step="0.01" oninput="calculateTotalCapex()" required>
+
+            <label>Total Capex</label>
+            <input type="number" id="total_capex" name="total_capex" class="readonly" readonly>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+function calculateYield() {
+    let generation = parseFloat(document.getElementById("generation").value) || 0;
+    let systemSize = parseFloat(document.getElementById("system_size").value) || 0;
+    let yieldField = document.getElementById("yield");
+    if(systemSize > 0){
+        yieldField.value = ((generation * 1000) / systemSize).toFixed(2);
+    } else {
+        yieldField.value = "";
+    }
+}
+
+function calculateTotalCapex() {
+    let netCapex = parseFloat(document.getElementById("net_capex").value) || 0;
+    let commissions = parseFloat(document.getElementById("commissions").value) || 0;
+    document.getElementById("total_capex").value = (netCapex + commissions).toFixed(2);
+}
+</script>
+
+</body>
+</html>

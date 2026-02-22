@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Learn More - Agile Energy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f6f8;
+            color: #1f2937;
+            line-height: 1.5;
+           padding-left: 20px;  /* gap from left */
+            padding-right: 20px; /* gap from right */
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background-color: #fff;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { width: 155px; height: auto; }
+        nav a {
+            margin-left: 24px;
+            text-decoration: none;
+            color: #1f2937;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #045174; }
+        nav a.btn-login {
+            background-color:#F07154;
+            color: #19123A;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-left: 24px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        nav a.btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        header nav { display: flex; align-items: center; }
+
+        /* LEARN MORE INTRO SECTION */
+        .learnmore-intro {
+            background: linear-gradient(120deg, #f5f6f8 50%, #e8f1f5 50%);
+            padding: 100px 40px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative lines */
+        .learnmore-intro::before {
+            content: '';
+            position: absolute;
+            top: 5%;
+            left: -50px;
+            width: 200%;
+            height: 2px;
+            background: repeating-linear-gradient(
+                to right,
+                #045174,
+                #045174 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            opacity: 0.1;
+            transform: rotate(-2deg);
+        }
+
+        .learnmore-intro::after {
+            content: '';
+            position: absolute;
+            bottom: 5%;
+            right: -50px;
+            width: 150%;
+            height: 2px;
+            background: repeating-linear-gradient(
+                to right,
+                #F07154,
+                #F07154 8px,
+                transparent 8px,
+                transparent 16px
+            );
+            opacity: 0.1;
+            transform: rotate(1.5deg);
+        }
+
+        /* Decorative circles/curves */
+        .learnmore-intro .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.06;
+            z-index: 0;
+        }
+
+        .circle1 {
+            width: 300px;
+            height: 300px;
+            background: #045174;
+            top: 10%;
+            left: -50px;
+        }
+        .circle2 {
+            width: 400px;
+            height: 400px;
+            background: #F07154;
+            bottom: -100px;
+            right: -100px;
+        }
+
+.intro-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: nowrap; /* prevent wrapping on larger screens */
+    position: relative; /* for z-index above lines/circles */
+    z-index: 1;
+}
+
+/* Stack vertically only on small screens */
+@media (max-width: 900px) {
+    .intro-container {
+        flex-direction: column;  /* stack text and image */
+        align-items: center;
+    }
+}
+
+        .intro-text {
+            flex: 1 1 55%; /* give more space to text */
+            min-width: 280px;
+        }
+
+        .intro-text h1 {
+            font-size: 36px;
+            font-weight: 600;
+            color: #19123A;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .intro-text h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #F07154;
+            margin-top: 12px;
+            border-radius: 2px;
+        }
+
+        .intro-text p {
+            font-size: 16px;
+            font-weight: 400;
+            color: #1f2937;
+            opacity: 0.85;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+.intro-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+    border: 2px solid #045174;
+
+    /* subtle adjustments for aesthetics */
+    filter: brightness(0.92) saturate(0.95); /* blends the image with background */
+    transition: transform 0.3s ease, filter 0.3s ease; /* smooth hover effect */
+}
+
+.intro-image img:hover {
+    transform: scale(1.02); /* gentle zoom on hover */
+    filter: brightness(1) saturate(1); /* restores full vibrance */
+}
+
+/* Optional: focus the image content if it has solar panels on top */
+.intro-image img {
+    object-fit: cover;
+    object-position: center top; /* keeps roof/solar panels in view */
+}
+
+      /* OUR SOLUTION SECTION */
+.our-solution {
+    background-color: #fff;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.solution-bg-angle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(4,81,116,0.06) 0%, rgba(240,113,84,0.03) 100%);
+    clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%);
+    z-index: 0;
+}
+
+.solution-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 40px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.solution-text {
+    flex: 1 1 55%;
+    min-width: 280px;
+}
+
+.solution-text h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #19123A;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.solution-text h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background-color: #F07154;
+    margin-top: 12px;
+    border-radius: 2px;
+}
+
+.solution-text p {
+    font-size: 16px;
+    font-weight: 400;
+    color: #1f2937;
+    opacity: 0.85;
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+.solution-list {
+    flex: 1 1 35%;
+    min-width: 260px;
+    list-style: none;
+    padding: 0;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.solution-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    background: rgba(4,81,116,0.03);
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #19123A;
+    line-height: 1.5;
+    border-left: 3px solid #045174;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.solution-list li:hover {
+    background: rgba(4,81,116,0.06);
+    transform: translateX(2px);
+}
+
+.solution-list li::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    margin-top: 7px;
+    background-color: #F07154;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+/* PPA BENEFITS SECTION */
+.ppa-benefits-section {
+    padding-top: 100px;
+    padding-bottom: 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+  /* PPA Section Titles with Underline */
+  .ppa-benefits-section .section-title,
+  .ppa-inputs-section .ppa-inputs-title {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 40px;
+      color: #19123A;
+      display: inline-block; /* width matches text */
+      padding-bottom: 6px;   /* space for underline */
+      position: relative;
+  }
+
+  /* Underline for both */
+  .ppa-benefits-section .section-title::after,
+  .ppa-inputs-section .ppa-inputs-title::after {
+      content: '';
+      display: block;
+      width: 100%;            /* underline length */
+      height: 4px;            /* thickness */
+      background-color: #F07154;
+      margin-top: 12px;
+      border-radius: 2px;
+  }
+
+
+/* Bottom row: horizontal text + icon boxes */
+.bottom-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 80px;
+}
+
+.bottom-box {
+    flex: 1 1 30%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: #fff;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    padding: 24px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+/* subtle decorative shapes inside each box */
+.bottom-box::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: rgba(240,113,84,0.05);
+    border-radius: 50%;
+    top: -30px;
+    right: -30px;
+    transform: rotate(25deg);
+}
+
+.bottom-box::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 2px;
+    background: rgba(4,81,116,0.05);
+    top: 50%;
+    left: -20px;
+    transform: rotate(-25deg);
+}
+
+.bottom-box-content h3 { 
+    font-size: 20px; 
+    font-weight: 600; 
+    margin-bottom: 8px; 
+}
+.bottom-box-content p { 
+    font-size: 15px; 
+    opacity: 0.85; 
+    line-height: 1.5; 
+}
+
+/* Decorative floating shapes around PPA section */
+.ppa-benefits-section .bg-circle-small {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.05;
+    z-index: 0;
+}
+
+.ppa-circle1 {
+    width: 120px;
+    height: 120px;
+    background: #045174;
+    top: 10%;
+    left: 5%;
+}
+
+.ppa-circle2 {
+    width: 200px;
+    height: 200px;
+    background: #F07154;
+    bottom: 0%;
+    right: 10%;
+}
+
+/* Additional angled lines in PPA section */
+.our-solution .line1,
+.our-solution .line2 {
+    position: absolute;
+    width: 200%;
+    height: 2px;
+    background: repeating-linear-gradient(
+        to right,
+        #045174,
+        #045174 10px,
+        transparent 10px,
+        transparent 20px
+    );
+    opacity: 0.07;
+}
+
+.ppa-benefits-section .line1 {
+    top: 20%;
+    left: -50%;
+    transform: rotate(-2deg);
+}
+
+.ppa-benefits-section .line2 {
+    bottom: 15%;
+    right: -50%;
+    transform: rotate(1.5deg);
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+    .bottom-row { flex-direction: column; }
+    .bottom-box { flex: 1 1 100%; }
+}
+/* Benefits Cards - unified grid */
+.benefits-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Individual cards styling */
+.benefit-card {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+}
+
+.benefit-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+}
+
+.benefit-card::before {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: rgba(4,81,116,0.05);
+    border-radius: 50%;
+    top: -20px;
+    right: -30px;
+    transform: rotate(20deg);
+}
+
+.benefit-card::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 2px;
+    background: rgba(240,113,84,0.05);
+    top: 50%;
+    left: -50px;
+    transform: rotate(-15deg);
+}
+
+.benefit-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #19123A;
+    margin-bottom: 12px;
+}
+
+.benefit-card p {
+    font-size: 15px;
+    color: #1f2937;
+    opacity: 0.85;
+    line-height: 1.6;
+}
+
+/* Responsive tweaks */
+@media(max-width: 900px) {
+    .benefits-container {
+        grid-template-columns: 1fr;
+    }
+    .benefit-card::before, .benefit-card::after {
+        display: none;
+    }
+}
+
+/* PPA INPUTS SECTION */
+.ppa-inputs-section {
+    background: linear-gradient(
+        135deg,
+        rgba(4,81,116,0.04),
+        rgba(240,113,84,0.03)
+    );
+    padding: 100px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ppa-inputs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.ppa-inputs-subtitle {
+    font-size: 16px;
+    color: #1f2937;
+    opacity: 0.8;
+    max-width: 720px;
+    margin: 0 auto 48px;
+    line-height: 1.6;
+}
+
+/* Grid */
+.ppa-inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+/* Individual cards */
+.ppa-input-card {
+    background-color: #fff;
+    border-radius: 18px;
+    padding: 28px 24px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ppa-input-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+}
+
+/* Decorative accent */
+.ppa-input-card::before {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: rgba(4,81,116,0.06);
+    border-radius: 50%;
+    top: -40px;
+    right: -40px;
+}
+
+/* Text */
+.input-label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #F07154;
+    margin-bottom: 6px;
+}
+
+.input-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 600;
+    color: #19123A;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .ppa-inputs-section {
+        padding: 80px 24px;
+    }
+}
+h1, h2, h3 {
+    color: #F07154 !important;
+}
+
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Logo" class="logo">
+    <nav>
+        <a href="{{ url_for('case_studies') }}">Case Studies</a>
+        <a href="{{ url_for('learn_more') }}">Learn More</a>
+        <a href="{{ url_for('sign_up') }}">Sign Up</a>
+        <a href="/login" class="btn-login">Login</a>
+    </nav>
+</header>
+
+<!-- Learn More Intro -->
+<section class="learnmore-intro">
+    <div class="bg-circle circle1"></div>
+    <div class="bg-circle circle2"></div>
+
+    <div class="intro-container">
+        <div class="intro-text">
+            <h1>PPAs and How to Calculate Your Potential Savings</h1>
+            <p>Get a clear overview of PPAs and see what info you’ll need to make the most of our Agile Energy Calculator.</p>
+        </div>
+        <div class="intro-image">
+            <img src="{{ url_for('static', filename='images/solar image 1.jpg') }}" alt="PPA Illustration">
+        </div>
+    </div>
+</section>
+
+<section class="our-solution">
+    <div class="solution-bg-angle"></div>
+    <div class="solution-container">
+        <div class="solution-text">
+            <h2>Our Solution</h2>
+            <p>Agile Energy delivers fully funded behind-the-meter, on-site solar and battery assets under an off-balance-sheet structure, requiring no upfront capital.</p>
+            <p>Customers secure energy at 20–40% below grid rates through a low-risk model with contracted performance, predictable pricing and full lifecycle asset management provided by Agile.</p>
+        </div>
+        <ul class="solution-list">
+            <li>Off balance sheet lending</li>
+            <li>Landlord management for leased properties</li>
+            <li>Uplift NABERS ratings and reduce carbon footprint</li>
+        </ul>
+    </div>
+    <div class="line1"></div>
+    <div class="line2"></div>
+</section>
+<!-- PPA Benefits Section -->
+<section class="ppa-benefits-section">
+    <h2 class="section-title">Benefits of a PPA</h2>
+
+    <!-- All benefit cards in a single grid -->
+    <div class="benefits-container">
+        <!-- Previously horizontal boxes -->
+        <div class="benefit-card">
+            <h3>Long-Term, Predictable Revenue & Pricing</h3>
+            <p>Enjoy stable electricity costs and reliable energy supply over the life of the PPA.</p>
+        </div>
+
+        <div class="benefit-card">
+            <h3>No Upfront Capital Required</h3>
+            <p>Access solar energy without any initial investment while avoiding asset management responsibilities.</p>
+        </div>
+
+        <div class="benefit-card">
+            <h3>Flexible Terms</h3>
+            <p>Agreements can be tailored to your business needs and future growth, providing maximum flexibility.</p>
+        </div>
+
+        <!-- Original benefit cards -->
+        <div class="benefit-card">
+            <h3>No Cost for Monitoring, Replacements or Maintenance</h3>
+            <p>Agile Energy covers all ongoing system upkeep at no cost to you.</p>
+        </div>
+
+        <div class="benefit-card">
+            <h3>No Insurance Cost for Solar Asset</h3>
+            <p>The solar system is fully insured by Agile Energy—no insurance cost for your business.</p>
+        </div>
+
+        <div class="benefit-card">
+            <h3>Option to Add Storage or Expand</h3>
+            <p>Flexibility to upgrade or expand your system as your energy needs grow.</p>
+        </div>
+
+        <div class="benefit-card">
+            <h3>Minimum Internal Resourcing Requirement</h3>
+            <p>Systems are managed by Agile, so your team can focus elsewhere.</p>
+        </div>
+
+        <div class="benefit-card">
+            <h3>Buyout Anytime</h3>
+            <p>Buyout options during or after term at pre-agreed prices. Full ownership at PPA completion.</p>
+        </div>
+
+
+    <!-- Decorative shapes -->
+    <div class="bg-circle-small ppa-circle1"></div>
+    <div class="bg-circle-small ppa-circle2"></div>
+
+
+</section>
+
+<!-- PPA Inputs Section -->
+<section class="ppa-inputs-section">
+    <div class="ppa-inputs-container">
+        <h2 class="ppa-inputs-title">Information Required to Structure Your PPA</h2>
+        <p class="ppa-inputs-subtitle">
+            To accurately model pricing, savings and performance, we require the following project inputs.
+        </p>
+
+        <div class="ppa-inputs-grid">
+            <div class="ppa-input-card">
+                <span class="input-label">System Size</span>
+                <span class="input-value">kW</span>
+            </div>
+
+            <div class="ppa-input-card">
+                <span class="input-label">Battery Size</span>
+                <span class="input-value">kWh</span>
+            </div>
+
+            <div class="ppa-input-card">
+                <span class="input-label">Annual Generation</span>
+                <span class="input-value">MWh</span>
+            </div>
+
+            <div class="ppa-input-card">
+                <span class="input-label">Net Capital Cost</span>
+                <span class="input-value">Net Capex</span>
+            </div>
+
+            <div class="ppa-input-card">
+                <span class="input-label">Commissions</span>
+                <span class="input-value">Applicable Fees</span>
+            </div>
+        </div>
+    </div>
+</section>

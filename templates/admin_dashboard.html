@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Master Dashboard</title>
+    <style>
+        /* Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #1f2937;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+
+        .dashboard-container {
+            background: #fff;
+            padding: 35px 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 1200px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        tr:hover {
+            background-color: #e0f2fe;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        @media(max-width: 768px) {
+            table {
+                font-size: 12px;
+            }
+        }
+
+        @media(max-width: 480px) {
+            .dashboard-container {
+                padding: 25px 15px;
+            }
+            table th, table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="dashboard-container">
+        <h2>Master Dashboard</h2>
+
+        {% if submissions %}
+        <table>
+            <tr>
+                <th>Date & Time</th>
+                <th>Email</th>
+                <th>Project Name</th>
+                <th>Customer Name</th>
+                <th>System Size (kW)</th>
+                <th>Battery Size (kWh)</th>
+                <th>Generation (MWh)</th>
+                <th>Yield</th>
+                <th>Suburb</th>
+                <th>State</th>
+                <th>Net Capex</th>
+                <th>Commissions</th>
+                <th>Total Capex</th>
+                <th>Year 10 Inverter Replacement</th>
+            </tr>
+
+            {% for id, s in submissions.items() %}
+            <tr>
+                <td>{{ s.submitted_at }}</td>
+                <td>{{ s.email }}</td>
+                <td>{{ s.project_name }}</td>
+                <td>{{ s.customer_name }}</td>
+                <td>{{ s.system_size }}</td>
+                <td>{{ s.battery_size }}</td>
+                <td>{{ s.generation }}</td>
+                <td>{{ s.yield }}</td>
+                <td>{{ s.suburb }}</td>
+                <td>{{ s.state }}</td>
+                <td>{{ s.net_capex }}</td>
+                <td>{{ s.commissions }}</td>
+                <td>{{ s.total_capex }}</td>
+                <td>{{ s.year_10_inverter_replacement_calculated }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No submissions yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

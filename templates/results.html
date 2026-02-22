@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PPA Rates</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f5f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative; 
+        }
+
+        /* Logo styling */
+        .logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 200px; 
+            height: auto;
+        }
+
+        .results-container {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            width: 360px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #1f2937;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 12px 10px;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        tr:hover {
+            background-color: #e0f2fe;
+        }
+
+        @media(max-width: 400px) {
+            .results-container {
+                padding: 30px 20px;
+            }
+            th, td {
+                padding: 10px 6px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo -->
+    <img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Logo" class="logo">
+
+    <div class="results-container">
+        <h2>PPA Rates</h2>
+
+<table>
+    <tr>
+        <th>Term Length</th>
+        <th>PPA Price (c/kWh)</th>
+    </tr>
+
+    {% for rate in rates.rates %}
+        <tr>
+            <td>{{ rate.term }}</td>
+            <td>{{ rate.ppa_rate | round(2) }}</td>
+        </tr>
+    {% endfor %}
+</table>
+    </div>
+    
+    <a href="{{ url_for('download_ppa_pdf') }}">
+        <button style="background-color:#005a9c;color:white;padding:10px 20px;border:none;border-radius:4px;cursor:pointer;">
+            Download PPA PDF
+        </button>
+    </a>
+</body>
+</html>
