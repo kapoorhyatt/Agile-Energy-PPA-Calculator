@@ -108,6 +108,9 @@ def results():
 def sign_up():
     if request.method == "POST":
         data = load_data()
+        if not isinstance(data, list):
+            data = []  # ensure it's a list
+
         submission_id = str(uuid.uuid4())
 
         # Handle logo upload
@@ -118,36 +121,28 @@ def sign_up():
             logo_filename = f"{submission_id}_{filename}"
             logo.save(os.path.join(UPLOAD_FOLDER, logo_filename))
 
-        # Get form data
-        name = request.form.get("name")
-        email = request.form.get("email")
-        phone = request.form.get("phone")
-        company = request.form.get("company")
-        abn = request.form.get("abn")
-        address = request.form.get("address")
-        password = request.form.get("password")
-
-        # Hash the password
-        hashed_password = generate_password_hash(password)
-
-        # Save submission
-        data[submission_id] = {
+        # Save submission as a dict
+        submission = {
+            "id": submission_id,
             "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "name": name,
-            "email": email,
-            "phone": phone,
-            "company": company,
-            "abn": abn,
-            "address": address,
+            "name": request.form.get("name"),
+            "email": request.form.get("email"),
+            "phone": request.form.get("phone"),
+            "company": request.form.get("company"),
+            "abn": request.form.get("abn"),
+            "address": request.form.get("address"),
             "logo_filename": logo_filename,
-            "password": hashed_password
+            "password": generate_password_hash(request.form.get("password"))
         }
+
+        # Append to the list
+        data.append(submission)
         save_data(data)
 
-        # Create default assumptions for new user
+        # Default assumptions
         assumptions = load_assumptions()
-        if email not in assumptions:
-            assumptions[email] = DEFAULT_ASSUMPTIONS.copy()
+        if submission["email"] not in assumptions:
+            assumptions[submission["email"]] = DEFAULT_ASSUMPTIONS.copy()
             save_assumptions(assumptions)
 
         return redirect(url_for("home"))
