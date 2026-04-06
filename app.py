@@ -67,17 +67,22 @@ def load_assumptions():
 def save_assumptions(data):
     save_json(ASSUMPTIONS_FILE, data)
 
+# Ensure the file is initialized as a list
+if not os.path.exists(DATA_FILE) or os.stat(DATA_FILE).st_size == 0:
+    with open(DATA_FILE, "w") as f:
+        json.dump([], f, indent=4)
+
 def load_data():
     """Load sign-up submissions as a list."""
-    if os.path.exists(DATA_FILE):
-        try:
-            with open(DATA_FILE, "r") as f:
-                data = json.load(f)
-                if isinstance(data, list):
-                    return data
-        except json.JSONDecodeError:
-            pass
-    return []  # default to empty list
+    try:
+        with open(DATA_FILE, "r") as f:
+            data = json.load(f)
+            if isinstance(data, list):
+                return data
+            # If the file was {}, convert to empty list
+            return []
+    except (json.JSONDecodeError, FileNotFoundError):
+        return []
 
 def save_data(data):
     """Save sign-up submissions."""
