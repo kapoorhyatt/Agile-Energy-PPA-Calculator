@@ -127,61 +127,82 @@ def results():
 @app.route("/sign_up", methods=["GET", "POST"])
 def sign_up():
     if request.method == "POST":
-        # Load existing submissions as a list
-        data = load_data()
-        if not isinstance(data, list):
-            data = []  # fallback
-
-        submission_id = str(uuid.uuid4())
-
-        # Handle logo upload
-        logo = request.files.get("logo")
-        logo_filename = None
-        if logo and logo.filename:
-            filename = secure_filename(logo.filename)
-            logo_filename = f"{submission_id}_{filename}"
-            logo.save(os.path.join(UPLOAD_FOLDER, logo_filename))
-
-        # Collect form data
-        password_raw = request.form.get("password")
-        submission = {
-            "id": submission_id,
-            "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "name": request.form.get("name", ""),
-            "email": request.form.get("email", ""),
-            "phone": request.form.get("phone", ""),
-            "company": request.form.get("company", ""),
-            "abn": request.form.get("abn", ""),
-            "address": request.form.get("address", ""),
-            "logo_filename": logo_filename,
-            "password": generate_password_hash(password_raw) if password_raw else ""
-        }
-
-        # Append new submission
-        data.append(submission)
-
-        # Save to JSON
         try:
+            print("[DEBUG] Received POST to /sign_up")
+            # Load existing submissions as a list
+            data = load_data()
+            print(f"[DEBUG] Current submissions loaded: {len(data)}")
+
+            submission_id = str(uuid.uuid4())
+
+            # Handle logo upload
+            logo = request.files.get("logo")
+            logo_filename = None
+            if logo and logo.filename:
+                filename = secure_filename(logo.filename)
+                logo_filename = f"{submission_id}_{filename}"
+                logo_path = os.path.join(UPLOAD_FOLDER, logo_filename)
+                logo.save(logo_path)
+                print(f"[DEBUG] Logo saved at {logo_path}")
+
+            # Collect form data
+            password_raw = request.form.get("password")
+            submission = {
+                "id": submission_id,
+                "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "name": request.form.get("name", ""),
+                "email": request.form.get("email", ""),
+                "phone": request.form.get("phone", ""),
+                "company": request.form.get("company", ""),
+                "abn": request.form.get("abn", ""),
+                "address": request.form.get("address", ""),
+                "logo_filename": logo_filename,
+                "password": generate_password_hash(password_raw) if password_raw else ""
+            }
+
+            print(f"[DEBUG] New submission: {submission}")
+
+            # Append new submission
+            data.append(submission)
+
+            # Save to JSON
             save_data(data)
-            print(f"[DEBUG] Submission saved: {submission['email']}")
+            print(f"[DEBUG] sign_up_responses.json now has {len(data)} submissions")
+            print(f"[DEBUG] JSON content preview: {data[-1]}")
+
+            # Default assumptions
+            assumptions = load_assumptions()
+            if submission["email"] not in assumptions:
+                assumptions[submission["email"]] = DEFAULT_ASSUMPTIONS.copy()
+                save_assumptions(assumptions)
+                print(f"[DEBUG] Default assumptions set for {submission['email']}")
+
+            return redirect(url_for("home"))
+
         except Exception as e:
-            print(f"[ERROR] Could not save submission: {e}")
-            return "Error saving submission", 500
+            print(f"[ERROR] Exception in /sign_up POST: {e}")
+            return "Internal Server Error during sign up", 500
 
-        # Default assumptions
-        assumptions = load_assumptions()
-        if submission["email"] not in assumptions:
-            assumptions[submission["email"]] = DEFAULT_ASSUMPTIONS.copy()
-            save_assumptions(assumptions)
-
-        return redirect(url_for("home"))
-
+    # GET request
+    print("[DEBUG] GET request to /sign_up")
     return render_template("sign_up.html")
 
 @app.route("/sign_up_responses")
 def sign_up_responses():
-    submissions = load_data()  # returns a list
-    return render_template("sign_up_responses.html", submissions=submissions)
+    try:
+        submissions = load_data()  # returns a list
+        print(f"[DEBUG] Loaded {len(submissions)} submissions for /sign_up_responses")
+
+        # Quick check for content type
+        if not isinstance(submissions, list):
+            print("[ERROR] submissions is not a list!")
+            submissions = []
+
+        return render_template("sign_up_responses.html", submissions=submissions)
+
+    except Exception as e:
+        print(f"[ERROR] Exception in /sign_up_responses: {e}")
+        return "Internal Server Error while loading submissions", 500
 
 # --- LOGIN ROUTE ---
 @app.route("/login", methods=["GET", "POST"])
