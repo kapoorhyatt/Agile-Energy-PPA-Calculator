@@ -2,224 +2,186 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PPA – Client Summary</title>
+<title>PPA One Pager</title>
+
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        margin: 25px;
-        color: #19123A;
-        font-size: 11pt;
-        line-height: 1.3;
-        background-color: #fff;
-    }
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    color: #1f2937;
+}
 
-    /* HEADER: Logos + Credibility + Title */
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-    .logos img {
-        max-height: 50px;
-    }
-    .credibility {
-        font-size: 9pt;
-        color: #045174;
-        font-weight: 600;
-        margin-top: 5px;
-        text-align: center;
-        width: 100%;
-    }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    /* TITLE */
-    h1 {
-        text-align: center;
-        font-size: 18pt;
-        margin: 5px 0 10px 0;
-        background: linear-gradient(90deg, #045174, #F07154);
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent;
-        -webkit-text-fill-color: transparent;
-    }
-    .subtitle {
-        text-align: center;
-        font-size: 10pt;
-        color: #19123A;
-        margin-bottom: 20px;
-    }
+header img {
+    height: 50px;
+}
 
-    /* SECTIONS */
-    section {
-        margin-bottom: 12px;
-    }
-    h2 {
-        font-size: 12pt;
-        margin-bottom: 5px;
-        color: #F07154;
-        border-bottom: 1px solid #F1BFA9;
-        padding-bottom: 2px;
-    }
+h1 {
+    text-align: center;
+    margin: 20px 0 30px;
+    font-size: 22px;
+}
 
-    /* CLIENT & SYSTEM INFO */
-    .client-system {
-        display: flex;
-        justify-content: space-between;
-        font-size: 10pt;
-    }
-    .client-system div {
-        width: 48%;
-    }
-    .client-system strong {
-        color: #045174;
-    }
+/* TOP SECTION */
+.top {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 30px;
+}
 
-    /* ENERGY PRICING */
-    .pricing-box {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 5px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        overflow: hidden;
-    }
-    .pricing-box .term {
-        flex: 1;
-        text-align: center;
-        background-color: #F6B836;
-        padding: 10px 0;
-        font-weight: 600;
-        color: #19123A;
-    }
-    .pricing-box .rate {
-        flex: 1;
-        text-align: center;
-        padding: 15px 0;
-        font-size: 16pt;
-        font-weight: 700;
-        color: #045174;
-        background-color: #F1BFA9;
-    }
+.left, .right {
+    flex: 1;
+}
 
-    .callout {
-        padding: 6px 10px;
-        background-color: #F6B836;
-        border-left: 4px solid #045174;
-        font-size: 10pt;
-        font-weight: 600;
-        margin-top: 5px;
-    }
+.section-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #045174;
+}
 
-    /* BENEFITS / INCLUSIONS */
-    .benefits, .inclusions {
-        display: flex;
-        justify-content: space-between;
-        font-size: 10pt;
-        margin-top: 5px;
-    }
-    .benefits ul, .inclusions ul {
-        width: 48%;
-        padding-left: 18px;
-        margin: 0;
-    }
-    li {
-        margin-bottom: 4px;
-    }
+.info p {
+    margin: 6px 0;
+    font-size: 14px;
+}
 
-    /* ENVIRONMENTAL IMPACT */
-    .impact {
-        margin-top: 8px;
-        font-size: 10pt;
-        display: flex;
-        justify-content: space-between;
-    }
-    .impact div {
-        width: 48%;
-    }
+/* BENEFITS BOX */
+.benefits {
+    background: #f9fafb;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #045174;
+}
 
-    /* FOOTER */
-    footer {
-        font-size: 8pt;
-        color: #555;
-        border-top: 1px solid #ccc;
-        padding-top: 5px;
-        margin-top: 10px;
-        text-align: center;
-    }
+.benefits ul {
+    padding-left: 18px;
+    margin: 0;
+}
+
+.benefits li {
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+/* RATES */
+.rates {
+    margin-top: 20px;
+}
+
+.rates table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rates th, .rates td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.rates th {
+    background: #f3f4f6;
+}
+
+/* NOTES */
+.notes {
+    margin-top: 20px;
+    font-size: 11px;
+    color: #555;
+}
+
+.notes p {
+    margin: 4px 0;
+}
+
+/* FOOTER */
+.footer {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 11px;
+}
 </style>
 </head>
+
 <body>
 
 <header>
-    <img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Energy Logo">
-    <img src="{{ url_for('static', filename='uploads/placeholder.png') }}" alt="Partner Logo">
+    <img src="{{ url_for('static', filename='images/Agile Logo.png') }}">
 </header>
-<div class="credibility">Locally funded by 5V and CEFC</div>
 
-<h1>Power Purchase Agreement (PPA)</h1>
-<div class="subtitle">Board-ready summary of your solar project proposal</div>
+<h1>Power Purchase Offer for Solar System</h1>
 
-<section>
-    <h2>Client & System Overview</h2>
-    <div class="client-system">
-        <div class="client-info">
+<!-- TOP SECTION -->
+<div class="top">
+
+    <!-- LEFT -->
+    <div class="left">
+        <div class="section-title">Project Details</div>
+
+        <div class="info">
             <p><strong>Client:</strong> {{ business_name }}</p>
-            <p><strong>Site / Address:</strong> {{ address }}</p>
-            <p><strong>Prepared By:</strong> Agile Energy</p>
+            <p><strong>Location:</strong> {{ address }}</p>
+            <p><strong>System Size:</strong> {{ system_size or '–' }} kW</p>
+            <p><strong>Annual Production:</strong> {{ generation or '–' }} MWh</p>
             <p><strong>Date:</strong> {{ now.strftime("%d %B %Y") }}</p>
         </div>
-        <div class="system-info">
-            <p><strong>Solar PV Size (kW):</strong> {{ system_size or '–' }}</p>
-            <p><strong>Battery (kWh):</strong> {{ battery_size or '–' }}</p>
-            <p><strong>Annual Generation (kWh):</strong> {{ generation or '–' }}</p>
-            <p><strong>Location:</strong> {{ system_location or '–' }}</p>
-            <p><strong>PPA Terms:</strong> 7,10,12,15,20,25 years</p>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+        <div class="section-title">No capex, opex or risk</div>
+
+        <div class="benefits">
+            <ul>
+                <li>No upfront capital or maintenance costs</li>
+                <li>Capital provided off balance sheet</li>
+                <li>Reduce energy rates and costs</li>
+                <li>No risk – approvals & install handled</li>
+                <li>No fees at end of term</li>
+                <li>Carbon emissions reduction</li>
+                <li>Improve NABERS rating</li>
+                <li>Focus on core business</li>
+            </ul>
         </div>
     </div>
-</section>
 
-<section>
-    <h2>Energy Pricing Snapshot</h2>
-    <div class="pricing-box">
-        {% for term in [7,10,12,15,20,25] %}
-        <div class="term">{{ term }} yrs</div>
+</div>
+
+<!-- RATES -->
+<div class="rates">
+    <div class="section-title">PPA Term Options</div>
+
+    <table>
+        <tr>
+            <th>Term</th>
+            <th>Rate (c/kWh)</th>
+        </tr>
+
+        {% for rate in rates.rates %}
+        <tr>
+            <td>{{ rate.term }} years</td>
+            <td>{{ rate.ppa_rate | round(2) }}</td>
+        </tr>
         {% endfor %}
-        {% for _ in [7,10,12,15,20,25] %}
-        <div class="rate">–</div>
-        {% endfor %}
-    </div>
-    <div class="callout">Rates are indicative and based on final project inputs</div>
-</section>
+    </table>
+</div>
 
-<section>
-    <div class="benefits">
-        <ul>
-            <strong>Why This PPA Works</strong>
-            <li>No upfront capital</li>
-            <li>Fixed discounted pricing</li>
-            <li>Risk transferred to Agile</li>
-            <li>Price certainty</li>
-        </ul>
-        <ul class="inclusions">
-            <strong>Included at No Cost</strong>
-            <li>Maintenance</li>
-            <li>Monitoring</li>
-            <li>Insurance</li>
-            <li>Component replacements</li>
-            <li>Performance guarantees</li>
-        </ul>
-    </div>
-</section>
+<!-- NOTES -->
+<div class="notes">
+    <p>PPA rates escalate annually by CPI (capped at 3%).</p>
+    <p>No fees payable at end of term.</p>
+    <p>System may be transferred if tenancy changes.</p>
+    <p>Installation subject to structural assessment.</p>
+</div>
 
-<section class="impact">
-    <div><strong>Annual CO₂-e Reduction:</strong> {{ co2_reduction or '–' }} tonnes</div>
-    <div><strong>Equivalent:</strong> {{ co2_equivalence or '–' }}</div>
-</section>
-
-<footer>
-Prepared by Agile Energy • {{ now.strftime("%d %B %Y") }} • Next Steps: Review proposal & confirm project inputs
-</footer>
+<!-- FOOTER -->
+<div class="footer">
+    www.agileenergy.com.au | 1800 512 194 | info@agileenergy.com.au
+</div>
 
 </body>
 </html>
