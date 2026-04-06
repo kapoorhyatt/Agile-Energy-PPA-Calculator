@@ -127,9 +127,10 @@ def results():
 @app.route("/sign_up", methods=["GET", "POST"])
 def sign_up():
     if request.method == "POST":
+        # Load existing submissions as a list
         data = load_data()
         if not isinstance(data, list):
-            data = []  # ensure it's a list
+            data = []  # fallback
 
         submission_id = str(uuid.uuid4())
 
@@ -141,23 +142,31 @@ def sign_up():
             logo_filename = f"{submission_id}_{filename}"
             logo.save(os.path.join(UPLOAD_FOLDER, logo_filename))
 
-        # Save submission as a dict
+        # Collect form data
+        password_raw = request.form.get("password")
         submission = {
             "id": submission_id,
             "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "name": request.form.get("name"),
-            "email": request.form.get("email"),
-            "phone": request.form.get("phone"),
-            "company": request.form.get("company"),
-            "abn": request.form.get("abn"),
-            "address": request.form.get("address"),
+            "name": request.form.get("name", ""),
+            "email": request.form.get("email", ""),
+            "phone": request.form.get("phone", ""),
+            "company": request.form.get("company", ""),
+            "abn": request.form.get("abn", ""),
+            "address": request.form.get("address", ""),
             "logo_filename": logo_filename,
-            "password": generate_password_hash(request.form.get("password"))
+            "password": generate_password_hash(password_raw) if password_raw else ""
         }
 
-        # Append to the list
+        # Append new submission
         data.append(submission)
-        save_data(data)
+
+        # Save to JSON
+        try:
+            save_data(data)
+            print(f"[DEBUG] Submission saved: {submission['email']}")
+        except Exception as e:
+            print(f"[ERROR] Could not save submission: {e}")
+            return "Error saving submission", 500
 
         # Default assumptions
         assumptions = load_assumptions()
