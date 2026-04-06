@@ -68,23 +68,25 @@ def save_assumptions(data):
     save_json(ASSUMPTIONS_FILE, data)
 
 def load_data():
-        if os.path.exists(DATA_FILE):
-           try:
-            data = json.load(open(DATA_FILE, "r"))
-            if isinstance(data, list):
-                return data
-           except json.JSONDecodeError:
+    """Load sign-up submissions as a list."""
+    if os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, "r") as f:
+                data = json.load(f)
+                if isinstance(data, list):
+                    return data
+        except json.JSONDecodeError:
             pass
-           return []  # default to empty list
+    return []  # default to empty list
 
 def save_data(data):
+    """Save sign-up submissions."""
     if not isinstance(data, list):
         raise ValueError("Data must be a list")
     with open(DATA_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
-def save_data(data):
-    save_json(DATA_FILE, data)
+
 
 def convert_html_to_pdf(source_html, output_filename):
 
@@ -164,7 +166,7 @@ def sign_up():
 
 @app.route("/sign_up_responses")
 def sign_up_responses():
-    submissions = load_data()
+    submissions = load_data()  # returns a list
     return render_template("sign_up_responses.html", submissions=submissions)
 
 # --- LOGIN ROUTE ---
@@ -175,15 +177,16 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
+        # Check admin/demo users first
         user = users.get(email)
         if user and check_password_hash(user["password"], password):
             session["user"] = email
             session["role"] = user["role"]
             return redirect("/admin_menu") if user["role"] == "admin" else redirect("/disclaimer")
 
-        # Check regular users
+        # Check user-submitted accounts
         data = load_data()
-        matched_user = next((sub for sub in data if sub.get("email") == email), None)
+        matched_user = next((u for u in data if u.get("email") == email), None)
         if matched_user and check_password_hash(matched_user.get("password", ""), password):
             session["user"] = email
             session["role"] = "company"
@@ -281,7 +284,8 @@ def download_ppa_pdf():
         return redirect("/login")
 
     # Load user data
-    data = load_data().get(session["user"], {})
+    all_users = load_data()  # load list of all sign-ups
+    data = next((u for u in all_users if u.get("email") == session["user"]), {})
 
     # Get current datetime
     now = datetime.now()
