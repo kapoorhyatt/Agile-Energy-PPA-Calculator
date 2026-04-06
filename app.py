@@ -68,7 +68,20 @@ def save_assumptions(data):
     save_json(ASSUMPTIONS_FILE, data)
 
 def load_data():
-    return load_json(DATA_FILE)
+        if os.path.exists(DATA_FILE):
+           try:
+            data = json.load(open(DATA_FILE, "r"))
+            if isinstance(data, list):
+                return data
+           except json.JSONDecodeError:
+            pass
+           return []  # default to empty list
+
+def save_data(data):
+    if not isinstance(data, list):
+        raise ValueError("Data must be a list")
+    with open(DATA_FILE, "w") as f:
+        json.dump(data, f, indent=4)
 
 def save_data(data):
     save_json(DATA_FILE, data)
@@ -170,7 +183,7 @@ def login():
 
         # Check regular users
         data = load_data()
-        matched_user = next((sub for sub in data.values() if sub.get("email") == email), None)
+        matched_user = next((sub for sub in data if sub.get("email") == email), None)
         if matched_user and check_password_hash(matched_user.get("password", ""), password):
             session["user"] = email
             session["role"] = "company"
