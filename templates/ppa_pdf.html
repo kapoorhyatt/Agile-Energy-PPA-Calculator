@@ -5,118 +5,135 @@
 <title>PPA Summary</title>
 
 <style>
-@page { size: A4; margin: 14mm; }
+@page { size: A4; margin: 12mm; }
 
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: #f3f4f6;
+    background: #F1BFA9;
     color: #19123A;
 }
 
 .page {
-    background: #fff;
+    background: #ffffff;
     max-width: 800px;
     margin: auto;
-    padding: 24px;
-    border-radius: 10px;
+    padding: 20px;
 }
 
 /* HEADER */
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+    align-items: flex-start;
+    margin-bottom: 14px;
 }
 
 .header h1 {
+    font-size: 16px;
+    color: #045174;
+    margin-bottom: 6px;
+}
+
+/* BIGGER CLIENT TEXT */
+.client {
     font-size: 18px;
+    font-weight: 600;
+    color: #19123A;
+}
+
+.address {
+    font-size: 14px;
+    color: #045174;
 }
 
 .logo {
-    height: 40px;
+    height: 36px;
 }
 
-/* TOP KPIs */
+/* KPI STRIP */
 .top-kpis {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 14px;
 }
 
 .kpi {
     background: #19123A;
-    padding: 16px;
-    border-radius: 8px;
+    padding: 14px;
+    border-radius: 6px;
     text-align: center;
 }
 
 .kpi strong {
-    font-size: 22px;
+    font-size: 20px;
     color: #F6B836;
 }
 
 .kpi span {
     display: block;
-    font-size: 12px;
-    color: #ccc;
+    font-size: 11px;
+    color: #F1BFA9;
 }
 
 /* SECTION TITLE */
 .section-title {
-    font-size: 12px;
-    margin-bottom: 8px;
+    font-size: 11px;
+    margin-bottom: 6px;
     color: #045174;
     text-transform: uppercase;
+    font-weight: 600;
 }
 
-/* RATE TABLE */
+/* TABLE */
 .rate-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
 }
 
 .rate-table th {
-    text-align: left;
-    font-size: 12px;
-    padding: 8px;
     background: #19123A;
-    color: white;
+    color: #ffffff;
+    font-size: 11px;
+    padding: 6px;
+    text-align: left;
 }
 
 .rate-table td {
-    padding: 10px 8px;
-    border-bottom: 1px solid #ddd;
-    font-size: 13px;
+    padding: 6px;
+    font-size: 12px;
+    border-bottom: 1px solid #F1BFA9;
 }
 
-/* BENEFITS */
+/* BENEFITS (2 COLUMN FOR SPACE) */
 .benefits {
-    background: #FFF7E6;
-    border-left: 4px solid #F6B836;
-    padding: 14px;
+    background: #F1BFA9;
+    padding: 12px;
+    border-left: 4px solid #F07154;
     border-radius: 6px;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
 }
 
 .benefits ul {
-    padding-left: 18px;
+    column-count: 2;
+    column-gap: 20px;
+    padding-left: 16px;
 }
 
 .benefits li {
-    margin-bottom: 6px;
-    font-size: 13px;
+    font-size: 12px;
+    margin-bottom: 4px;
 }
 
 /* FOOTER */
 .footer {
     font-size: 10px;
-    border-top: 1px solid #ddd;
-    padding-top: 10px;
+    border-top: 1px solid #F1BFA9;
+    padding-top: 8px;
     display: flex;
     justify-content: flex-end;
+    color: #045174;
 }
 </style>
 </head>
@@ -129,12 +146,13 @@ body {
     <div class="header">
         <div>
             <h1>PPA Offer</h1>
-            <p>{{ business_name }} – {{ address }}</p>
+            <div class="client">{{ business_name }}</div>
+            <div class="address">{{ address }}</div>
         </div>
         <img src="{{ user_logo_url }}" class="logo">
     </div>
 
-    <!-- TOP KPIs -->
+    <!-- KPIs -->
     <div class="top-kpis">
         <div class="kpi">
             <strong>{{ system_size }}</strong>
@@ -146,19 +164,19 @@ body {
         </div>
     </div>
 
-    <!-- RATE TABLE -->
+    <!-- TABLE -->
     <div class="section-title">PPA Rate Options</div>
     <table class="rate-table">
-    <tr>
-        <th>Term (Years)</th>
-        <th>Rate (c/kWh)</th>
-    </tr>
-    {% for rate in rates.rates %}
-    <tr>
-        <td>{{ rate.term }}</td>
-        <td>{{ rate.ppa_rate }}</td>
-    </tr>
-    {% endfor %}
+        <tr>
+            <th>Term (Years)</th>
+            <th>Rate (c/kWh)</th>
+        </tr>
+        {% for rate in rates.rates %}
+        <tr>
+            <td>{{ rate.term }}</td>
+            <td>{{ rate.ppa_rate | round(2) }}</td>
+        </tr>
+        {% endfor %}
     </table>
 
     <!-- BENEFITS -->
@@ -167,13 +185,13 @@ body {
         <ul>
             <li>No upfront capital or maintenance costs</li>
             <li>Capital provided off balance sheet</li>
-            <li>Reduced energy rates and operating costs</li>
-            <li>No risk — approvals, install and performance covered</li>
+            <li>Reduced energy costs</li>
+            <li>No risk – install & performance covered</li>
             <li>No fees at end of term</li>
             <li>Carbon emissions reduction</li>
-            <li>No maintenance or quality concerns</li>
-            <li>Focus on core business, not energy infrastructure</li>
-            <li>Supports NABERS and sustainability targets</li>
+            <li>No maintenance concerns</li>
+            <li>Focus on core business</li>
+            <li>Supports sustainability targets</li>
         </ul>
     </div>
 
