@@ -2,179 +2,186 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PPA One Pager</title>
+<title>PPA Summary</title>
 
 <style>
+@page { size: A4; margin: 14mm; }
+
 body {
-    font-family: 'Segoe UI', sans-serif;
-    margin: 20px;
-    color: #1f2937;
-    line-height: 1.4;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f3f4f6;
+    color: #19123A;
 }
 
-header {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 20px;
+.page {
+    background: #fff;
+    max-width: 800px;
+    margin: auto;
+    padding: 24px;
+    border-radius: 10px;
 }
 
-header img {
-    height: 50px;
-}
-
-/* TITLE */
-h1 {
-    text-align: center;
-    margin: 0 0 20px;
-    font-size: 24px;
-    color: #045174;
-}
-
-/* TOP FEATURES */
-.features {
+/* HEADER */
+.header {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
-    margin-bottom: 25px;
-}
-
-.feature-item {
-    flex: 1 1 30%;
-    font-size: 13px;
-    margin-bottom: 10px;
-    display: flex;
     align-items: center;
-    gap: 6px;
-}
-
-/* TABLE */
-.table-container {
-    width: 100%;
-    overflow-x: auto;
     margin-bottom: 20px;
 }
 
-table {
+.header h1 {
+    font-size: 18px;
+}
+
+.logo {
+    height: 40px;
+}
+
+/* TOP KPIs */
+.top-kpis {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.kpi {
+    background: #19123A;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.kpi strong {
+    font-size: 22px;
+    color: #F6B836;
+}
+
+.kpi span {
+    display: block;
+    font-size: 12px;
+    color: #ccc;
+}
+
+/* SECTION TITLE */
+.section-title {
+    font-size: 12px;
+    margin-bottom: 8px;
+    color: #045174;
+    text-transform: uppercase;
+}
+
+/* RATE TABLE */
+.rate-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    margin-bottom: 20px;
 }
 
-th, td {
-    border: 1px solid #ccc;
+.rate-table th {
+    text-align: left;
+    font-size: 12px;
     padding: 8px;
-    text-align: center;
+    background: #19123A;
+    color: white;
 }
 
-th {
-    background: #f3f4f6;
-    color: #045174;
-    font-weight: bold;
-}
-
-/* BOTTOM DOT POINTS */
-.bottom-points {
-    text-align: center;
-    margin-top: 15px;
+.rate-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #ddd;
     font-size: 13px;
 }
 
-.bottom-points ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+/* BENEFITS */
+.benefits {
+    background: #FFF7E6;
+    border-left: 4px solid #F6B836;
+    padding: 14px;
+    border-radius: 6px;
+    margin-bottom: 20px;
 }
 
-.bottom-points li {
-    display: inline-block;
-    margin: 0 10px;
-    padding-left: 20px;
-    position: relative;
+.benefits ul {
+    padding-left: 18px;
 }
 
-.bottom-points li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: #045174;
+.benefits li {
+    margin-bottom: 6px;
+    font-size: 13px;
 }
 
 /* FOOTER */
 .footer {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 11px;
-    color: #666;
+    font-size: 10px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    display: flex;
+    justify-content: flex-end;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <img src="{{ url_for('static', filename='images/Agile Logo.png') }}">
-</header>
+<div class="page">
 
-<h1>Power Purchase Offer – Solar System</h1>
+    <!-- HEADER -->
+    <div class="header">
+        <div>
+            <h1>PPA Offer</h1>
+            <p>{{ business_name }} – {{ address }}</p>
+        </div>
+        <img src="{{ user_logo_url }}" class="logo">
+    </div>
 
-<!-- TOP FEATURES -->
-<div class="features">
-    <div class="feature-item">⚡ Monitoring included</div>
-    <div class="feature-item">🛡 Warranty & Replacement included</div>
-    <div class="feature-item">🌞 Guaranteed Generation</div>
-    <div class="feature-item">⏱ Shortest Term & Aligned to Site Leases</div>
-    <div class="feature-item">🛠 Maintenance Included</div>
-    <div class="feature-item">💰 No Capex Required</div>
-</div>
+    <!-- TOP KPIs -->
+    <div class="top-kpis">
+        <div class="kpi">
+            <strong>{{ system_size }}</strong>
+            <span>System Size (kW)</span>
+        </div>
+        <div class="kpi">
+            <strong>{{ generation }}</strong>
+            <span>Annual Output (MWh)</span>
+        </div>
+    </div>
 
-<!-- PROJECT + RATES TABLE -->
-<div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>Project Name</th>
-                <th>Location</th>
-                <th>System Size (kW)</th>
-                <th>Annual Solar Production (MWh)</th>
-                <th>PPA Term Options (yrs)</th>
-                <th>PPA Rate (c/kWh)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ business_name }}</td>
-                <td>{{ address }}</td>
-                <td>{{ system_size or '–' }}</td>
-                <td>{{ generation or '–' }}</td>
-                <td>
-                    {% for rate in rates.rates %}
-                        {{ rate.term }}{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for rate in rates.rates %}
-                        {{ rate.ppa_rate | round(2) }}{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                </td>
-            </tr>
-        </tbody>
+    <!-- RATE TABLE -->
+    <div class="section-title">PPA Rate Options</div>
+    <table class="rate-table">
+    <tr>
+        <th>Term (Years)</th>
+        <th>Rate (c/kWh)</th>
+    </tr>
+    {% for rate in rates.rates %}
+    <tr>
+        <td>{{ rate.term }}</td>
+        <td>{{ rate.ppa_rate }}</td>
+    </tr>
+    {% endfor %}
     </table>
-</div>
 
-<!-- BOTTOM DOT POINTS -->
-<div class="bottom-points">
-    <ul>
-        <li>PPA rates escalate annually by CPI (capped at 3%)</li>
-        <li>No fees payable at end of term</li>
-        <li>System may be transferred if tenancy changes</li>
-        <li>Installation subject to structural assessment</li>
-    </ul>
-</div>
+    <!-- BENEFITS -->
+    <div class="section-title">Key Benefits</div>
+    <div class="benefits">
+        <ul>
+            <li>No upfront capital or maintenance costs</li>
+            <li>Capital provided off balance sheet</li>
+            <li>Reduced energy rates and operating costs</li>
+            <li>No risk — approvals, install and performance covered</li>
+            <li>No fees at end of term</li>
+            <li>Carbon emissions reduction</li>
+            <li>No maintenance or quality concerns</li>
+            <li>Focus on core business, not energy infrastructure</li>
+            <li>Supports NABERS and sustainability targets</li>
+        </ul>
+    </div>
 
-<!-- FOOTER -->
-<div class="footer">
-    www.agileenergy.com.au | 1800 512 194 | info@agileenergy.com.au
+    <!-- FOOTER -->
+    <div class="footer">
+        <span>agileenergy.com.au | 1800 512 194</span>
+    </div>
+
 </div>
 
 </body>
