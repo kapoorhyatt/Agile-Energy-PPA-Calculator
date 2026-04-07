@@ -341,13 +341,16 @@ def download_ppa_pdf():
     # Get current datetime
     now = datetime.now()
 
+    # Load rates
+    rates_data = load_rates()
+
     # HTML content for PDF
     html = render_template(
         "ppa_pdf.html",
         business_name=data.get("company", "Business Name"),
         address=data.get("address", "Project Address"),
-        ppa_terms=[7,10,12,15,20,25],
-        ppa_rates=[None]*6,  # empty for now
+        ppa_terms=[7, 10, 12, 15, 20, 25],
+        rates=rates_data,  # make sure the comma is here
         benefits=[
             "No upfront capital, operating, or insurance costs",
             "Fixed, discounted electricity rate for the full term",
@@ -357,23 +360,26 @@ def download_ppa_pdf():
             "Optional battery storage with no capital outlay",
             "Improved sustainability outcomes and NABERS rating"
         ],
-        now=now  # <--- pass now here
+        now=now
     )
 
-    # Generate PDF
+    # Ensure PDF folder exists
     PDF_FOLDER = os.path.join("static", "PDF")
     os.makedirs(PDF_FOLDER, exist_ok=True)
+
+    # Generate unique PDF filename
     pdf_filename = f"ppa_{session['user']}_{int(now.timestamp())}.pdf"
     pdf_path = os.path.join(PDF_FOLDER, pdf_filename)
 
+    # Generate PDF
     with open(pdf_path, "wb") as f:
         pisa_status = pisa.CreatePDF(src=html, dest=f)
 
     if pisa_status.err:
         return "Error generating PDF", 500
 
+    # Send file to user
     return send_file(pdf_path, download_name=pdf_filename, as_attachment=True)
-
 # --- ADMIN MENU ---
 @app.route("/admin_menu")
 def admin_menu():

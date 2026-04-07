@@ -1,1 +1,28 @@
-{}
+{
+    "rates": [
+        {
+            "term": 7,
+            "ppa_rate": 17.01
+        },
+        {
+            "term": 10,
+            "ppa_rate": 14.63
+        },
+        {
+            "term": 12,
+            "ppa_rate": 13.61
+        },
+        {
+            "term": 15,
+            "ppa_rate": 12.66
+        },
+        {
+            "term": 20,
+            "ppa_rate": 11.86
+        },
+        {
+            "term": 25,
+            "ppa_rate": 11.48
+        }
+    ]
+}

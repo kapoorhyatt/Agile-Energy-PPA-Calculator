@@ -55,16 +55,23 @@ h1 {
     padding: 15px;
     border-radius: 8px;
     border-left: 4px solid #045174;
-}
-
-.benefits ul {
-    padding-left: 18px;
-    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
 }
 
 .benefits li {
-    margin-bottom: 6px;
     font-size: 13px;
+    list-style: none;
+    padding-left: 20px;
+    position: relative;
+}
+
+.benefits li::before {
+    content: "•";
+    color: #045174;
+    position: absolute;
+    left: 0;
 }
 
 /* RATES */
@@ -75,6 +82,7 @@ h1 {
 .rates table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 13px;
 }
 
 .rates th, .rates td {
@@ -111,6 +119,9 @@ h1 {
 
 <header>
     <img src="{{ url_for('static', filename='images/Agile Logo.png') }}">
+    {% if company_logo %}
+        <img src="{{ url_for('static', filename='uploads/' + company_logo) }}" style="height:50px;">
+    {% endif %}
 </header>
 
 <h1>Power Purchase Offer for Solar System</h1>
@@ -118,10 +129,9 @@ h1 {
 <!-- TOP SECTION -->
 <div class="top">
 
-    <!-- LEFT -->
+    <!-- LEFT: Project Info -->
     <div class="left">
         <div class="section-title">Project Details</div>
-
         <div class="info">
             <p><strong>Client:</strong> {{ business_name }}</p>
             <p><strong>Location:</strong> {{ address }}</p>
@@ -129,44 +139,54 @@ h1 {
             <p><strong>Annual Production:</strong> {{ generation or '–' }} MWh</p>
             <p><strong>Date:</strong> {{ now.strftime("%d %B %Y") }}</p>
         </div>
+        <!-- Small graphic -->
+        <svg width="100%" height="40px" style="margin-top:10px;">
+            <rect width="100%" height="40" rx="6" fill="#04517433"/>
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="14" fill="#045174">
+                Project Overview
+            </text>
+        </svg>
     </div>
 
-    <!-- RIGHT -->
+    <!-- RIGHT: Benefits -->
     <div class="right">
         <div class="section-title">No capex, opex or risk</div>
-
-        <div class="benefits">
-            <ul>
-                <li>No upfront capital or maintenance costs</li>
-                <li>Capital provided off balance sheet</li>
-                <li>Reduce energy rates and costs</li>
-                <li>No risk – approvals & install handled</li>
-                <li>No fees at end of term</li>
-                <li>Carbon emissions reduction</li>
-                <li>Improve NABERS rating</li>
-                <li>Focus on core business</li>
-            </ul>
-        </div>
+        <ul class="benefits">
+            <li>💰 No upfront capital or maintenance costs</li>
+            <li>📊 Capital provided off balance sheet</li>
+            <li>⚡ Reduce energy rates and costs</li>
+            <li>🛡 No risk – approvals & install handled</li>
+            <li>🏁 No fees at end of term</li>
+            <li>🌿 Carbon emissions reduction</li>
+            <li>⭐ Improve NABERS rating</li>
+            <li>🏢 Focus on core business</li>
+        </ul>
+        <!-- Small graphic -->
+        <svg width="100%" height="40px" style="margin-top:10px;">
+            <rect width="100%" height="40" rx="6" fill="#04517433"/>
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="14" fill="#045174">
+                Benefits Summary
+            </text>
+        </svg>
     </div>
-
 </div>
 
 <!-- RATES -->
 <div class="rates">
     <div class="section-title">PPA Term Options</div>
-
     <table>
         <tr>
-            <th>Term</th>
-            <th>Rate (c/kWh)</th>
+            <th>Term (years)</th>
+            {% for rate in rates.rates %}
+                <th>{{ rate.term }}</th>
+            {% endfor %}
         </tr>
-
-        {% for rate in rates.rates %}
         <tr>
-            <td>{{ rate.term }} years</td>
-            <td>{{ rate.ppa_rate | round(2) }}</td>
+            <td>Rate (c/kWh)</td>
+            {% for rate in rates.rates %}
+                <td>{{ rate.ppa_rate | round(2) }}</td>
+            {% endfor %}
         </tr>
-        {% endfor %}
     </table>
 </div>
 
