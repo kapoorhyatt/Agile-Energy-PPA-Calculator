@@ -65,11 +65,11 @@ body {
 
 .top-kpis {
     display: flex;
-    justify-content: space-between;
-    margin: 18px 0 18px 0;
+    justify-content: center;   /* NOT space-between */
+    gap: 20px;                 /* THIS creates the separation */
+    margin: 18px 0;
 }
 
-/* KEY CHANGE: smaller width + gap */
 .kpi {
     background: #19123A;
     padding: 16px 18px;
@@ -77,24 +77,12 @@ body {
     display: flex;
     align-items: center;
     gap: 14px;
-    width: 44%; /* was 48% */
-    
-    /* THIS makes them feel "floating" */
+
+    width: 320px;              /* FIXED width instead of % */
     box-shadow: 0 4px 12px rgba(25,18,58,0.12);
 }
 
-/* push them apart visually */
-.kpi.left {
-    margin-right: auto;
-    transform: translateY(2px);
-}
 
-.kpi.right {
-    margin-left: auto;
-    justify-content: flex-end;
-    text-align: right;
-    transform: translateY(-2px);
-}
 
 .kpi-value {
     font-size: 28px;
