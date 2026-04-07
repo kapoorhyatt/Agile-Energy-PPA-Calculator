@@ -23,13 +23,14 @@ users = {
 # =========================
 # FILES & UPLOADS
 # =========================
-SUBMISSIONS_FILE = "submissions.json"
-ASSUMPTIONS_FILE = "assumptions.json"
-DATA_FILE = "sign_up_responses.json"
-UPLOAD_FOLDER = "static/uploads"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE = os.path.join(BASE_DIR, "sign_up_responses.json")
+SUBMISSIONS_FILE = os.path.join(BASE_DIR, "submissions.json")
+ASSUMPTIONS_FILE = os.path.join(BASE_DIR, "assumptions.json")
+RATES_FILE = os.path.join(BASE_DIR, "rates.json")
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
 
 # =========================
 # HELPER FUNCTIONS
@@ -74,23 +75,36 @@ if not os.path.exists(DATA_FILE) or os.stat(DATA_FILE).st_size == 0:
 
 def load_data():
     """Load sign-up submissions as a list."""
+    print(f"[DEBUG] Loading data from: {DATA_FILE}")
+    if not os.path.exists(DATA_FILE):
+        print("[DEBUG] Data file does not exist, creating empty list")
+        save_data([])
+        return []
+
     try:
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
-            if isinstance(data, list):
-                return data
-            # If the file was {}, convert to empty list
-            return []
-    except (json.JSONDecodeError, FileNotFoundError):
+            if not isinstance(data, list):
+                print("[DEBUG] Data in file is not a list, resetting to []")
+                data = []
+            return data
+    except json.JSONDecodeError as e:
+        print(f"[ERROR] JSON decode error: {e}, resetting file")
+        save_data([])
         return []
 
 def save_data(data):
     """Save sign-up submissions."""
+    print(f"[DEBUG] Saving data to {DATA_FILE} with {len(data)} entries")
     if not isinstance(data, list):
         raise ValueError("Data must be a list")
-    with open(DATA_FILE, "w") as f:
-        json.dump(data, f, indent=4)
-
+    try:
+        with open(DATA_FILE, "w") as f:
+            json.dump(data, f, indent=4)
+        print("[DEBUG] Data saved successfully")
+    except Exception as e:
+        print(f"[ERROR] Could not save data: {e}")
+        raise
 
 
 def convert_html_to_pdf(source_html, output_filename):
@@ -415,7 +429,3 @@ def assumptions():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))  # use Render's dynamic PORT
     app.run(host="0.0.0.0", port=port)
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)  # <- debug=True
