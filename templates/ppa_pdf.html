@@ -7,16 +7,16 @@
 <style>
 body {
     font-family: 'Segoe UI', sans-serif;
-    margin: 15px 25px;
+    margin: 20px;
     color: #1f2937;
     line-height: 1.4;
 }
 
 header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 header img {
@@ -31,115 +31,78 @@ h1 {
     color: #045174;
 }
 
-/* BENEFITS */
-.benefits-section {
+/* TOP FEATURES */
+.features {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.feature-item {
+    flex: 1 1 30%;
+    font-size: 13px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* TABLE */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
     margin-bottom: 20px;
 }
 
-.benefits {
-    background: #f9fafb;
-    border-left: 5px solid #045174;
-    padding: 15px;
-    border-radius: 8px;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
 }
 
-.benefits h2 {
-    font-size: 16px;
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background: #f3f4f6;
     color: #045174;
-    margin-bottom: 10px;
+    font-weight: bold;
 }
 
-.benefits ul {
+/* BOTTOM DOT POINTS */
+.bottom-points {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+.bottom-points ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.benefits li {
-    font-size: 13px;
-    padding-left: 25px;
-    margin-bottom: 5px;
+.bottom-points li {
+    display: inline-block;
+    margin: 0 10px;
+    padding-left: 20px;
     position: relative;
 }
 
-.benefits li::before {
+.bottom-points li::before {
     content: "•";
     position: absolute;
     left: 0;
     color: #045174;
 }
 
-/* DIVIDER */
-.divider {
-    border-top: 1px solid #ccc;
-    margin: 15px 0;
-}
-
-/* PROJECT DETAILS + RATES */
-.rates-projects {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.project-info {
-    font-size: 13px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-bottom: 5px;
-}
-
-.project-info div {
-    margin-bottom: 3px;
-}
-
-.rates table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    margin-bottom: 5px;
-}
-
-.rates th, .rates td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-}
-
-.rates th {
-    background: #e0f2f7;
-    color: #045174;
-}
-
-/* SUBTLE GRAPHICS */
-.graphic-bar {
-    width: 100%;
-    height: 28px;
-    background: #04517433;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    color: #045174;
-    margin-top: 5px;
-}
-
-/* NOTES */
-.notes {
-    font-size: 11px;
-    color: #555;
-    margin-top: 10px;
-}
-
-.notes p {
-    margin: 2px 0;
-}
-
 /* FOOTER */
 .footer {
-    margin-top: 15px;
+    margin-top: 20px;
     text-align: center;
     font-size: 11px;
     color: #666;
@@ -151,71 +114,63 @@ h1 {
 
 <header>
     <img src="{{ url_for('static', filename='images/Agile Logo.png') }}">
-    {% if company_logo %}
-        <img src="{{ url_for('static', filename='uploads/' + company_logo) }}" style="height:50px;">
-    {% endif %}
 </header>
 
 <h1>Power Purchase Offer – Solar System</h1>
 
-<!-- BENEFITS TOP -->
-<div class="benefits-section">
-    <div class="benefits">
-        <h2>No capex, opex or risk</h2>
-        <ul>
-            <li>💰 No upfront capital or maintenance costs</li>
-            <li>📊 Capital provided off balance sheet</li>
-            <li>⚡ Reduce energy rates and costs</li>
-            <li>🛡 No risk – approvals & install handled</li>
-            <li>🏁 No fees at end of term</li>
-            <li>🌿 Carbon emissions reduction</li>
-            <li>⭐ Improve NABERS rating</li>
-            <li>🏢 Focus on core business</li>
-        </ul>
-        <div class="graphic-bar">Benefits Summary</div>
-    </div>
+<!-- TOP FEATURES -->
+<div class="features">
+    <div class="feature-item">⚡ Monitoring included</div>
+    <div class="feature-item">🛡 Warranty & Replacement included</div>
+    <div class="feature-item">🌞 Guaranteed Generation</div>
+    <div class="feature-item">⏱ Shortest Term & Aligned to Site Leases</div>
+    <div class="feature-item">🛠 Maintenance Included</div>
+    <div class="feature-item">💰 No Capex Required</div>
 </div>
 
-<div class="divider"></div>
-
-<!-- PROJECT DETAILS + RATES -->
-<div class="rates-projects">
-    <div class="project-info">
-        <div><strong>Client:</strong> {{ business_name }}</div>
-        <div><strong>Location:</strong> {{ address }}</div>
-        <div><strong>System Size:</strong> {{ system_size or '–' }} kW</div>
-        <div><strong>Annual Production:</strong> {{ generation or '–' }} MWh</div>
-        <div><strong>Date:</strong> {{ now.strftime("%d %B %Y") }}</div>
-    </div>
-
-    <div class="rates">
-        <table>
+<!-- PROJECT + RATES TABLE -->
+<div class="table-container">
+    <table>
+        <thead>
             <tr>
-                <th>Term (years)</th>
-                {% for rate in rates.rates %}
-                    <th>{{ rate.term }}</th>
-                {% endfor %}
+                <th>Project Name</th>
+                <th>Location</th>
+                <th>System Size (kW)</th>
+                <th>Annual Solar Production (MWh)</th>
+                <th>PPA Term Options (yrs)</th>
+                <th>PPA Rate (c/kWh)</th>
             </tr>
+        </thead>
+        <tbody>
             <tr>
-                <td>Rate (c/kWh)</td>
-                {% for rate in rates.rates %}
-                    <td>{{ rate.ppa_rate | round(2) }}</td>
-                {% endfor %}
+                <td>{{ business_name }}</td>
+                <td>{{ address }}</td>
+                <td>{{ system_size or '–' }}</td>
+                <td>{{ generation or '–' }}</td>
+                <td>
+                    {% for rate in rates.rates %}
+                        {{ rate.term }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for rate in rates.rates %}
+                        {{ rate.ppa_rate | round(2) }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
-        </table>
-        <div class="graphic-bar">Project Overview</div>
-    </div>
+        </tbody>
+    </table>
 </div>
 
-<!-- NOTES -->
-<div class="notes">
-    <p>PPA rates escalate annually by CPI (capped at 3%).</p>
-    <p>No fees payable at end of term.</p>
-    <p>System may be transferred if tenancy changes.</p>
-    <p>Installation subject to structural assessment.</p>
+<!-- BOTTOM DOT POINTS -->
+<div class="bottom-points">
+    <ul>
+        <li>PPA rates escalate annually by CPI (capped at 3%)</li>
+        <li>No fees payable at end of term</li>
+        <li>System may be transferred if tenancy changes</li>
+        <li>Installation subject to structural assessment</li>
+    </ul>
 </div>
-
-<div class="divider"></div>
 
 <!-- FOOTER -->
 <div class="footer">
