@@ -6,111 +6,143 @@
 
 <style>
 body {
-    font-family: Arial, sans-serif;
-    margin: 30px;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 15px 25px;
     color: #1f2937;
+    line-height: 1.4;
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 15px;
 }
 
 header img {
     height: 50px;
 }
 
+/* TITLE */
 h1 {
     text-align: center;
-    margin: 20px 0 30px;
-    font-size: 22px;
-}
-
-/* TOP SECTION */
-.top {
-    display: flex;
-    gap: 40px;
-    margin-bottom: 30px;
-}
-
-.left, .right {
-    flex: 1;
-}
-
-.section-title {
-    font-weight: bold;
-    margin-bottom: 10px;
+    margin: 0 0 20px;
+    font-size: 24px;
     color: #045174;
 }
 
-.info p {
-    margin: 6px 0;
-    font-size: 14px;
+/* BENEFITS */
+.benefits-section {
+    margin-bottom: 20px;
 }
 
-/* BENEFITS BOX */
 .benefits {
     background: #f9fafb;
+    border-left: 5px solid #045174;
     padding: 15px;
     border-radius: 8px;
-    border-left: 4px solid #045174;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+}
+
+.benefits h2 {
+    font-size: 16px;
+    color: #045174;
+    margin-bottom: 10px;
+}
+
+.benefits ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .benefits li {
     font-size: 13px;
-    list-style: none;
-    padding-left: 20px;
+    padding-left: 25px;
+    margin-bottom: 5px;
     position: relative;
 }
 
 .benefits li::before {
     content: "•";
-    color: #045174;
     position: absolute;
     left: 0;
+    color: #045174;
 }
 
-/* RATES */
-.rates {
-    margin-top: 20px;
+/* DIVIDER */
+.divider {
+    border-top: 1px solid #ccc;
+    margin: 15px 0;
+}
+
+/* PROJECT DETAILS + RATES */
+.rates-projects {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.project-info {
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+}
+
+.project-info div {
+    margin-bottom: 3px;
 }
 
 .rates table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 14px;
+    margin-bottom: 5px;
 }
 
 .rates th, .rates td {
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 8px;
     text-align: center;
 }
 
 .rates th {
-    background: #f3f4f6;
+    background: #e0f2f7;
+    color: #045174;
+}
+
+/* SUBTLE GRAPHICS */
+.graphic-bar {
+    width: 100%;
+    height: 28px;
+    background: #04517433;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #045174;
+    margin-top: 5px;
 }
 
 /* NOTES */
 .notes {
-    margin-top: 20px;
     font-size: 11px;
     color: #555;
+    margin-top: 10px;
 }
 
 .notes p {
-    margin: 4px 0;
+    margin: 2px 0;
 }
 
 /* FOOTER */
 .footer {
-    margin-top: 25px;
+    margin-top: 15px;
     text-align: center;
     font-size: 11px;
+    color: #666;
 }
 </style>
 </head>
@@ -124,34 +156,13 @@ h1 {
     {% endif %}
 </header>
 
-<h1>Power Purchase Offer for Solar System</h1>
+<h1>Power Purchase Offer – Solar System</h1>
 
-<!-- TOP SECTION -->
-<div class="top">
-
-    <!-- LEFT: Project Info -->
-    <div class="left">
-        <div class="section-title">Project Details</div>
-        <div class="info">
-            <p><strong>Client:</strong> {{ business_name }}</p>
-            <p><strong>Location:</strong> {{ address }}</p>
-            <p><strong>System Size:</strong> {{ system_size or '–' }} kW</p>
-            <p><strong>Annual Production:</strong> {{ generation or '–' }} MWh</p>
-            <p><strong>Date:</strong> {{ now.strftime("%d %B %Y") }}</p>
-        </div>
-        <!-- Small graphic -->
-        <svg width="100%" height="40px" style="margin-top:10px;">
-            <rect width="100%" height="40" rx="6" fill="#04517433"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="14" fill="#045174">
-                Project Overview
-            </text>
-        </svg>
-    </div>
-
-    <!-- RIGHT: Benefits -->
-    <div class="right">
-        <div class="section-title">No capex, opex or risk</div>
-        <ul class="benefits">
+<!-- BENEFITS TOP -->
+<div class="benefits-section">
+    <div class="benefits">
+        <h2>No capex, opex or risk</h2>
+        <ul>
             <li>💰 No upfront capital or maintenance costs</li>
             <li>📊 Capital provided off balance sheet</li>
             <li>⚡ Reduce energy rates and costs</li>
@@ -161,33 +172,39 @@ h1 {
             <li>⭐ Improve NABERS rating</li>
             <li>🏢 Focus on core business</li>
         </ul>
-        <!-- Small graphic -->
-        <svg width="100%" height="40px" style="margin-top:10px;">
-            <rect width="100%" height="40" rx="6" fill="#04517433"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="14" fill="#045174">
-                Benefits Summary
-            </text>
-        </svg>
+        <div class="graphic-bar">Benefits Summary</div>
     </div>
 </div>
 
-<!-- RATES -->
-<div class="rates">
-    <div class="section-title">PPA Term Options</div>
-    <table>
-        <tr>
-            <th>Term (years)</th>
-            {% for rate in rates.rates %}
-                <th>{{ rate.term }}</th>
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>Rate (c/kWh)</td>
-            {% for rate in rates.rates %}
-                <td>{{ rate.ppa_rate | round(2) }}</td>
-            {% endfor %}
-        </tr>
-    </table>
+<div class="divider"></div>
+
+<!-- PROJECT DETAILS + RATES -->
+<div class="rates-projects">
+    <div class="project-info">
+        <div><strong>Client:</strong> {{ business_name }}</div>
+        <div><strong>Location:</strong> {{ address }}</div>
+        <div><strong>System Size:</strong> {{ system_size or '–' }} kW</div>
+        <div><strong>Annual Production:</strong> {{ generation or '–' }} MWh</div>
+        <div><strong>Date:</strong> {{ now.strftime("%d %B %Y") }}</div>
+    </div>
+
+    <div class="rates">
+        <table>
+            <tr>
+                <th>Term (years)</th>
+                {% for rate in rates.rates %}
+                    <th>{{ rate.term }}</th>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Rate (c/kWh)</td>
+                {% for rate in rates.rates %}
+                    <td>{{ rate.ppa_rate | round(2) }}</td>
+                {% endfor %}
+            </tr>
+        </table>
+        <div class="graphic-bar">Project Overview</div>
+    </div>
 </div>
 
 <!-- NOTES -->
@@ -197,6 +214,8 @@ h1 {
     <p>System may be transferred if tenancy changes.</p>
     <p>Installation subject to structural assessment.</p>
 </div>
+
+<div class="divider"></div>
 
 <!-- FOOTER -->
 <div class="footer">

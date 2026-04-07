@@ -6,11 +6,11 @@
         },
         {
             "term": 10,
-            "ppa_rate": 14.63
+            "ppa_rate": 14.62
         },
         {
             "term": 12,
-            "ppa_rate": 13.61
+            "ppa_rate": 13.6
         },
         {
             "term": 15,
@@ -22,7 +22,7 @@
         },
         {
             "term": 25,
-            "ppa_rate": 11.48
+            "ppa_rate": 11.47
         }
     ]
 }
