@@ -52,22 +52,24 @@
             background-color: #fafafa;
         }
 
-        .btn {
-            margin-top: 25px;
-            background: linear-gradient(90deg, #045174, #F07154);
-            color: white;
-            padding: 12px 26px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-        }
+    .btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 28px;
+    background-color: #045174; /* clean corporate blue */
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
+    }
 
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
+    .btn:hover {
+    background-color: #033e59;
+    transform: translateY(-1px);
+    }
     </style>
 </head>
 
@@ -93,9 +95,8 @@
             </tr>
             {% endfor %}
         </table>
-
-        <a href="{{ url_for('download_ppa_pdf') }}">
-            <button class="btn">Download One-Page Summary</button>
+        <a href="{{ url_for('download_ppa_pdf') }}" class="btn">
+           Download One-Page Summary
         </a>
     </div>
 
