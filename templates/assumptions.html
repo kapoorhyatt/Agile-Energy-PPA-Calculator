@@ -81,27 +81,28 @@
             {% set first_company = assumptions | dictsort | first | last %}
             {% set keys = first_company.keys() %}
 
-            <tr>
-                <th>Company</th>
-                {% for key in keys %}
-                    <th>{{ key.replace("_", " ").title() }}</th>
-                {% endfor %}
-            </tr>
+<tr>
+    <th>Company</th>
+    {% set show_keys = ["om_cost", "degradation", "generation_derate", "ppa_meter_cost", "target_irr", "ppa_escalator", "construction_period"] %}
+    {% for key in show_keys %}
+        <th>{{ key.replace("_", " ").title() }}</th>
+    {% endfor %}
+</tr>
 
-            {% for company, data in assumptions.items() %}
-            <tr>
-                <td>{{ company }}</td>
-                {% for key in keys %}
-                    <td>
-                        <input
-                            type="text"
-                            name="{{ company }}_{{ key }}"
-                            value="{{ data[key] }}"
-                        >
-                    </td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
+{% for company, data in assumptions.items() %}
+<tr>
+    <td>{{ company }}</td>
+    {% for key in show_keys %}
+        <td>
+            <input
+                type="text"
+                name="{{ company }}_{{ key }}"
+                value="{{ data.get(key, '') }}"
+            >
+        </td>
+    {% endfor %}
+</tr>
+{% endfor %}
         </table>
 
         <button type="submit">Save Assumptions</button>

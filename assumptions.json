@@ -4,7 +4,12 @@
         "unlevered_IRR": 0.165,
         "site": 1.0,
         "PPA_meter_cost": 1200.0,
-        "generation_derate": 0.05
+        "generation_derate": 0.05,
+        "om_cost": 1000,
+        "degradation": 0.05,
+        "ppa_meter_cost": 1200,
+        "target_irr": 0.165,
+        "ppa_escalator": 0.03
     },
     "kapoorhyatt@gmail.com": {
         "om_cost": 1000,
