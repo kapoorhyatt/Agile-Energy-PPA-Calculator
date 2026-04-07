@@ -185,6 +185,8 @@ def sign_up():
             print(f"[DEBUG] JSON content preview: {data[-1]}")
 
             # Default assumptions
+            import copy
+
             assumptions = load_assumptions()
             if submission["email"] not in assumptions:
                 assumptions[submission["email"]] = DEFAULT_ASSUMPTIONS.copy()
