@@ -6,7 +6,6 @@
 
 <style>
 @page { size: A4; margin: 12mm; }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -24,94 +23,59 @@ body {
     padding: 20px;
 }
 
-/* HEADER */
+/* Header container remains flex for left text */
 .header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
+    align-items: flex-start;        /* align top edges */
+    margin-bottom: 12px;
+    position: relative;             /* needed for absolute logo */
+    padding-left: 10px;             /* left padding for text */
 }
 
 .header-left h1 {
-    font-size: 13px;
-    color: #045174;
-    font-weight: 600;
-    text-transform: uppercase;
+    font-size: 18px;           /* same as section titles */
+    color: #045174;            /* same color */
+    text-transform: uppercase; /* match section titles */
+    font-weight: 700;
     letter-spacing: 0.06em;
-    margin-bottom: 5px;
+    line-height: 1.2;
+    margin: 0;
 }
 
-.client-row {
+/* Logo absolutely top-right inside header */
+.header-right .logo {
+    position: absolute;
+    top: 0;           /* top of header */
+    right: 0;         /* right edge of header */
+    max-height: 50px; /* small enough for PDF */
+    width: auto;      /* maintain aspect ratio */
+}
+/* SHIFT PAGE CONTENT UP */
+.page {
+    padding-top: 10px;   /* less top padding so content moves up */
+}
+
+.kpi-image {
     display: flex;
-    align-items: baseline;
-    gap: 10px;
+    justify-content: center;
+    margin: 18px 0 20px;
 }
 
-.client {
-    font-size: 17px;
-    font-weight: 600;
-    color: #19123A;
-}
-
-.address {
-    font-size: 13px;
-    color: #045174;
-}
-
-.logo {
-    height: 34px;
-    object-fit: contain;
-}
-
-.top-kpis {
-    display: flex;
-    justify-content: center;   /* NOT space-between */
-    gap: 20px;                 /* THIS creates the separation */
-    margin: 18px 0;
-}
-
-.kpi {
-    background: #19123A;
-    padding: 16px 18px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-
-    width: 320px;              /* FIXED width instead of % */
+.kpi-image img {
+    width: 100%;
+    max-width: 680px;
+    height: auto;
+    border-radius: 10px;
     box-shadow: 0 4px 12px rgba(25,18,58,0.12);
-}
-
-
-
-.kpi-value {
-    font-size: 28px;
-    font-weight: 600;
-    color: #F6B836;
-    white-space: nowrap;
-}
-
-.kpi-divider {
-    width: 1px;
-    height: 36px;
-    background: #F1BFA9;
-    opacity: 0.3;
-    flex-shrink: 0;
-}
-
-.kpi-label {
-    font-size: 12px;
-    color: #F1BFA9;
-    line-height: 1.4;
 }
 
 /* SECTION TITLE */
 .section-title {
-    font-size: 10px;
-    margin-bottom: 6px;
+    font-size: 18px;
+    margin-bottom: 10px;
     color: #045174;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.06em;
 }
 
@@ -119,49 +83,50 @@ body {
 .rate-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 14px;
+    margin-bottom: 22px;
 }
 
 .rate-table th {
     background: #19123A;
     color: #ffffff;
-    font-size: 11px;
-    padding: 6px 10px;
+    font-size: 13px;
+    padding: 8px 10px;
     text-align: left;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .rate-table td {
-    padding: 5px 10px;
-    font-size: 12px;
+    padding: 6px 10px;
+    font-size: 13px;
     border-bottom: 1px solid #F1BFA9;
     color: #19123A;
 }
 
 /* BENEFITS */
 .benefits {
-    background: #F1BFA9;
-    padding: 10px 14px;
-    border-left: 3px solid #F07154;
-    border-radius: 0 6px 6px 0;
-    margin-bottom: 14px;
+    background: transparent;   /* remove background */
+    padding: 0;                /* optional: remove extra padding */
+    border: none;              /* remove orange border */
+    margin-bottom: 22px;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .benefits ul {
     column-count: 2;
-    column-gap: 20px;
-    padding-left: 14px;
+    column-gap: 24px;
+    padding-left: 16px;
 }
 
 .benefits li {
-    font-size: 11px;
-    margin-bottom: 3px;
+    font-size: 14px;
+    margin-bottom: 6px;
     color: #19123A;
 }
 
 /* FOOTER */
 .footer {
-    font-size: 10px;
+    font-size: 11px;
     border-top: 1px solid #F1BFA9;
     padding-top: 8px;
     display: flex;
@@ -174,35 +139,28 @@ body {
 <body>
 <div class="page">
 
-    <!-- HEADER -->
-    <div class="header">
-        <div class="header-left">
-            <h1>PPA Offer</h1>
-            <div class="client-row">
-                <span class="client">{{ business_name }}</span>
-                <span class="address">{{ address }}</span>
+<div class="header">
+    <table width="100%" style="border-collapse: collapse;">
+        <tr>
+        <td style="text-align: left; vertical-align: top;">
+            <div class="header-left">
+                <h1>PPA Offer</h1>
             </div>
-        </div>
-        <img src="{{ user_logo_url }}" class="logo">
-    </div>
-
-    <!-- KPIs -->
-<!-- KPIs -->
-<div class="top-kpis">
-    <div class="kpi left">
-        <div class="kpi-value">{{ system_size }} kW</div>
-        <div class="kpi-divider"></div>
-        <div class="kpi-label">System Size</div>
-    </div>
-
-    <div class="kpi right">
-        <div class="kpi-value">{{ generation }} MWh</div>
-        <div class="kpi-divider"></div>
-        <div class="kpi-label">Annual Output</div>
-    </div>
+        </td>
+            <td style="text-align: right; vertical-align: top; width: 160px;">
+                {% if user_logo_url %}
+                    <img src="{{ user_logo_url }}" style="width: 120px; height: auto;">
+                {% endif %}
+            </td>
+        </tr>
+    </table>
 </div>
 
-    <!-- TABLE -->
+<div class="kpi-image">
+    <img src="{{ screenshot_url }}" alt="KPI Screenshot">
+</div>
+
+    <!-- PPA Rates Table -->
     <div class="section-title">PPA Rate Options</div>
     <table class="rate-table">
         <tr>
@@ -221,14 +179,13 @@ body {
     <div class="section-title">Key Benefits</div>
     <div class="benefits">
         <ul>
-            <li>No upfront capital or maintenance costs</li>
-            <li>Capital provided off balance sheet</li>
+            <li>Guranteed generation from the system</li>
+            <li>Site installtion will be undertaken in line with site specific requirments</li>
             <li>Reduced energy costs</li>
             <li>No risk – install & performance covered</li>
             <li>No fees at end of term</li>
-            <li>Carbon emissions reduction</li>
+            <li>Option to add storage with no capital</li>
             <li>No maintenance concerns</li>
-            <li>Focus on core business</li>
             <li>Supports sustainability targets</li>
         </ul>
     </div>

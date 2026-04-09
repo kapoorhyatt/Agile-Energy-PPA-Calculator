@@ -2,27 +2,27 @@
     "rates": [
         {
             "term": 7,
-            "ppa_rate": 17.01
+            "ppa_rate": 7.47
         },
         {
             "term": 10,
-            "ppa_rate": 14.62
+            "ppa_rate": 6.79
         },
         {
             "term": 12,
-            "ppa_rate": 13.6
+            "ppa_rate": 6.37
         },
         {
             "term": 15,
-            "ppa_rate": 12.66
+            "ppa_rate": 5.99
         },
         {
             "term": 20,
-            "ppa_rate": 11.86
+            "ppa_rate": 5.67
         },
         {
             "term": 25,
-            "ppa_rate": 11.47
+            "ppa_rate": 5.52
         }
     ]
 }
