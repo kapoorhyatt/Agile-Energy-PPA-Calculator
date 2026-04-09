@@ -3946,5 +3946,89 @@
             "ppa_escalator": 0.03,
             "construction_period": 3
         }
+    },
+    "kapoorhyatt@gmail.com_1775708481.418494": {
+        "email": "kapoorhyatt@gmail.com",
+        "submitted_at": "2026-04-09 14:21:21",
+        "inputs": {
+            "solar_kw": 3.0,
+            "annual_generation_mwh": 3.0,
+            "total_capex": 6.0,
+            "bess_kwh": 3.0,
+            "state": "NSW",
+            "specific_yield": 1000.0
+        },
+        "result": {
+            "solar_kw": 3.0,
+            "annual_generation_mwh": 3.0,
+            "applied_yield_mwh": 2.85,
+            "specific_yield": 950.0,
+            "net_dollar_per_watt": 0.002,
+            "results": [
+                {
+                    "install_price": 6.0,
+                    "applied_price": 6.0,
+                    "terms": [
+                        {
+                            "term": 7,
+                            "ppa_rate_cents": 7.47,
+                            "ppa_rate_dollars": 7.47,
+                            "b2": -0.016400442,
+                            "b1": 18.25454545,
+                            "a": 23.00933706
+                        },
+                        {
+                            "term": 10,
+                            "ppa_rate_cents": 6.79,
+                            "ppa_rate_dollars": 6.79,
+                            "b2": -0.013899784,
+                            "b1": 15.05314685,
+                            "a": 19.9657958
+                        },
+                        {
+                            "term": 12,
+                            "ppa_rate_cents": 6.37,
+                            "ppa_rate_dollars": 6.37,
+                            "b2": -0.012903938,
+                            "b1": 13.90559441,
+                            "a": 18.60481119
+                        },
+                        {
+                            "term": 15,
+                            "ppa_rate_cents": 5.99,
+                            "ppa_rate_dollars": 5.99,
+                            "b2": -0.011958568,
+                            "b1": 12.83426573,
+                            "a": 17.3289958
+                        },
+                        {
+                            "term": 20,
+                            "ppa_rate_cents": 5.67,
+                            "ppa_rate_dollars": 5.67,
+                            "b2": -0.011188811,
+                            "b1": 11.92237762,
+                            "a": 16.27588252
+                        },
+                        {
+                            "term": 25,
+                            "ppa_rate_cents": 5.52,
+                            "ppa_rate_dollars": 5.52,
+                            "b2": -0.010799727,
+                            "b1": 11.48321678,
+                            "a": 15.75513846
+                        }
+                    ]
+                }
+            ]
+        },
+        "assumptions_used": {
+            "om_cost": 1000,
+            "degradation": 0.004,
+            "generation_derate": 0.05,
+            "ppa_meter_cost": 1200,
+            "target_irr": 0.165,
+            "ppa_escalator": 0.03,
+            "construction_period": 3
+        }
     }
 }

@@ -894,7 +894,7 @@
             <div class="feature-box-text">
                 <h2>Why Agile Energy</h2>
                 <p>Discover why we’re trusted by hundreds of businesses across Australia.</p>
-                <a href="aboutus" class="btn-primary" style="margin-top:16px;">About Us</a>
+                <a href="https://www.agileenergy.com.au/about/our-company" target="_blank" rel="noopener noreferrer" class="btn-primary" style="margin-top:16px;">About Us</a>
             </div>
             <div class="feature-box-image">
                 <img src="{{ url_for('static', filename='images/laptop.jpg') }}" alt="Transparent Modelling">
@@ -923,7 +923,7 @@
                 Quickly see your site’s potential PPA rates. Just enter your system details in our simple form, and we’ll calculate projected energy output, costs, and possible savings — all in one place.
         </p>
         <div class="hero-buttons">
-            <a href="/calculator" class="btn-primary">Try the Calculator</a>
+            <a href="{{ url_for('login') }}" class="btn-primary">Try the Calculator</a>
             <a href="{{ url_for('learn_more') }}" class="btn-secondary"> Learn How It Works </a>
         </div>
     </div>
