@@ -552,5 +552,7 @@ def assumptions():
     return render_template("assumptions.html", assumptions=assumptions_data)
 
 if __name__ == "__main__":
+    from init_db import create_tables
+    create_tables()
     port = int(os.environ.get("PORT", 5000))  # use Render's dynamic PORT
     app.run(host="0.0.0.0", port=port)
