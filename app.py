@@ -9,7 +9,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from calculator.assumptions import DEFAULT_ASSUMPTIONS
 from calculator.model import run_model
 import uuid
+import psycopg2
 
+
+def get_db_connection():
+    return psycopg2.connect(os.environ.get("DATABASE_URL"))
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-key"
@@ -26,92 +30,10 @@ users = {
 }
 
 
-# =========================
-# FILES & UPLOADS
-# =========================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_FILE = os.path.join(BASE_DIR, "sign_up_responses.json")
-SUBMISSIONS_FILE = os.path.join(BASE_DIR, "submissions.json")
-ASSUMPTIONS_FILE = os.path.join(BASE_DIR, "assumptions.json")
-RATES_FILE = os.path.join(BASE_DIR, "rates.json")
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-# =========================
-# HELPER FUNCTIONS
-# =========================
-def load_json(file_path):
-    if os.path.exists(file_path):
-        try:
-            with open(file_path, "r") as f:
-                return json.load(f)
-        except json.JSONDecodeError:
-            return {}
-    return {}
-
-def save_json(file_path, data):
-    with open(file_path, "w") as f:
-        json.dump(data, f, indent=4)
-
-RATES_FILE = "rates.json"
-
-def load_rates():
-    return load_json(RATES_FILE)
-
-def save_rates(data):
-    save_json(RATES_FILE, data)
-
-def load_submissions():
-    return load_json(SUBMISSIONS_FILE)
-
-def save_submissions(submissions):
-    save_json(SUBMISSIONS_FILE, submissions)
-
-def load_assumptions():
-    return load_json(ASSUMPTIONS_FILE)
-
-def save_assumptions(data):
-    save_json(ASSUMPTIONS_FILE, data)
-
-# Ensure the file is initialized as a list
-if not os.path.exists(DATA_FILE) or os.stat(DATA_FILE).st_size == 0:
-    with open(DATA_FILE, "w") as f:
-        json.dump([], f, indent=4)
-
-def load_data():
-    """Load sign-up submissions as a list."""
-    print(f"[DEBUG] Loading data from: {DATA_FILE}")
-    if not os.path.exists(DATA_FILE):
-        print("[DEBUG] Data file does not exist, creating empty list")
-        save_data([])
-        return []
-
-    try:
-        with open(DATA_FILE, "r") as f:
-            data = json.load(f)
-            if not isinstance(data, list):
-                print("[DEBUG] Data in file is not a list, resetting to []")
-                data = []
-            return data
-    except json.JSONDecodeError as e:
-        print(f"[ERROR] JSON decode error: {e}, resetting file")
-        save_data([])
-        return []
-
-def save_data(data):
-    """Save sign-up submissions."""
-    print(f"[DEBUG] Saving data to {DATA_FILE} with {len(data)} entries")
-    if not isinstance(data, list):
-        raise ValueError("Data must be a list")
-    try:
-        with open(DATA_FILE, "w") as f:
-            json.dump(data, f, indent=4)
-        print("[DEBUG] Data saved successfully")
-    except Exception as e:
-        print(f"[ERROR] Could not save data: {e}")
-        raise
-
 
 def convert_html_to_pdf(source_html, output_filename):
 
@@ -140,112 +62,163 @@ def results():
     if "user" not in session or session.get("role") != "company":
         return redirect("/login")
 
-    rates = load_rates()
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT result
+        FROM submissions
+        WHERE email = %s
+        ORDER BY submitted_at DESC
+        LIMIT 1
+    """, (session["user"],))
+
+    row = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    rates = {}
+
+    if row:
+        result = json.loads(row[0])
+
+        rates_data = []
+        first_row = result["results"][0]
+
+        for term in first_row["terms"]:
+            rates_data.append({
+                "term": term["term"],
+                "ppa_rate": term["ppa_rate_dollars"]
+            })
+
+        rates = {"rates": rates_data}
+
     return render_template("results.html", rates=rates)
 
-# --- SIGN UP PAGE ---
 @app.route("/sign_up", methods=["GET", "POST"])
 def sign_up():
     if request.method == "POST":
-        try:
-            print("[DEBUG] Received POST to /sign_up")
-            # Load existing submissions as a list
-            data = load_data()
-            print(f"[DEBUG] Current submissions loaded: {len(data)}")
 
-            submission_id = str(uuid.uuid4())
+        email = request.form.get("email")
+        password = request.form.get("password")
+        name = request.form.get("name")
+        company = request.form.get("company")
+        phone = request.form.get("phone")
+        abn = request.form.get("abn")
+        address = request.form.get("address")
 
-            # Handle logo upload
-            logo = request.files.get("logo")
-            logo_filename = None
-            if logo and logo.filename:
-                filename = secure_filename(logo.filename)
-                logo_filename = f"{submission_id}_{filename}"
-                logo_path = os.path.join(UPLOAD_FOLDER, logo_filename)
-                logo.save(logo_path)
-                print(f"[DEBUG] Logo saved at {logo_path}")
+        hashed_password = generate_password_hash(password)
 
-            # Collect form data
-            password_raw = request.form.get("password")
-            submission = {
-                "id": submission_id,
-                "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                "name": request.form.get("name", ""),
-                "email": request.form.get("email", ""),
-                "phone": request.form.get("phone", ""),
-                "company": request.form.get("company", ""),
-                "abn": request.form.get("abn", ""),
-                "address": request.form.get("address", ""),
-                "logo_filename": logo_filename,
-                "password": generate_password_hash(password_raw) if password_raw else ""
-            }
+        conn = get_db_connection()
+        cur = conn.cursor()
 
-            print(f"[DEBUG] New submission: {submission}")
+        # CHECK IF USER EXISTS
+        cur.execute("SELECT email FROM users WHERE email = %s", (email,))
+        if cur.fetchone():
+            cur.close()
+            conn.close()
+            return render_template("sign_up.html", error="User already exists")
 
-            # Append new submission
-            data.append(submission)
+        # INSERT USER
+        cur.execute("""
+            INSERT INTO users (
+                id, email, password, name, company, phone, abn, address, submitted_at
+            )
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        """, (
+            str(uuid.uuid4()),
+            email,
+            hashed_password,
+            name,
+            company,
+            phone,
+            abn,
+            address,
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        ))
 
-            # Save to JSON
-            save_data(data)
-            print(f"[DEBUG] sign_up_responses.json now has {len(data)} submissions")
-            print(f"[DEBUG] JSON content preview: {data[-1]}")
+        # CREATE DEFAULT ASSUMPTIONS (THIS IS WHAT YOU WANTED)
+        cur.execute("""
+            INSERT INTO assumptions (id, email, data, created_at)
+            VALUES (%s,%s,%s,%s)
+        """, (
+            str(uuid.uuid4()),
+            email,
+            json.dumps(DEFAULT_ASSUMPTIONS),
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        ))
 
-            # Default assumptions
-            import copy
+        conn.commit()
+        cur.close()
+        conn.close()
 
-            assumptions = load_assumptions()
-            if submission["email"] not in assumptions:
-                assumptions[submission["email"]] = DEFAULT_ASSUMPTIONS.copy()
-                save_assumptions(assumptions)
-                print(f"[DEBUG] Default assumptions set for {submission['email']}")
+        return redirect("/login")
 
-            return redirect(url_for("home"))
-
-        except Exception as e:
-            print(f"[ERROR] Exception in /sign_up POST: {e}")
-            return "Internal Server Error during sign up", 500
-
-    # GET request
-    print("[DEBUG] GET request to /sign_up")
     return render_template("sign_up.html")
 
 @app.route("/sign_up_responses")
 def sign_up_responses():
-    try:
-        submissions = load_data()  # returns a list
-        print(f"[DEBUG] Loaded {len(submissions)} submissions for /sign_up_responses")
+    if "user" not in session or session.get("role") != "admin":
+        return redirect("/login")
 
-        # Quick check for content type
-        if not isinstance(submissions, list):
-            print("[ERROR] submissions is not a list!")
-            submissions = []
+    conn = get_db_connection()
+    cur = conn.cursor()
 
-        return render_template("sign_up_responses.html", submissions=submissions)
+    cur.execute("""
+        SELECT id, email, name, company, phone, abn, address, logo_filename, submitted_at
+        FROM users
+        ORDER BY submitted_at DESC
+    """)
 
-    except Exception as e:
-        print(f"[ERROR] Exception in /sign_up_responses: {e}")
-        return "Internal Server Error while loading submissions", 500
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
 
+    submissions = [
+        {
+            "id": r[0],
+            "email": r[1],
+            "name": r[2],
+            "company": r[3],
+            "phone": r[4],
+            "abn": r[5],
+            "address": r[6],
+            "logo_filename": r[7],
+            "submitted_at": r[8],
+        }
+        for r in rows
+    ]
+
+    return render_template("sign_up_responses.html", submissions=submissions)
 # --- LOGIN ROUTE ---
 @app.route("/login", methods=["GET", "POST"])
 def login():
     error = None
+
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
 
-        # Check admin/demo users first
+        # Admin users first
         user = users.get(email)
         if user and check_password_hash(user["password"], password):
             session["user"] = email
             session["role"] = user["role"]
             return redirect("/admin_menu") if user["role"] == "admin" else redirect("/disclaimer")
 
-        # Check user-submitted accounts
-        data = load_data()
-        matched_user = next((u for u in data if u.get("email") == email), None)
-        if matched_user and check_password_hash(matched_user.get("password", ""), password):
-            session["user"] = email
+        # DATABASE USERS
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user = cur.fetchone()
+
+        cur.close()
+        conn.close()
+
+        if user and check_password_hash(user[3], password):
+            session["user"] = user[1]
             session["role"] = "company"
             return redirect("/disclaimer")
 
@@ -275,26 +248,31 @@ def calculator():
     if "user" not in session or session.get("role") != "company":
         return redirect("/login")
 
-    # Load company assumptions
-    company_assumptions = load_assumptions().get(session["user"], {})
+    conn = get_db_connection()
+    cur = conn.cursor()
 
-    def safe_form_float(field_name, default=0.0):
-        val = request.form.get(field_name)
+    cur.execute("""
+        SELECT data FROM assumptions WHERE email = %s
+    """, (session["user"],))
+
+    row = cur.fetchone()
+    company_assumptions = json.loads(row[0]) if row else DEFAULT_ASSUMPTIONS
+
+    def safe_float(name, default=0.0):
         try:
-            return float(val)
-        except (TypeError, ValueError):
+            return float(request.form.get(name))
+        except:
             return default
 
     if request.method == "POST":
-        # Capture inputs safely using the HTML form names
-        solar_kw = safe_form_float("system_size", 0.0)             # HTML 'system_size'
-        annual_generation_mwh = safe_form_float("generation", 0.0) # HTML 'generation'
-        total_capex = safe_form_float("total_capex", solar_kw * 600) # HTML 'total_capex'
-        bess_kwh = safe_form_float("battery_size", 0.0)
-        specific_yield = safe_form_float("yield", 0.0)
+
+        solar_kw = safe_float("system_size", 0.0)
+        annual_generation_mwh = safe_float("generation", 0.0)
+        total_capex = safe_float("total_capex", solar_kw * 600)
+        bess_kwh = safe_float("battery_size", 0.0)
+        specific_yield = safe_float("yield", 0.0)
         state = request.form.get("state", "")
 
-        # Map to the keys that model.py expects
         inputs = {
             "solar_kw": solar_kw,
             "annual_generation_mwh": annual_generation_mwh,
@@ -304,34 +282,52 @@ def calculator():
             "specific_yield": specific_yield
         }
 
-        # Run the model
-        result = run_model(submission_file=None, inputs=inputs, assumptions=company_assumptions, debug=True)
+        result = run_model(
+            submission_file=None,
+            inputs=inputs,
+            assumptions=company_assumptions,
+            debug=True
+        )
 
-        # Save submissions
-        submissions = load_submissions()
-        submission_id = f"{session['user']}_{datetime.now().timestamp()}"
-        submissions[submission_id] = {
-            "email": session["user"],
-            "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "inputs": inputs,
-            "result": result,
-            "assumptions_used": company_assumptions
-        }
-        save_submissions(submissions)
+        # ✅ EXTRACT RATES
+        rates = []
+        try:
+            first_row = result["results"][0]
+            for term in first_row["terms"]:
+                rates.append({
+                    "term": term["term"],
+                    "ppa_rate": term["ppa_rate_dollars"]
+                })
+        except:
+            rates = []
 
-        # Save rates for results page
-        rates_data = []
-        first_row = result["results"][0]
-        for term_obj in first_row["terms"]:
-            rates_data.append({
-                "term": term_obj["term"],
-                "ppa_rate": term_obj["ppa_rate_dollars"]
-            })
-        save_rates({"rates": rates_data})
+        submission_id = str(uuid.uuid4())
+
+        # ✅ SAVE EVERYTHING INCLUDING RATES
+        cur.execute("""
+            INSERT INTO submissions (
+                id, email, inputs, result, assumptions, rates, submitted_at
+            )
+            VALUES (%s,%s,%s,%s,%s,%s,%s)
+        """, (
+            submission_id,
+            session["user"],
+            json.dumps(inputs),
+            json.dumps(result),
+            json.dumps(company_assumptions),
+            json.dumps(rates),
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        ))
+
+        conn.commit()
+        cur.close()
+        conn.close()
 
         return redirect("/results")
 
-    # GET request: show the form
+    cur.close()
+    conn.close()
+
     return render_template("company_form.html", assumptions=company_assumptions)
 
 
@@ -340,58 +336,75 @@ def download_ppa_pdf():
     if "user" not in session or session.get("role") != "company":
         return redirect("/login")
 
-    # Load user data
-    all_users = load_data()  # load list of all sign-ups
-    data = next((u for u in all_users if u.get("email") == session["user"]), {})
+    conn = get_db_connection()
+    cur = conn.cursor()
 
-# Get current datetime
+    # USER DATA
+    cur.execute("""
+        SELECT logo_filename, name, company
+        FROM users
+        WHERE email = %s
+    """, (session["user"],))
+
+    user = cur.fetchone()
+
+    logo_filename = user[0] if user else None
+    user_name = user[1] if user else None
+    company_name = user[2] if user else None
+
+    user_logo_url = f"/static/uploads/{logo_filename}" if logo_filename else None
+
+    # LATEST SUBMISSION
+    cur.execute("""
+        SELECT result
+        FROM submissions
+        WHERE email = %s
+        ORDER BY submitted_at DESC
+        LIMIT 1
+    """, (session["user"],))
+
+    row = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    rates_data = {}
+
+    if row:
+        result = json.loads(row[0])
+
+        rates_list = []
+        first_row = result["results"][0]
+
+        for term in first_row["terms"]:
+            rates_list.append({
+                "term": term["term"],
+                "ppa_rate": term["ppa_rate_dollars"]
+            })
+
+        rates_data = {"rates": rates_list}
+
     now = datetime.now()
-
-# Load rates
-    rates_data = load_rates()
-
-# --- LOGO FOR THIS USER ---
-    logo_filename = data.get("logo_filename")  # get logo filename from JSON
-
-    if logo_filename:
-    # This is the URL for HTML / PDF
-        user_logo_url = f"/static/uploads/{logo_filename}"
-    else:
-        user_logo_url = None  # optional: or use a default logo
-
-# Screenshot is already coming through like before
-    screenshot_url = "/static/images/ss.png"  # keep this as URL, not file path
-
 
     html = render_template(
         "ppa_pdf.html",
         rates=rates_data,
-        screenshot_url=screenshot_url,
         user_logo_url=user_logo_url,
-        now=now
+        now=now,
+        user_name=user_name,
+        company_name=company_name
     )
-    # Ensure PDF folder exists
+
     PDF_FOLDER = os.path.join("static", "PDF")
     os.makedirs(PDF_FOLDER, exist_ok=True)
 
-    # Generate unique PDF filename
     pdf_filename = f"ppa_{session['user']}_{int(now.timestamp())}.pdf"
     pdf_path = os.path.join(PDF_FOLDER, pdf_filename)
 
-    # Generate PDF
     with open(pdf_path, "wb") as f:
-     pisa_status = pisa.CreatePDF(
-         src=html,
-         dest=f,
-         link_callback=link_callback
-)
+        pisa.CreatePDF(html, dest=f, link_callback=link_callback)
 
-    if pisa_status.err:
-        return "Error generating PDF", 500
-
-    # Send file to user
-    return send_file(pdf_path, download_name=pdf_filename, as_attachment=True)
-
+    return send_file(pdf_path, as_attachment=True)
 
 # --- ADMIN MENU ---
 @app.route("/admin_menu")
@@ -406,11 +419,82 @@ def admin():
     if "user" not in session or session.get("role") != "admin":
         return redirect("/login")
 
-    submissions = load_submissions()
-    assumptions_data = load_assumptions()
+    conn = get_db_connection()
+    cur = conn.cursor()
 
+    # -------------------------
+    # GET ALL SUBMISSIONS (LATEST FIRST)
+    # -------------------------
+    cur.execute("""
+        SELECT id, email, inputs, result, assumptions, rates, submitted_at
+        FROM submissions
+        ORDER BY submitted_at DESC
+    """)
 
-    return render_template("admin_dashboard.html", submissions=submissions)
+    submission_rows = cur.fetchall()
+
+    submissions = [
+        {
+            "id": r[0],
+            "email": r[1],
+            "inputs": json.loads(r[2]) if r[2] else {},
+            "result": json.loads(r[3]) if r[3] else {},
+            "assumptions": json.loads(r[4]) if r[4] else {},
+            "rates": json.loads(r[5]) if r[5] else [],
+            "submitted_at": r[5],
+        }
+        for r in submission_rows
+    ]
+
+    # -------------------------
+    # GET ALL USERS
+    # -------------------------
+    cur.execute("""
+        SELECT id, email, name, company, phone, abn, address, submitted_at
+        FROM users
+        ORDER BY submitted_at DESC
+    """)
+
+    user_rows = cur.fetchall()
+
+    users_list = [
+        {
+            "id": r[0],
+            "email": r[1],
+            "name": r[2],
+            "company": r[3],
+            "phone": r[4],
+            "abn": r[5],
+            "address": r[6],
+            "submitted_at": r[7],
+        }
+        for r in user_rows
+    ]
+
+    # -------------------------
+    # GET ALL ASSUMPTIONS (optional view for admin)
+    # -------------------------
+    cur.execute("""
+        SELECT email, data
+        FROM assumptions
+    """)
+
+    assumption_rows = cur.fetchall()
+
+    assumptions_data = {
+        r[0]: json.loads(r[1]) if r[1] else {}
+        for r in assumption_rows
+    }
+
+    cur.close()
+    conn.close()
+
+    return render_template(
+        "admin_dashboard.html",
+        submissions=submissions,
+        users=users_list,
+        assumptions=assumptions_data
+    )
 
 # --- ASSUMPTIONS PAGE ---
 @app.route("/assumptions", methods=["GET", "POST"])
@@ -418,34 +502,53 @@ def assumptions():
     if "user" not in session or session.get("role") != "admin":
         return redirect("/login")
 
-    assumptions_data = load_assumptions()
+    conn = get_db_connection()
+    cur = conn.cursor()
 
-    # Merge defaults for all users
-    for email, user_data in users.items():
-        if user_data["role"] != "company":
-            continue
-        if email not in assumptions_data:
-            assumptions_data[email] = {}
-        for key, value in DEFAULT_ASSUMPTIONS.items():
-            if key not in assumptions_data[email]:
-                assumptions_data[email][key] = value
+    # GET ALL ASSUMPTIONS
+    cur.execute("""
+        SELECT email, data
+        FROM assumptions
+    """)
 
+    rows = cur.fetchall()
+
+    assumptions_data = {
+        r[0]: json.loads(r[1]) if r[1] else {}
+        for r in rows
+    }
+
+    # UPDATE ASSUMPTIONS
     if request.method == "POST":
-        for company, company_data in assumptions_data.items():
-            for key in company_data:
-                form_key = f"{company}_{key}"
+
+        for email, data in assumptions_data.items():
+            updated = data.copy()
+
+            for key in updated.keys():
+                form_key = f"{email}_{key}"
                 value = request.form.get(form_key)
+
                 if value is not None:
                     try:
-                        value = float(value)
-                    except ValueError:
-                        pass
-                    assumptions_data[company][key] = value
-        save_assumptions(assumptions_data)
+                        updated[key] = float(value)
+                    except:
+                        updated[key] = value
 
-    save_assumptions(assumptions_data)
+            cur.execute("""
+                UPDATE assumptions
+                SET data = %s
+                WHERE email = %s
+            """, (
+                json.dumps(updated),
+                email
+            ))
+
+        conn.commit()
+
+    cur.close()
+    conn.close()
+
     return render_template("assumptions.html", assumptions=assumptions_data)
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))  # use Render's dynamic PORT
