@@ -11,9 +11,13 @@ from calculator.model import run_model
 import uuid
 import psycopg2
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
 
 def get_db_connection():
-    return psycopg2.connect(os.environ.get("DATABASE_URL"))
+    return psycopg2.connect(
+        os.environ["DATABASE_URL"].replace("postgres://", "postgresql://")
+    )
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-key"
@@ -29,9 +33,6 @@ users = {
     "demo@ppa.com": {"password": generate_password_hash("demo123"), "role": "company"}
 }
 
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -100,13 +101,13 @@ def results():
 def sign_up():
     if request.method == "POST":
 
-        email = request.form.get("email")
-        password = request.form.get("password")
-        name = request.form.get("name")
-        company = request.form.get("company")
-        phone = request.form.get("phone")
-        abn = request.form.get("abn")
-        address = request.form.get("address")
+        email = request.form.get("email") or ""
+        password = request.form.get("password") or ""
+        name = request.form.get("name") or ""
+        company = request.form.get("company") or ""
+        phone = request.form.get("phone") or ""
+        abn = request.form.get("abn") or ""
+        address = request.form.get("address") or ""
 
         hashed_password = generate_password_hash(password)
 

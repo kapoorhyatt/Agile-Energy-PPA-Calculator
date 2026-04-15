@@ -1,11 +1,13 @@
 import os
 import psycopg2
 
-def get_conn():
-    return psycopg2.connect(os.environ["DATABASE_URL"])
+def get_db_connection():
+    return psycopg2.connect(
+        os.environ["DATABASE_URL"].replace("postgres://", "postgresql://")
+    )
 
 def create_tables():
-    conn = get_conn()
+    conn = get_db_connection()
     cur = conn.cursor()
 
     # USERS table (sign ups)
@@ -21,6 +23,16 @@ def create_tables():
         address TEXT,
         logo_filename TEXT,
         submitted_at TEXT
+    );
+    """)
+
+    # ASSUMPTIONS table (FIXED)
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS assumptions (
+        id TEXT PRIMARY KEY,
+        email TEXT,
+        data TEXT,
+        created_at TEXT
     );
     """)
 
