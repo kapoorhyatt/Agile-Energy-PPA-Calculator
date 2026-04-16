@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Agile{% endblock %}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", system-ui, sans-serif;
+            margin: 0;
+            background: linear-gradient(180deg, #f5f6f8 0%, #eef0f3 100%);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 48px;
+            background-color: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            width: 155px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #1f2937;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: #045174;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #F07154, #e35d40);
+            color: #19123A;
+            padding: 10px 26px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(240,113,84,0.25);
+            transition: 0.2s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+        }
+
+        .user-pill {
+            font-weight: 600;
+            color: #19123A;
+            background: linear-gradient(135deg, #eef2f7, #ffffff);
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+    </style>
+
+    {% block style %}{% endblock %}
+</head>
+
+<body>
+
+<header>
+
+    <a href="/">
+        <img src="{{ url_for('static', filename='images/Agile Logo.png') }}" class="logo">
+    </a>
+
+    <div style="display:flex; align-items:center; gap:18px;">
+
+        <nav>
+            <a href="{{ url_for('case_studies') }}">Case Studies</a>
+            <a href="{{ url_for('learn_more') }}">Learn More</a>
+        </nav>
+
+        {% if session.get('user_name') %}
+
+            <span class="user-pill">
+                👋 Hi {{ session.get('user_name') }}
+            </span>
+
+            <a href="{{ url_for('logout') }}" class="btn-login">Logout</a>
+
+        {% else %}
+
+            <a href="{{ url_for('login') }}" class="btn-login">Login</a>
+
+        {% endif %}
+
+    </div>
+
+</header>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>
