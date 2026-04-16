@@ -22,6 +22,8 @@ ABN_GUID = "9e4c9f11-a8e2-4e1d-a3f9-048a06d577c1"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
 
+BLOCKED_EMAIL_DOMAINS = ["gmail.com", "outlook.com", "hotmail.com", "live.com"]
+
 def get_db_connection():
     return psycopg2.connect(
         os.environ["DATABASE_URL"].replace("postgres://", "postgresql://")
@@ -110,6 +112,14 @@ def sign_up():
     if request.method == "POST":
 
         email = request.form.get("email", "").strip().lower()
+
+        domain = email.split("@")[-1]
+
+        if domain in BLOCKED_EMAIL_DOMAINS:
+            return render_template(
+                "sign_up.html",
+                error="Please use your company email address (Gmail/Outlook not allowed)."
+            )
         password = request.form.get("password") or ""
         name = request.form.get("name") or ""
         company = request.form.get("company") or ""
