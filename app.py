@@ -4,6 +4,7 @@ from io import BytesIO
 import json
 import os
 from datetime import datetime
+import pytz
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from calculator.assumptions import DEFAULT_ASSUMPTIONS
@@ -136,7 +137,7 @@ def sign_up():
             phone,
             abn,
             address,
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            datetime.now(pytz.timezone("Australia/Sydney")).strftime("%Y-%m-%d %H:%M:%S")
         ))
 
         # CREATE DEFAULT ASSUMPTIONS (THIS IS WHAT YOU WANTED)
@@ -147,7 +148,7 @@ def sign_up():
             str(uuid.uuid4()),
             email,
             json.dumps(DEFAULT_ASSUMPTIONS),
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            datetime.now(pytz.timezone("Australia/Sydney")).strftime("%Y-%m-%d %H:%M:%S")
         ))
 
         conn.commit()
@@ -260,39 +261,34 @@ def calculator():
     company_assumptions = json.loads(row[0]) if row else DEFAULT_ASSUMPTIONS
 
     def safe_float(name, default=0.0):
+        value = request.form.get(name)
+
+        if value is None or value == "":
+            return default
+
         try:
-            return float(request.form.get(name))
+            return float(value)
         except:
             return default
 
     if request.method == "POST":
 
-        # -------------------------
-        # NEW TEXT FIELDS (FIX FOR BLANK VALUES)
-        # -------------------------
         project_name = request.form.get("project_name", "")
         customer_name = request.form.get("customer_name", "")
         suburb = request.form.get("suburb", "")
         state = request.form.get("state", "")
 
-        # -------------------------
-        # NUMERIC INPUTS
-        # -------------------------
         solar_kw = safe_float("system_size", 0.0)
         bess_kwh = safe_float("battery_size", 0.0)
         generation = safe_float("generation", 0.0)
         specific_yield = safe_float("yield", 0.0)
         total_capex = safe_float("total_capex", solar_kw * 600)
 
-        # -------------------------
-        # INPUTS DICT (NOW COMPLETE)
-        # -------------------------
         inputs = {
             "project_name": project_name,
             "customer_name": customer_name,
             "suburb": suburb,
             "state": state,
-
             "system_size": solar_kw,
             "battery_size": bess_kwh,
             "generation": generation,
@@ -300,9 +296,6 @@ def calculator():
             "total_capex": total_capex
         }
 
-        # -------------------------
-        # RUN MODEL
-        # -------------------------
         result = run_model(
             submission_file=None,
             inputs=inputs,
@@ -310,9 +303,6 @@ def calculator():
             debug=True
         )
 
-        # -------------------------
-        # EXTRACT RATES
-        # -------------------------
         rates = []
         try:
             first_row = result["results"][0]
@@ -326,18 +316,9 @@ def calculator():
 
         submission_id = str(uuid.uuid4())
 
-        # -------------------------
-        # SAVE TO DATABASE
-        # -------------------------
         cur.execute("""
             INSERT INTO submissions (
-                id,
-                email,
-                inputs,
-                result,
-                assumptions,
-                rates,
-                submitted_at
+                id, email, inputs, result, assumptions, rates, submitted_at
             )
             VALUES (%s,%s,%s,%s,%s,%s,%s)
         """, (
@@ -347,7 +328,7 @@ def calculator():
             json.dumps(result),
             json.dumps(company_assumptions),
             json.dumps(rates),
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            datetime.now(pytz.timezone("Australia/Sydney")).strftime("%Y-%m-%d %H:%M:%S")
         ))
 
         conn.commit()
