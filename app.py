@@ -424,7 +424,7 @@ def admin():
     cur = conn.cursor()
 
     # -------------------------
-    # GET ALL SUBMISSIONS (LATEST FIRST)
+    # SUBMISSIONS
     # -------------------------
     cur.execute("""
         SELECT id, email, inputs, result, assumptions, rates, submitted_at
@@ -434,21 +434,21 @@ def admin():
 
     submission_rows = cur.fetchall()
 
-    submissions = [
-        {
+    submissions = []
+    for r in submission_rows:
+
+        submissions.append({
             "id": r[0],
             "email": r[1],
             "inputs": json.loads(r[2]) if r[2] else {},
             "result": json.loads(r[3]) if r[3] else {},
             "assumptions": json.loads(r[4]) if r[4] else {},
             "rates": json.loads(r[5]) if r[5] else [],
-            "submitted_at": r[5],
-        }
-        for r in submission_rows
-    ]
+            "submitted_at": r[6]   # ✅ FIXED (was WRONG index)
+        })
 
     # -------------------------
-    # GET ALL USERS
+    # USERS
     # -------------------------
     cur.execute("""
         SELECT id, email, name, company, phone, abn, address, submitted_at
@@ -458,8 +458,9 @@ def admin():
 
     user_rows = cur.fetchall()
 
-    users_list = [
-        {
+    users_list = []
+    for r in user_rows:
+        users_list.append({
             "id": r[0],
             "email": r[1],
             "name": r[2],
@@ -468,12 +469,10 @@ def admin():
             "abn": r[5],
             "address": r[6],
             "submitted_at": r[7],
-        }
-        for r in user_rows
-    ]
+        })
 
     # -------------------------
-    # GET ALL ASSUMPTIONS (optional view for admin)
+    # ASSUMPTIONS
     # -------------------------
     cur.execute("""
         SELECT email, data
@@ -482,10 +481,9 @@ def admin():
 
     assumption_rows = cur.fetchall()
 
-    assumptions_data = {
-        r[0]: json.loads(r[1]) if r[1] else {}
-        for r in assumption_rows
-    }
+    assumptions_data = {}
+    for r in assumption_rows:
+        assumptions_data[r[0]] = json.loads(r[1]) if r[1] else {}
 
     cur.close()
     conn.close()

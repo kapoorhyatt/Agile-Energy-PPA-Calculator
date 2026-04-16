@@ -10,82 +10,75 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-            color: #1f2937;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 30px;
         }
 
-        .dashboard-container {
-            background: #fff;
-            padding: 35px 30px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 1200px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
         }
 
         h2 {
-            text-align: center;
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
             font-size: 13px;
         }
 
         th, td {
-            border: 1px solid #d1d5db;
-            padding: 10px;
+            border: 1px solid #ddd;
+            padding: 8px;
             text-align: left;
+            vertical-align: top;
         }
 
         th {
-            background-color: #f3f4f6;
-            font-weight: 600;
+            background: #f0f0f0;
         }
 
-        tr:nth-child(even) {
-            background-color: #f9fafb;
+        .rates-boxes {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
-        tr:hover {
-            background-color: #e0f2fe;
+        .rate-box {
+            background: #e8f4ff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            min-width: 80px;
         }
 
-        p {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 16px;
-            color: #555;
-        }
     </style>
 </head>
 <body>
 
-<div class="dashboard-container">
+<div class="container">
     <h2>Master Dashboard</h2>
 
-    {% if submissions %}
+    {% if submissions and submissions|length > 0 %}
+
     <table>
         <tr>
             <th>Date & Time</th>
             <th>Email</th>
-            <th>System Size (kW)</th>
-            <th>Battery Size (kWh)</th>
-            <th>Generation (MWh)</th>
+            <th>Project</th>
+            <th>Customer</th>
+            <th>System (kW)</th>
+            <th>Battery (kWh)</th>
+            <th>Generation</th>
             <th>Yield</th>
+            <th>Suburb</th>
             <th>State</th>
             <th>Total Capex</th>
+            <th>Rates</th>
         </tr>
 
         {% for s in submissions %}
@@ -93,17 +86,35 @@
             <td>{{ s.submitted_at }}</td>
             <td>{{ s.email }}</td>
 
+            <td>{{ s.inputs.project_name if s.inputs.project_name is defined else '' }}</td>
+            <td>{{ s.inputs.customer_name if s.inputs.customer_name is defined else '' }}</td>
+
             <td>{{ s.inputs.system_size if s.inputs.system_size is defined else '' }}</td>
             <td>{{ s.inputs.battery_size if s.inputs.battery_size is defined else '' }}</td>
             <td>{{ s.inputs.generation if s.inputs.generation is defined else '' }}</td>
             <td>{{ s.inputs.specific_yield if s.inputs.specific_yield is defined else '' }}</td>
+
+            <td>{{ s.inputs.suburb if s.inputs.suburb is defined else '' }}</td>
             <td>{{ s.inputs.state if s.inputs.state is defined else '' }}</td>
+
             <td>{{ s.inputs.total_capex if s.inputs.total_capex is defined else '' }}</td>
+
+            <td>
+                <div class="rates-boxes">
+                    {% for r in s.rates %}
+                        <div class="rate-box">
+                            {{ r.term }}yr<br>
+                            ${{ r.ppa_rate }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </td>
         </tr>
         {% endfor %}
     </table>
+
     {% else %}
-    <p>No submissions yet.</p>
+        <p>No submissions yet.</p>
     {% endif %}
 </div>
 
