@@ -1,7 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>PPA Rates</title>
+{% extends "base.html" %}
+
+{% block title %}PPA Rates{% endblock %}
+
+{% block style %}
 
     <style>
         body {
@@ -71,9 +72,9 @@
     transform: translateY(-1px);
     }
     </style>
-</head>
+{% endblock %}
 
-<body>
+{% block content %}
 
 <div class="page">
 
@@ -102,5 +103,5 @@
 
 </div>
 
-</body>
-</html>
+
+{% endblock %}

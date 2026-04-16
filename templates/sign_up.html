@@ -1,19 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Sign Up - Agile Energy</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% extends "base.html" %}
+
+{% block title %}Sign Up - Agile Energy{% endblock %}
+
+{% block style %}
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f6f8;
-    color: #1f2937;
-    line-height: 1.5;
-    padding-left: 20px;
-    padding-right: 20px;
-}
+
 
 .disclaimer-container {
     display: flex;
@@ -62,34 +54,6 @@ body {
     margin: 0;
 }
 
-/* HEADER */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 40px;
-    background-color: #fff;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-.logo { width: 155px; }
-nav a { margin-left: 24px; text-decoration: none; color: #1f2937; font-weight: 500; font-size: 15px; transition: color 0.2s; }
-nav a:hover { color: #045174; }
-nav a.btn-login {
-    background-color:#F07154;
-    color: #19123A;
-    padding: 10px 24px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 16px;
-    margin-left: 24px;
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-nav a.btn-login:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
-header nav { display: flex; align-items: center; }
 
 /* HERO */
 .signup-hero {
@@ -204,18 +168,11 @@ header nav { display: flex; align-items: center; }
 }
 
 </style>
-</head>
-<body>
+{% endblock %}
 
-<header>
-    <a href="/"><img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Logo" class="logo"></a>
-    <nav>
-        <a href="{{ url_for('case_studies') }}">Case Studies</a>
-        <a href="{{ url_for('learn_more') }}">Learn More</a>
-        <a href="{{ url_for('sign_up') }}">Sign Up</a>
-        <a href="/login" class="btn-login">Login</a>
-    </nav>
-</header>
+{% block content %}
+
+
 
 <section class="signup-hero">
     <div class="bg-circle circle1"></div>
@@ -369,5 +326,4 @@ function checkABN() {
     });
 }
 </script>
-</body>
-</html>
+{% endblock %}

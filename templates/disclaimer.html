@@ -1,35 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Disclaimer</title>
+{% extends "base.html" %}
 
+{% block title %}Disclaimer{% endblock %}
+
+{% block style %}
 <style>
     body {
         font-family: 'Segoe UI', Arial, sans-serif;
-        margin: 0;
         background: #f4f6f9;
         color: #111827;
-    }
-
-    /* HEADER */
-    .header {
-        padding: 20px 48px;
-        background: #ffffff;
-        border-bottom: 1px solid #e5e7eb;
-        display: flex;
-        align-items: center;
-    }
-
-    .logo {
-        width: 160px;
     }
 
     /* MAIN CONTAINER */
     .container {
         max-width: 900px;
-        margin: 50px auto;
-        padding: 0 24px;
+        margin: 0;;
+        padding: 0 
     }
 
     /* TITLE */
@@ -120,13 +105,10 @@
     }
 
 </style>
-</head>
 
-<body>
+{% endblock %}
 
-<div class="header">
-    <img src="{{ url_for('static', filename='images/Agile Logo.png') }}" class="logo">
-</div>
+{% block content %}
 
 <div class="container">
 
@@ -253,5 +235,4 @@
     </form>
 </div>
 
-</body>
-</html>
+{% endblock %}
