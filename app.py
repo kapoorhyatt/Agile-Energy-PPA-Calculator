@@ -12,6 +12,8 @@ from calculator.model import run_model
 import uuid
 import psycopg2
 import requests
+import smtplib
+
 
 
 
@@ -107,7 +109,7 @@ def results():
 def sign_up():
     if request.method == "POST":
 
-        email = request.form.get("email") or ""
+        email = request.form.get("email", "").strip().lower()
         password = request.form.get("password") or ""
         name = request.form.get("name") or ""
         company = request.form.get("company") or ""
@@ -125,7 +127,7 @@ def sign_up():
         if cur.fetchone():
             cur.close()
             conn.close()
-            return render_template("sign_up.html", error="User already exists")
+            return render_template("sign_up.html", error="You already have an account created.")
 
         # =========================
         # ✅ ABN VALIDATION (ADDED)
