@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Master Dashboard</title>
+
     <style>
         * {
             box-sizing: border-box;
@@ -74,14 +75,18 @@
         <tr>
             <th>Date & Time</th>
             <th>Email</th>
+
             <th>Project</th>
             <th>Customer</th>
+
             <th>System (kW)</th>
             <th>Battery (kWh)</th>
             <th>Generation</th>
             <th>Yield</th>
+
             <th>Suburb</th>
             <th>State</th>
+
             <th>Total Capex</th>
             <th>Rates</th>
         </tr>
@@ -91,18 +96,18 @@
             <td>{{ s.submitted_at or '' }}</td>
             <td>{{ s.email or '' }}</td>
 
-            <td>{{ s.inputs.get('project_name', '') if s.inputs else '' }}</td>
-            <td>{{ s.inputs.get('customer_name', '') if s.inputs else '' }}</td>
+            <td>{{ s.inputs.project_name if s.inputs else '' }}</td>
+            <td>{{ s.inputs.customer_name if s.inputs else '' }}</td>
 
-            <td>{{ s.inputs.get('system_size', '') if s.inputs else '' }}</td>
-            <td>{{ s.inputs.get('battery_size', '') if s.inputs else '' }}</td>
-            <td>{{ s.inputs.get('generation', '') if s.inputs else '' }}</td>
-            <td>{{ s.inputs.get('specific_yield', '') if s.inputs else '' }}</td>
+            <td>{{ s.inputs.system_size if s.inputs else '' }}</td>
+            <td>{{ s.inputs.battery_size if s.inputs else '' }}</td>
+            <td>{{ s.inputs.generation if s.inputs else '' }}</td>
+            <td>{{ s.inputs.specific_yield if s.inputs else '' }}</td>
 
-            <td>{{ s.inputs.get('suburb', '') if s.inputs else '' }}</td>
-            <td>{{ s.inputs.get('state', '') if s.inputs else '' }}</td>
+            <td>{{ s.inputs.suburb if s.inputs else '' }}</td>
+            <td>{{ s.inputs.state if s.inputs else '' }}</td>
 
-            <td>{{ s.inputs.get('total_capex', '') if s.inputs else '' }}</td>
+            <td>{{ s.inputs.total_capex if s.inputs else '' }}</td>
 
             <td>
                 {% if s.rates and s.rates|length > 0 %}
@@ -118,6 +123,7 @@
                     <span class="empty">No rates</span>
                 {% endif %}
             </td>
+
         </tr>
         {% endfor %}
     </table>

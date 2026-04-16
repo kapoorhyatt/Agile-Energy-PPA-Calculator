@@ -262,8 +262,10 @@ def calculator():
 
     def safe_float(name, default=0.0):
         value = request.form.get(name)
+
         if value is None or value == "":
             return default
+
         try:
             return float(value)
         except:
@@ -271,30 +273,28 @@ def calculator():
 
     if request.method == "POST":
 
-        # TEXT INPUTS
+        # TEXT INPUTS (DO THIS FIRST ONCE ONLY)
         project_name = request.form.get("project_name", "")
         customer_name = request.form.get("customer_name", "")
         suburb = request.form.get("suburb", "")
         state = request.form.get("state", "")
 
-        # NUMERIC INPUTS (FORM FIELD NAMES MATCH HTML)
-        system_size = safe_float("system_size", 0.0)
-        generation = safe_float("generation", 0.0)
-        battery_size = safe_float("battery_size", 0.0)
-        total_capex = safe_float("total_capex", system_size * 600)
+        # NUMERIC INPUTS
+        solar_kw = safe_float("system_size", 0.0)
+        annual_generation_mwh = safe_float("generation", 0.0)
+        total_capex = safe_float("total_capex", solar_kw * 600)
+        bess_kwh = safe_float("battery_size", 0.0)
         specific_yield = safe_float("yield", 0.0)
 
-        # ✅ IMPORTANT: KEEP KEYS CONSISTENT FOR ADMIN + DB + MODEL
         inputs = {
             "project_name": project_name,
             "customer_name": customer_name,
             "suburb": suburb,
             "state": state,
-
-            "system_size": system_size,
-            "generation": generation,
-            "battery_size": battery_size,
+            "solar_kw": solar_kw,
+            "annual_generation_mwh": annual_generation_mwh,
             "total_capex": total_capex,
+            "bess_kwh": bess_kwh,
             "specific_yield": specific_yield
         }
 
@@ -305,6 +305,7 @@ def calculator():
             debug=True
         )
 
+        # EXTRACT RATES SAFELY
         rates = []
         try:
             first_row = result.get("results", [{}])[0]
