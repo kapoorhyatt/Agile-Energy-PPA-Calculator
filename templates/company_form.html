@@ -24,7 +24,7 @@ header {
     width: 155px;
 }
 
-header nav a.btn-login {
+.btn-login {
     background: linear-gradient(135deg, #F07154, #e35d40);
     color: #fff;
     padding: 10px 26px;
@@ -35,9 +35,26 @@ header nav a.btn-login {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-header nav a.btn-login:hover {
+.btn-login:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 28px rgba(240,113,84,0.35);
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+}
+
+header nav a {
+    margin-left: 28px;
+    text-decoration: none;
+    color: #1f2937;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+header nav a:hover {
+    color: #045174;
 }
 
 /* PAGE */
@@ -167,14 +184,13 @@ button:hover {
 
     <div style="display:flex; align-items:center; margin-left:auto; gap:18px;">
 
-        <nav style="display:flex; align-items:center;">
+        <nav>
             <a href="{{ url_for('case_studies') }}">Case Studies</a>
             <a href="{{ url_for('learn_more') }}">Learn More</a>
         </nav>
 
         {% if session.get('user_name') %}
 
-            <!-- greeting moved left of buttons + upgraded style -->
             <span style="
                 font-weight:600;
                 color:#19123A;
@@ -182,15 +198,11 @@ button:hover {
                 padding:8px 14px;
                 border-radius:999px;
                 border:1px solid #e5e7eb;
-                display:flex;
-                align-items:center;
-                gap:6px;
                 white-space:nowrap;
             ">
                 👋 Hi {{ session.get('user_name') }}!
             </span>
 
-            <!-- logout now matches login style -->
             <a href="{{ url_for('logout') }}" class="btn-login">
                 Logout
             </a>
