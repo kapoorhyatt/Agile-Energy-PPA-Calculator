@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block style %}
+    <style>
+
+
+        /* Container */
+        .login-container {
+            background: #fff;
+            padding: 45px 35px;
+            border-radius: 12px;
+            width: 360px;
+            max-width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: relative;
+            margin: 100px auto;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 35px;
+            color: #1f2937;
+        }
+
+        /* Floating label wrapper */
+        .form-group {
+            position: relative;
+            margin-top: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f9fafb;
+            transition: border 0.2s, background 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            background: #fff;
+            outline: none;
+        }
+
+        /* Fix autofill background in Chrome/Safari */
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px #f9fafb inset !important;
+            -webkit-text-fill-color: #1f2937 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        label {
+            position: absolute;
+            left: 14px;
+            top: 16px;
+            color: #6b7280;
+            font-size: 14px;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            background: #fff;
+            padding: 0 5px;
+        }
+
+        input:focus + label,
+        input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 10px;
+            font-size: 12px;
+            color: #2563eb;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 35px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #1e40af;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .error {
+            color: #b91c1c;
+            margin-top: 12px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Logo top right for login (optional) */
+        .login-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 200px;
+            height: auto;
+        }
+
+        @media(max-width: 400px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            .login-logo {
+                width: 120px;
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+    {% endblock %}
+
+    {% block content %}
+
+
+<div class="login-container">
+    <h1 style="color:red;">TEST</h1>
+    <h2>Login</h2>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        <div class="form-group">
+            <input type="email" name="email" placeholder=" " required>
+            <label>Email</label>
+        </div>
+
+        <div class="form-group">
+            <input type="password" name="password" placeholder=" " required>
+            <label>Password</label>
+        </div>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+{% endblock %}
