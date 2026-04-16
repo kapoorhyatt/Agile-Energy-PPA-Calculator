@@ -1,95 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Disclaimer</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            background: #f5f6f8;
-            color: #111827;
-        }
+<meta charset="UTF-8">
+<title>Disclaimer</title>
 
-        /* HEADER */
-        .header {
-            padding: 16px 40px;
-            background: #fff;
-            border-bottom: 1px solid #e5e7eb;
-        }
+<style>
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        margin: 0;
+        background: #f4f6f9;
+        color: #111827;
+    }
 
-        .logo {
-            width: 150px;
-        }
+    /* HEADER */
+    .header {
+        padding: 20px 48px;
+        background: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+    }
 
-        /* MAIN */
-        .container {
-            max-width: 850px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+    .logo {
+        width: 160px;
+    }
 
-        h1 {
-            font-size: 32px;
-            margin-bottom: 6px;
-        }
+    /* MAIN CONTAINER */
+    .container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 0 24px;
+    }
 
-        .intro {
-            color: #6b7280;
-            margin-bottom: 30px;
-        }
+    /* TITLE */
+    h1 {
+        font-size: 34px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        letter-spacing: -0.3px;
+    }
 
-        /* SECTIONS */
-        .section {
-            margin-bottom: 30px;
-        }
+    .intro {
+        font-size: 15px;
+        color: #6b7280;
+        margin-bottom: 40px;
+    }
 
-        .section h2 {
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
+    /* SECTION CARD STYLE */
+    .section {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 22px 24px;
+        margin-bottom: 18px;
+        transition: 0.2s ease;
+    }
 
-        .section p {
-            font-size: 14.5px;
-            line-height: 1.6;
-            color: #4b5563;
-            margin-bottom: 10px;
-        }
+    .section:hover {
+        box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+        transform: translateY(-1px);
+    }
 
-        ul {
-            margin: 10px 0 10px 18px;
-            color: #4b5563;
-            font-size: 14.5px;
-        }
+    .section h2 {
+        font-size: 15.5px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #111827;
+    }
 
-        li {
-            margin-bottom: 6px;
-        }
+    .section p {
+        font-size: 14.5px;
+        line-height: 1.65;
+        color: #4b5563;
+        margin-bottom: 10px;
+    }
 
-        /* FOOTER BUTTON */
-        .footer {
-            position: sticky;
-            bottom: 0;
-            background: #fff;
-            border-top: 1px solid #e5e7eb;
-            padding: 16px;
-            text-align: center;
-        }
+    ul {
+        margin: 10px 0 10px 20px;
+        padding: 0;
+        color: #4b5563;
+        font-size: 14.5px;
+    }
 
-        button {
-            padding: 14px 28px;
-            font-size: 16px;
-            background: #F07154;
-            color: #19123A;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-        }
+    li {
+        margin-bottom: 6px;
+    }
 
-        button:hover {
-            opacity: 0.9;
-        }
-    </style>
+    /* FOOTER */
+    .footer {
+        position: sticky;
+        bottom: 0;
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(6px);
+        border-top: 1px solid #e5e7eb;
+        padding: 18px;
+        text-align: center;
+    }
+
+    button {
+        padding: 14px 34px;
+        font-size: 16px;
+        background: linear-gradient(135deg, #F07154, #e85c3d);
+        color: #19123A;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        box-shadow: 0 6px 16px rgba(240, 113, 84, 0.25);
+        transition: all 0.2s ease;
+    }
+
+    button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(240, 113, 84, 0.35);
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
+
+</style>
 </head>
 
 <body>

@@ -254,14 +254,21 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        # Admin users first
-        user = users.get(email)
-        if user and check_password_hash(user["password"], password):
-            session["user"] = email
-            session["role"] = user["role"]
-            return redirect("/admin_menu") if user["role"] == "admin" else redirect("/disclaimer")
+        # -------------------
+        # ADMIN USERS (TEMP)
+        # -------------------
+        admin_user = users.get(email)
 
+        if admin_user and check_password_hash(admin_user["password"], password):
+            session["user"] = email
+            session["user_name"] = email.split("@")[0]  # display name
+            session["role"] = admin_user["role"]
+
+            return redirect("/admin_menu") if admin_user["role"] == "admin" else redirect("/disclaimer")
+
+        # -------------------
         # DATABASE USERS
+        # -------------------
         conn = get_db_connection()
         cur = conn.cursor()
 
@@ -272,8 +279,11 @@ def login():
         conn.close()
 
         if user and check_password_hash(user[3], password):
-            session["user"] = user[1]
+
+            session["user"] = user[1]        # email
+            session["user_name"] = user[2]   # ✅ THIS IS THE KEY FIX
             session["role"] = "company"
+
             return redirect("/disclaimer")
 
         error = "Invalid email or password"
@@ -614,6 +624,12 @@ def assumptions():
     conn.close()
 
     return render_template("assumptions.html", assumptions=assumptions_data)
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
 
 if __name__ == "__main__":
     from init_db import create_tables

@@ -170,17 +170,40 @@ button:hover {
 <body>
 
 <header>
-    <a href="/"><img src="{{ url_for('static', filename='images/Agile Logo.png') }}" class="logo"></a>
+    <!-- LEFT: Agile logo -->
+    <a href="/">
+        <img src="{{ url_for('static', filename='images/Agile Logo.png') }}" class="logo">
+    </a>
+
+    <!-- RIGHT SIDE GROUP -->
+<!-- RIGHT SIDE GROUP -->
+<div style="display:flex; align-items:center; margin-left:auto;">
+
     <nav>
         <a href="{{ url_for('case_studies') }}">Case Studies</a>
         <a href="{{ url_for('learn_more') }}">Learn More</a>
-        <a href="{{ url_for('sign_up') }}">Sign Up</a>
-        <a href="/login" class="btn-login">Login</a>
     </nav>
+
+    {% if session.get('user_name') %}
+        <span style="margin-left:18px; font-weight:600; color:#19123A;">
+            Hi {{ session.get('user_name') }}
+        </span>
+
+        <a href="{{ url_for('logout') }}" class="btn-login" style="margin-left: 18px;">
+            Logout
+        </a>
+
+    {% else %}
+        <a href="{{ url_for('login') }}" class="btn-login" style="margin-left: 18px;">
+            Login
+        </a>
+    {% endif %}
+
+</div>
 </header>
 
 <div class="form-container">
-    <h2>Demo Company Calculator</h2>
+    <h2>Calculator</h2>
 
     <form method="POST" action="/calculator">
 
