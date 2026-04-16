@@ -221,7 +221,7 @@ header nav { display: flex; align-items: center; }
     <div class="bg-circle circle1"></div>
     <div class="bg-circle circle2"></div>
     <h1>Join Now</h1>
-    <p>Sign up today to get your personalised PPA rate.</p>
+    <p>Sign up today to Agile Deal Desk.</p>
 </section>
 
 <section class="signup-form-section">
@@ -271,7 +271,19 @@ header nav { display: flex; align-items: center; }
         <input type="text" id="address" name="address" required>
 
         <label for="abn">Company ABN</label>
-        <input type="text" id="abn" name="abn" required>
+        <input 
+            type="text" 
+            id="abn" 
+            name="abn" 
+            required 
+            pattern="\d{11}" 
+            maxlength="11" 
+            minlength="11"
+            inputmode="numeric"
+       >
+<small style="display:block; margin-top:-12px; margin-bottom:16px; color:#6b7280;">
+    Must be exactly 11 digits
+</small>
 
         <label for="logo">Company Logo</label>
         <input type="file" id="logo" name="logo" accept="image/*">
