@@ -36,7 +36,7 @@ def create_tables():
     );
     """)
 
-    # SUBMISSIONS table (calculator results)
+    # SUBMISSIONS table
     cur.execute("""
     CREATE TABLE IF NOT EXISTS submissions (
         id TEXT PRIMARY KEY,
@@ -47,6 +47,12 @@ def create_tables():
         rates TEXT,
         submitted_at TEXT
     );
+    """)
+
+# ADD MISSING COLUMN IF NEEDED
+    cur.execute("""
+    ALTER TABLE submissions
+    ADD COLUMN IF NOT EXISTS rates TEXT;
     """)
 
     conn.commit()
