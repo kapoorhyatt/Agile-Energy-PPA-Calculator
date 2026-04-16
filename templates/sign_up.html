@@ -280,10 +280,13 @@ header nav { display: flex; align-items: center; }
             maxlength="11" 
             minlength="11"
             inputmode="numeric"
+            onkeyup="checkABN()"
        >
-<small style="display:block; margin-top:-12px; margin-bottom:16px; color:#6b7280;">
-    Must be exactly 11 digits
-</small>
+        <small style="display:block; margin-top:-12px; margin-bottom:16px; color:#6b7280;">
+            Must be exactly 11 digits
+        </small>
+
+        <p id="abn-status" style="margin-bottom:16px; font-size:14px;"></p>
 
         <label for="logo">Company Logo</label>
         <input type="file" id="logo" name="logo" accept="image/*">
@@ -298,6 +301,8 @@ header nav { display: flex; align-items: center; }
 </section>
 
 <script>
+let abnValid = false;
+
 function validatePasswords() {
     const pass = document.getElementById("password").value;
     const confirm = document.getElementById("confirm_password").value;
@@ -305,11 +310,63 @@ function validatePasswords() {
 
     if (pass !== confirm || pass.length < 8) {
         error.style.display = "block";
-        return false; // stops the form from submitting
+        return false;
+    }
+
+    if (!abnValid) {
+        alert("Please enter a valid ABN before continuing.");
+        return false;
     }
 
     error.style.display = "none";
-    return true; // allows the form to submit
+    return true;
+}
+
+// 🔥 ABN LIVE CHECK
+function checkABN() {
+    const abn = document.getElementById("abn").value;
+    const status = document.getElementById("abn-status");
+    const companyField = document.getElementById("company");
+
+    if (abn.length !== 11) {
+        status.textContent = "";
+        abnValid = false;
+        return;
+    }
+
+    status.textContent = "Checking ABN...";
+    status.style.color = "#6b7280";
+
+    fetch("/validate-abn", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ abn: abn })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.valid) {
+            status.textContent = "✓ Valid ABN (" + data.name + ")";
+            status.style.color = "green";
+            abnValid = true;
+
+            // auto-fill company name if empty
+            if (!companyField.value) {
+                companyField.value = data.name;
+            }
+
+        } else {
+            status.textContent = "✗ Invalid ABN";
+            status.style.color = "red";
+            abnValid = false;
+        }
+    })
+    .catch(() => {
+        status.textContent = "Error validating ABN";
+        status.style.color = "red";
+        abnValid = false;
+    });
 }
 </script>
 </body>

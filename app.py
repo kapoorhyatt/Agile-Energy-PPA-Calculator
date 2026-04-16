@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for, send_file
+from flask import Flask, render_template, request, redirect, session, url_for, send_file, jsonify
 from xhtml2pdf import pisa
 from io import BytesIO
 import json
@@ -11,6 +11,11 @@ from calculator.assumptions import DEFAULT_ASSUMPTIONS
 from calculator.model import run_model
 import uuid
 import psycopg2
+import requests
+
+
+
+ABN_GUID = "9e4c9f11-a8e2-4e1d-a3f9-048a06d577c1"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
@@ -122,7 +127,30 @@ def sign_up():
             conn.close()
             return render_template("sign_up.html", error="User already exists")
 
+        # =========================
+        # ✅ ABN VALIDATION (ADDED)
+        # =========================
+        url = f"https://abr.business.gov.au/json/AbnDetails.aspx?abn={abn}&guid={ABN_GUID}"
+
+        try:
+            res = requests.get(url)
+            text = res.text
+            text = text[text.find("(")+1:text.rfind(")")]
+            data = json.loads(text)
+
+            if not (data.get("Abn") and data.get("AbnStatus") == "Active"):
+                cur.close()
+                conn.close()
+                return render_template("sign_up.html", error="Invalid or inactive ABN")
+
+        except Exception as e:
+            cur.close()
+            conn.close()
+            return render_template("sign_up.html", error="ABN validation failed")
+
+        # =========================
         # INSERT USER
+        # =========================
         cur.execute("""
             INSERT INTO users (
                 id, email, password, name, company, phone, abn, address, submitted_at
@@ -158,6 +186,30 @@ def sign_up():
         return redirect("/login")
 
     return render_template("sign_up.html")
+
+@app.route("/validate-abn", methods=["POST"])
+def validate_abn():
+    abn = request.json.get("abn")
+
+    url = f"https://abr.business.gov.au/json/AbnDetails.aspx?abn={abn}&guid={ABN_GUID}"
+
+    try:
+        res = requests.get(url)
+        text = res.text
+        text = text[text.find("(")+1:text.rfind(")")]
+        data = json.loads(text)
+
+        # Check if valid
+        if data.get("Abn") and data.get("AbnStatus") == "Active":
+            return jsonify({
+                "valid": True,
+                "name": data.get("EntityName")
+            })
+        else:
+            return jsonify({"valid": False})
+
+    except Exception as e:
+        return jsonify({"valid": False})
 
 @app.route("/sign_up_responses")
 def sign_up_responses():
