@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Demo Company Calculator</title>
+    <title>Calculator</title>
     <style>
 * {
     box-sizing: border-box;
@@ -166,10 +166,11 @@ button:hover {
 }
     </style>
 </head>
+
 <body>
 
 <header>
-    <a href="/"><img src="{{ url_for('static', filename='images/Agile Logo.png') }}" alt="Agile Logo" class="logo"></a>
+    <a href="/"><img src="{{ url_for('static', filename='images/Agile Logo.png') }}" class="logo"></a>
     <nav>
         <a href="{{ url_for('case_studies') }}">Case Studies</a>
         <a href="{{ url_for('learn_more') }}">Learn More</a>
@@ -186,16 +187,18 @@ button:hover {
         <!-- Project Info -->
         <div class="form-section">
             <h3>Project Info</h3>
+
             <label>Project Name</label>
-            <input type="text" name="project_name" required placeholder="Enter project name">
+            <input type="text" name="project_name" required>
 
             <label>Customer Name</label>
-            <input type="text" name="customer_name" required placeholder="Enter customer name">
+            <input type="text" name="customer_name" required>
         </div>
 
         <!-- System Info -->
         <div class="form-section">
             <h3>System Info</h3>
+
             <label>System Size (kW)</label>
             <input type="number" id="system_size" name="system_size" step="0.01" oninput="calculateYield()" required>
 
@@ -212,34 +215,44 @@ button:hover {
         <!-- Address -->
         <div class="form-section">
             <h3>Address</h3>
+
             <label>Suburb</label>
-            <input type="text" id="suburb" name="suburb" required>
+            <input type="text" name="suburb" required>
 
             <label>State</label>
-            <select id="state" name="state" required>
-                <option value="">Select a state</option>
-                <option value="NSW">NSW</option>
-                <option value="VIC">VIC</option>
-                <option value="QLD">QLD</option>
-                <option value="SA">SA</option>
-                <option value="WA">WA</option>
-                <option value="TAS">TAS</option>
-                <option value="ACT">ACT</option>
-                <option value="NT">NT</option>
+            <select name="state" required>
+                <option value="">Select</option>
+                <option>NSW</option><option>VIC</option><option>QLD</option>
+                <option>SA</option><option>WA</option><option>TAS</option>
+                <option>ACT</option><option>NT</option>
             </select>
         </div>
 
         <!-- Costs -->
         <div class="form-section">
             <h3>Costs</h3>
+
             <label>Net Capex</label>
-            <input type="number" id="net_capex" name="net_capex" step="0.01" oninput="calculateTotalCapex()" required>
+            <div style="position:relative;">
+                <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6b7280;">$</span>
+                <input style="padding-left:28px;" type="number" id="net_capex" name="net_capex" step="0.01" oninput="calculateTotalCapex()" required>
+            </div>
+
+            <label>Commission Type</label>
+            <select id="commission_type" onchange="calculateTotalCapex()">
+                <option value="percent">Percent (%)</option>
+                <option value="fixed">Dollar ($)</option>
+            </select>
 
             <label>Commissions</label>
             <input type="number" id="commissions" name="commissions" step="0.01" oninput="calculateTotalCapex()" required>
+            <small id="commission_hint">Enter % of Net Capex</small>
 
             <label>Total Capex</label>
-            <input type="number" id="total_capex" name="total_capex" class="readonly" readonly>
+            <div style="position:relative;">
+                <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6b7280;">$</span>
+                <input style="padding-left:28px;" type="number" id="total_capex" name="total_capex" class="readonly" readonly>
+            </div>
         </div>
 
         <button type="submit">Submit</button>
@@ -251,17 +264,30 @@ function calculateYield() {
     let generation = parseFloat(document.getElementById("generation").value) || 0;
     let systemSize = parseFloat(document.getElementById("system_size").value) || 0;
     let yieldField = document.getElementById("yield");
-    if(systemSize > 0){
-        yieldField.value = ((generation * 1000) / systemSize).toFixed(2);
-    } else {
-        yieldField.value = "";
-    }
+
+    yieldField.value = systemSize > 0
+        ? ((generation * 1000) / systemSize).toFixed(2)
+        : "";
 }
 
 function calculateTotalCapex() {
     let netCapex = parseFloat(document.getElementById("net_capex").value) || 0;
     let commissions = parseFloat(document.getElementById("commissions").value) || 0;
-    document.getElementById("total_capex").value = (netCapex + commissions).toFixed(2);
+    let type = document.getElementById("commission_type").value;
+    let hint = document.getElementById("commission_hint");
+
+    let commissionValue = 0;
+
+    if (type === "percent") {
+        commissionValue = netCapex * (commissions / 100);
+        hint.textContent = "Enter % (e.g. 5 = 5%)";
+    } else {
+        commissionValue = commissions;
+        hint.textContent = "Enter fixed $ amount";
+    }
+
+    document.getElementById("total_capex").value =
+        (netCapex + commissionValue).toFixed(2);
 }
 </script>
 
