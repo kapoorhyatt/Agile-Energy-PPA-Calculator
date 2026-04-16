@@ -54,10 +54,15 @@
             border-radius: 6px;
             font-size: 12px;
             min-width: 80px;
+            text-align: center;
         }
 
+        .empty {
+            color: #999;
+        }
     </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -83,23 +88,24 @@
 
         {% for s in submissions %}
         <tr>
-            <td>{{ s.submitted_at }}</td>
-            <td>{{ s.email }}</td>
+            <td>{{ s.submitted_at or '' }}</td>
+            <td>{{ s.email or '' }}</td>
 
-            <td>{{ s.inputs.project_name if s.inputs.project_name is defined else '' }}</td>
-            <td>{{ s.inputs.customer_name if s.inputs.customer_name is defined else '' }}</td>
+            <td>{{ s.inputs.get('project_name', '') if s.inputs else '' }}</td>
+            <td>{{ s.inputs.get('customer_name', '') if s.inputs else '' }}</td>
 
-            <td>{{ s.inputs.system_size if s.inputs.system_size is defined else '' }}</td>
-            <td>{{ s.inputs.battery_size if s.inputs.battery_size is defined else '' }}</td>
-            <td>{{ s.inputs.generation if s.inputs.generation is defined else '' }}</td>
-            <td>{{ s.inputs.specific_yield if s.inputs.specific_yield is defined else '' }}</td>
+            <td>{{ s.inputs.get('system_size', '') if s.inputs else '' }}</td>
+            <td>{{ s.inputs.get('battery_size', '') if s.inputs else '' }}</td>
+            <td>{{ s.inputs.get('generation', '') if s.inputs else '' }}</td>
+            <td>{{ s.inputs.get('specific_yield', '') if s.inputs else '' }}</td>
 
-            <td>{{ s.inputs.suburb if s.inputs.suburb is defined else '' }}</td>
-            <td>{{ s.inputs.state if s.inputs.state is defined else '' }}</td>
+            <td>{{ s.inputs.get('suburb', '') if s.inputs else '' }}</td>
+            <td>{{ s.inputs.get('state', '') if s.inputs else '' }}</td>
 
-            <td>{{ s.inputs.total_capex if s.inputs.total_capex is defined else '' }}</td>
+            <td>{{ s.inputs.get('total_capex', '') if s.inputs else '' }}</td>
 
             <td>
+                {% if s.rates and s.rates|length > 0 %}
                 <div class="rates-boxes">
                     {% for r in s.rates %}
                         <div class="rate-box">
@@ -108,6 +114,9 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% else %}
+                    <span class="empty">No rates</span>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}

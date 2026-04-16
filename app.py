@@ -267,22 +267,42 @@ def calculator():
 
     if request.method == "POST":
 
-        solar_kw = safe_float("system_size", 0.0)
-        annual_generation_mwh = safe_float("generation", 0.0)
-        total_capex = safe_float("total_capex", solar_kw * 600)
-        bess_kwh = safe_float("battery_size", 0.0)
-        specific_yield = safe_float("yield", 0.0)
+        # -------------------------
+        # NEW TEXT FIELDS (FIX FOR BLANK VALUES)
+        # -------------------------
+        project_name = request.form.get("project_name", "")
+        customer_name = request.form.get("customer_name", "")
+        suburb = request.form.get("suburb", "")
         state = request.form.get("state", "")
 
+        # -------------------------
+        # NUMERIC INPUTS
+        # -------------------------
+        solar_kw = safe_float("system_size", 0.0)
+        bess_kwh = safe_float("battery_size", 0.0)
+        generation = safe_float("generation", 0.0)
+        specific_yield = safe_float("yield", 0.0)
+        total_capex = safe_float("total_capex", solar_kw * 600)
+
+        # -------------------------
+        # INPUTS DICT (NOW COMPLETE)
+        # -------------------------
         inputs = {
-            "solar_kw": solar_kw,
-            "annual_generation_mwh": annual_generation_mwh,
-            "total_capex": total_capex,
-            "bess_kwh": bess_kwh,
+            "project_name": project_name,
+            "customer_name": customer_name,
+            "suburb": suburb,
             "state": state,
-            "specific_yield": specific_yield
+
+            "system_size": solar_kw,
+            "battery_size": bess_kwh,
+            "generation": generation,
+            "specific_yield": specific_yield,
+            "total_capex": total_capex
         }
 
+        # -------------------------
+        # RUN MODEL
+        # -------------------------
         result = run_model(
             submission_file=None,
             inputs=inputs,
@@ -290,7 +310,9 @@ def calculator():
             debug=True
         )
 
-        # ✅ EXTRACT RATES
+        # -------------------------
+        # EXTRACT RATES
+        # -------------------------
         rates = []
         try:
             first_row = result["results"][0]
@@ -304,10 +326,18 @@ def calculator():
 
         submission_id = str(uuid.uuid4())
 
-        # ✅ SAVE EVERYTHING INCLUDING RATES
+        # -------------------------
+        # SAVE TO DATABASE
+        # -------------------------
         cur.execute("""
             INSERT INTO submissions (
-                id, email, inputs, result, assumptions, rates, submitted_at
+                id,
+                email,
+                inputs,
+                result,
+                assumptions,
+                rates,
+                submitted_at
             )
             VALUES (%s,%s,%s,%s,%s,%s,%s)
         """, (
