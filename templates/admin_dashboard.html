@@ -79,9 +79,9 @@
             <th>Project</th>
             <th>Customer</th>
 
-            <th>System (kW)</th>
-            <th>Battery (kWh)</th>
-            <th>Generation</th>
+            <th>System size (KW)</th>
+            <th>Battery (KWH)</th>
+            <th>Generation (MWH)</th>
             <th>Yield</th>
 
             <th>Suburb</th>
@@ -99,9 +99,9 @@
             <td>{{ s.inputs.project_name if s.inputs else '' }}</td>
             <td>{{ s.inputs.customer_name if s.inputs else '' }}</td>
 
-            <td>{{ s.inputs.system_size if s.inputs else '' }}</td>
-            <td>{{ s.inputs.battery_size if s.inputs else '' }}</td>
-            <td>{{ s.inputs.generation if s.inputs else '' }}</td>
+            <td>{{ s.inputs.solar_kw if s.inputs else '' }}</td>
+            <td>{{ s.inputs.bess_kwh if s.inputs else '' }}</td>
+            <td>{{ s.inputs.annual_generation_mwh if s.inputs else '' }}</td>
             <td>{{ s.inputs.specific_yield if s.inputs else '' }}</td>
 
             <td>{{ s.inputs.suburb if s.inputs else '' }}</td>
