@@ -24,29 +24,20 @@ header {
     width: 155px;
 }
 
-header nav {
-    display: flex;
-    align-items: center;
-}
-
-header nav a {
-    margin-left: 28px;
-    text-decoration: none;
-    color: #1f2937;
-    font-weight: 500;
-    font-size: 15px;
-}
-
-header nav a:hover {
-    color: #045174;
-}
-
 header nav a.btn-login {
-    background-color: #F07154;
-    color: #19123A;
+    background: linear-gradient(135deg, #F07154, #e35d40);
+    color: #fff;
     padding: 10px 26px;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(240,113,84,0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+header nav a.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(240,113,84,0.35);
 }
 
 /* PAGE */
@@ -170,40 +161,46 @@ button:hover {
 <body>
 
 <header>
-    <!-- LEFT: Agile logo -->
     <a href="/">
         <img src="{{ url_for('static', filename='images/Agile Logo.png') }}" class="logo">
     </a>
 
-    <!-- RIGHT SIDE GROUP -->
- <div style="display:flex; align-items:center; margin-left:auto;">
+    <div style="display:flex; align-items:center; margin-left:auto; gap:18px;">
 
-        <nav>
+        <nav style="display:flex; align-items:center;">
             <a href="{{ url_for('case_studies') }}">Case Studies</a>
             <a href="{{ url_for('learn_more') }}">Learn More</a>
-
-            {% if session.get('user_name') %}
-                <span style="
-                    margin-left:28px;
-                    font-weight:600;
-                    color:#19123A;
-                    padding:8px 14px;
-                    background:#eef2f7;
-                    border-radius:8px;
-                ">
-                    Hi {{ session.get('user_name') }}
-                </span>
-            {% endif %}
         </nav>
 
         {% if session.get('user_name') %}
-            <a href="{{ url_for('logout') }}" class="btn-login" style="margin-left: 18px;">
+
+            <!-- greeting moved left of buttons + upgraded style -->
+            <span style="
+                font-weight:600;
+                color:#19123A;
+                background: linear-gradient(135deg, #eef2f7, #ffffff);
+                padding:8px 14px;
+                border-radius:999px;
+                border:1px solid #e5e7eb;
+                display:flex;
+                align-items:center;
+                gap:6px;
+                white-space:nowrap;
+            ">
+                👋 Hi {{ session.get('user_name') }}!
+            </span>
+
+            <!-- logout now matches login style -->
+            <a href="{{ url_for('logout') }}" class="btn-login">
                 Logout
             </a>
+
         {% else %}
-            <a href="{{ url_for('login') }}" class="btn-login" style="margin-left: 18px;">
+
+            <a href="{{ url_for('login') }}" class="btn-login">
                 Login
             </a>
+
         {% endif %}
 
     </div>
