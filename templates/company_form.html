@@ -176,30 +176,37 @@ button:hover {
     </a>
 
     <!-- RIGHT SIDE GROUP -->
-<!-- RIGHT SIDE GROUP -->
-<div style="display:flex; align-items:center; margin-left:auto;">
+ <div style="display:flex; align-items:center; margin-left:auto;">
 
-    <nav>
-        <a href="{{ url_for('case_studies') }}">Case Studies</a>
-        <a href="{{ url_for('learn_more') }}">Learn More</a>
-    </nav>
+        <nav>
+            <a href="{{ url_for('case_studies') }}">Case Studies</a>
+            <a href="{{ url_for('learn_more') }}">Learn More</a>
 
-    {% if session.get('user_name') %}
-        <span style="margin-left:18px; font-weight:600; color:#19123A;">
-            Hi {{ session.get('user_name') }}
-        </span>
+            {% if session.get('user_name') %}
+                <span style="
+                    margin-left:28px;
+                    font-weight:600;
+                    color:#19123A;
+                    padding:8px 14px;
+                    background:#eef2f7;
+                    border-radius:8px;
+                ">
+                    Hi {{ session.get('user_name') }}
+                </span>
+            {% endif %}
+        </nav>
 
-        <a href="{{ url_for('logout') }}" class="btn-login" style="margin-left: 18px;">
-            Logout
-        </a>
+        {% if session.get('user_name') %}
+            <a href="{{ url_for('logout') }}" class="btn-login" style="margin-left: 18px;">
+                Logout
+            </a>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="btn-login" style="margin-left: 18px;">
+                Login
+            </a>
+        {% endif %}
 
-    {% else %}
-        <a href="{{ url_for('login') }}" class="btn-login" style="margin-left: 18px;">
-            Login
-        </a>
-    {% endif %}
-
-</div>
+    </div>
 </header>
 
 <div class="form-container">
