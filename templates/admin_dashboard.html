@@ -3,7 +3,6 @@
 <head>
     <title>Master Dashboard</title>
     <style>
-        /* Reset */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -19,9 +18,7 @@
             justify-content: center;
             align-items: flex-start;
             padding: 40px 20px;
-            position: relative;
         }
-
 
         .dashboard-container {
             background: #fff;
@@ -43,7 +40,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         th, td {
@@ -71,70 +68,44 @@
             font-size: 16px;
             color: #555;
         }
-
-        @media(max-width: 768px) {
-            table {
-                font-size: 12px;
-            }
-        }
-
-        @media(max-width: 480px) {
-            .dashboard-container {
-                padding: 25px 15px;
-            }
-            table th, table td {
-                padding: 8px;
-            }
-        }
     </style>
 </head>
 <body>
 
+<div class="dashboard-container">
+    <h2>Master Dashboard</h2>
 
-    <div class="dashboard-container">
-        <h2>Master Dashboard</h2>
+    {% if submissions %}
+    <table>
+        <tr>
+            <th>Date & Time</th>
+            <th>Email</th>
+            <th>System Size (kW)</th>
+            <th>Battery Size (kWh)</th>
+            <th>Generation (MWh)</th>
+            <th>Yield</th>
+            <th>State</th>
+            <th>Total Capex</th>
+        </tr>
 
-        {% if submissions %}
-        <table>
-            <tr>
-                <th>Date & Time</th>
-                <th>Email</th>
-                <th>Project Name</th>
-                <th>Customer Name</th>
-                <th>System Size (kW)</th>
-                <th>Battery Size (kWh)</th>
-                <th>Generation (MWh)</th>
-                <th>Yield</th>
-                <th>Suburb</th>
-                <th>State</th>
-                <th>Net Capex</th>
-                <th>Commissions</th>
-                <th>Total Capex</th>
-                <th>Year 10 Inverter Replacement</th>
-            </tr>
+        {% for s in submissions %}
+        <tr>
+            <td>{{ s.submitted_at }}</td>
+            <td>{{ s.email }}</td>
 
-            {% for id, s in submissions.items() %}
-            <tr>
-                <td>{{ s.submitted_at }}</td>
-                <td>{{ s.email }}</td>
-                <td>{{ s.project_name }}</td>
-                <td>{{ s.customer_name }}</td>
-                <td>{{ s.system_size }}</td>
-                <td>{{ s.battery_size }}</td>
-                <td>{{ s.generation }}</td>
-                <td>{{ s.yield }}</td>
-                <td>{{ s.suburb }}</td>
-                <td>{{ s.state }}</td>
-                <td>{{ s.net_capex }}</td>
-                <td>{{ s.commissions }}</td>
-                <td>{{ s.total_capex }}</td>
-                <td>{{ s.year_10_inverter_replacement_calculated }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% else %}
-        <p>No submissions yet.</p>
-        {% endif %}
-    </div>
+            <td>{{ s.inputs.system_size if s.inputs.system_size is defined else '' }}</td>
+            <td>{{ s.inputs.battery_size if s.inputs.battery_size is defined else '' }}</td>
+            <td>{{ s.inputs.generation if s.inputs.generation is defined else '' }}</td>
+            <td>{{ s.inputs.specific_yield if s.inputs.specific_yield is defined else '' }}</td>
+            <td>{{ s.inputs.state if s.inputs.state is defined else '' }}</td>
+            <td>{{ s.inputs.total_capex if s.inputs.total_capex is defined else '' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No submissions yet.</p>
+    {% endif %}
+</div>
+
 </body>
 </html>
