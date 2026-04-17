@@ -72,6 +72,22 @@
         }
     </style>
 
+
+{% if request.path == "/" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "Agile Energy PPA Overview",
+  "description": "Calculate your PPA rate in minutes with Agile Energy.",
+  "thumbnailUrl": "{{ url_for('static', filename='images/video-thumb.jpg', _external=True) }}",
+  "uploadDate": "2026-04-17",
+  "contentUrl": "{{ url_for('static', filename='Vid.mp4', _external=True) }}",
+  "duration": "PT30S"
+}
+</script>
+{% endif %}
+
     {% block style %}{% endblock %}
 </head>
 
