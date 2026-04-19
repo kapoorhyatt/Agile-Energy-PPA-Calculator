@@ -109,7 +109,7 @@
         {% if session.get('user_name') %}
 
             <span class="user-pill">
-                👋 Hi {{ session.get('user_name') }}
+                {{ session.get('user_name') }}
             </span>
 
             <a href="{{ url_for('logout') }}" class="btn-login">Logout</a>

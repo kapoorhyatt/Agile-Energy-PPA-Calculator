@@ -226,13 +226,6 @@
             Passwords must match and be at least 8 characters long.
         </p>
 
-        <div style="text-align:center; margin: 10px 0 20px;">
-            <a href="{{ url_for('forgot_password') }}"
-            style="font-size:14px; color:#045174; text-decoration:none;">
-            Forgot password?
-            </a>
-        </div>
-
         <label for="company">Company Name</label>
         <input type="text" id="company" name="company" required onkeyup="checkABN()" value="{{ form_data.company if form_data else '' }}">
 
@@ -263,6 +256,13 @@
         <div class="disclaimer-container">
             <input type="checkbox" id="disclaimer" name="disclaimer" required>
             <label for="disclaimer">Disclaimer: By signing up you agree to our terms and conditions.</label>
+        </div>
+
+        <div style="text-align:center; margin: 10px 0 20px;">
+            <a href="{{ url_for('forgot_password') }}"
+            style="font-size:14px; color:#045174; text-decoration:none;">
+            Forgot password?
+            </a>
         </div>
 
         <button type="submit">Sign Up</button>
