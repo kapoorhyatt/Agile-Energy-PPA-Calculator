@@ -64,33 +64,35 @@
     text-shadow: 0 4px 20px rgba(0,0,0,0.35); /* optional */
 }
 
-/* Feature cards overlapping hero */
 .hero-feature-row {
     position: absolute;
     left: 50%;
     bottom: 0;
     transform: translate(-50%, 65%);
     display: flex;
-    gap: 32px;
+    gap: 20px;
     justify-content: center;
-    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-wrap: nowrap;   /* IMPORTANT: stops weird height expansion */
     z-index: 5;
 }
 
-  .hero-feature-row .feature-box {
-    flex: 0 0 160px;      /* stops growing/shrinking */
-    width: 160px;
-    max-width: 160px;
+.hero-feature-row .feature-box {
+    width: 150px;
+    height: 150px;       /* 🔥 THIS is what stops “long boxes” */
+    flex: 0 0 150px;
 
     background: white;
     border-radius: 14px;
-    padding: 14px 12px;
+
+    padding: 12px;
 
     box-shadow: 0 10px 25px rgba(0,0,0,0.18);
 
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* 🔥 vertically tight */
     text-align: center;
 
     overflow: hidden;
@@ -512,28 +514,45 @@
 @media(max-width: 900px) {
     /* Remove overlap completely, stack under hero text */
     .hero-feature-row {
-        position: static;      /* no absolute */
-        transform: none;
-        margin-top: 40px;      /* space after hero text */
-        gap: 24px;
-        flex-direction: column;
-        align-items: center;
-    }
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 65%);
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: nowrap;
+    z-index: 5;
+}
 
-    .hero-feature-row .feature-box {
-        max-width: 90%;
-        width: 100%;
-        padding: 24px 16px;
-        flex-direction: column;
-        text-align: center;
-    }
+.hero-feature-row .feature-box {
+    width: 150px;
+    height: 150px;
+    flex: 0 0 150px;
 
-    .hero-feature-row .feature-box-icon {
-    width: 48px;
-    height: 48px;
-    font-size: 22px;
-    margin-bottom: 10px;
-    }
+    background: white;
+    border-radius: 14px;
+
+    padding: 10px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    overflow: hidden;
+}
+
+/* ICON */
+.hero-feature-row .feature-box-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+    margin-bottom: 6px;
+}
 
     /* Adjust hero text */
     .hero h1 {
@@ -708,8 +727,8 @@
 }
 
 .hero-feature-row .feature-box-content p {
-    font-size: 13px;
-    line-height: 1.3;
+    font-size: 10px;
+    line-height: 1.1;
     margin: 0;
 }
 
@@ -717,7 +736,12 @@
     margin-bottom: 16px;
 }
 
-.hero-feature-row .feature-box-content h3,
+.hero-feature-row .feature-box-content h3 {
+    font-size: 12px;
+    margin: 2px 0;
+    line-height: 1.1;
+}
+
 .info-box-section .section-title,
 .deep-row-title,
 .feature-box-text h2,
