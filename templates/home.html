@@ -65,15 +65,10 @@
 }
 
 .hero-feature-row {
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translate(-50%, 65%);
     display: flex;
-    gap: 20px;
     justify-content: center;
-    align-items: flex-start;
-    flex-wrap: nowrap;   /* IMPORTANT: stops weird height expansion */
+    gap: 20px;
+    margin-top: -80px; /* overlap effect */
     z-index: 5;
 }
 
@@ -785,7 +780,7 @@
             <div class="feature-box-icon"><i class="fas fa-calculator"></i></div>
             <div class="feature-box-content">
                 <h3>Generate a PPA offer</h3>
-                <p>Get a PPA rates for your site</p>
+                <p>Get PPA rates for your site</p>
             </div>
 
 
