@@ -513,14 +513,15 @@
 
 @media(max-width: 900px) {
     /* Remove overlap completely, stack under hero text */
-    .hero-feature-row {
+.hero-feature-row {
     position: absolute;
     left: 50%;
     bottom: 0;
-    transform: translate(-50%, 65%);
+    transform: translate(-50%, calc(65% + 20px)); /* 👈 adds spacing cleanly */
     display: flex;
-    gap: 16px;
+    gap: 20px;
     justify-content: center;
+    align-items: flex-start;
     flex-wrap: nowrap;
     z-index: 5;
 }
@@ -588,6 +589,7 @@
     }
     .hero-feature-row .feature-box {
         padding: 16px 12px;
+        padding-top: 18px;
     }
 }
 /* Add arrow overlay on bottom-box hover */
