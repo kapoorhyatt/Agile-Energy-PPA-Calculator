@@ -227,7 +227,7 @@
         </p>
 
         <label for="company">Company Name</label>
-        <input type="text" id="company" name="company" required>
+        <input type="text" id="company" name="company" required onkeyup="checkABN()">
 
         <label for="address">Company Address</label>
         <input type="text" id="address" name="address" required>
@@ -307,28 +307,42 @@ function checkABN() {
         body: JSON.stringify({ abn: abn })
     })
     .then(res => res.json())
-    .then(data => {
-        if (data.valid) {
+.then(data => {
+    if (data.valid) {
+        const enteredCompany = companyField.value.trim().toLowerCase();
+        const abnCompany = data.name.trim().toLowerCase();
+
+        const clean = str => str.replace(/[^a-z0-9]/g, "");
+
+        const matches =
+            enteredCompany &&
+            clean(abnCompany).includes(clean(enteredCompany));
+
+        if (matches) {
             status.textContent = "✓ Valid ABN (" + data.name + ")";
             status.style.color = "green";
             abnValid = true;
-
-            // auto-fill company name if empty
-            if (!companyField.value) {
-                companyField.value = data.name;
-            }
-
         } else {
-            status.textContent = "✗ Invalid ABN";
+            status.textContent = "✗ This ABN is registered to " + data.name;
             status.style.color = "red";
             abnValid = false;
         }
-    })
-    .catch(() => {
-        status.textContent = "Error validating ABN";
+
+        if (!companyField.value) {
+            companyField.value = data.name;
+        }
+
+    } else {
+        status.textContent = "✗ Invalid ABN";
         status.style.color = "red";
         abnValid = false;
-    });
+    }
+})
+.catch(() => {
+    status.textContent = "Error validating ABN";
+    status.style.color = "red";
+    abnValid = false;
+});
 }
 </script>
 {% endblock %}
