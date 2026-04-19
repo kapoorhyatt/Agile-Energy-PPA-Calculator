@@ -14,6 +14,7 @@ import uuid
 import psycopg2
 import requests
 from datetime import timedelta
+from dateutil import parser
 
 
 
@@ -28,7 +29,7 @@ BLOCKED_EMAIL_DOMAINS = ["gmail.com", "outlook.com", "hotmail.com", "live.com"]
 APP_BASE_URL = os.environ.get("BASE_URL", "http://localhost:5000")
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
-FROM_EMAIL = "PPA App <onboarding@resend.dev>"
+FROM_EMAIL = "PPA App <noreply@yourdomain.com>"
 
 
 
@@ -522,7 +523,7 @@ def reset_password(token):
 
     email, expires_at = row
 
-    if datetime.now(pytz.timezone("Australia/Sydney")) > datetime.fromisoformat(expires_at):
+    if datetime.now(pytz.timezone("Australia/Sydney")) > parser.isoparse(expires_at):
         return "Link expired"
 
     if request.method == "POST":
