@@ -104,6 +104,10 @@
         <nav>
             <a href="{{ url_for('case_studies') }}">Case Studies</a>
             <a href="{{ url_for('learn_more') }}">Learn More</a>
+
+            {% if session.get('user') %}
+                <a href="{{ url_for('calculator') }}">Deal Desk</a>
+            {% endif %}
         </nav>
 
         {% if session.get('user_name') %}
