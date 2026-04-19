@@ -1,3 +1,4 @@
+from urllib import response
 from flask import Flask, render_template, request, redirect, session, url_for, send_file, jsonify
 from xhtml2pdf import pisa
 from io import BytesIO
@@ -12,7 +13,7 @@ from calculator.model import run_model
 import uuid
 import psycopg2
 import requests
-import smtplib
+from datetime import timedelta
 
 
 
@@ -23,6 +24,13 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
 
 BLOCKED_EMAIL_DOMAINS = ["gmail.com", "outlook.com", "hotmail.com", "live.com"]
+
+APP_BASE_URL = os.environ.get("BASE_URL", "http://localhost:5000")
+
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
+FROM_EMAIL = "PPA App <onboarding@resend.dev>"
+
+
 
 def get_db_connection():
     return psycopg2.connect(
@@ -43,6 +51,36 @@ users = {
     "demo@ppa.com": {"password": generate_password_hash("demo123"), "role": "company"}
 }
 
+
+def send_reset_email(email, token):
+    reset_link = f"{APP_BASE_URL}/reset-password/{token}"
+
+    payload = {
+        "from": FROM_EMAIL,
+        "to": email,
+        "subject": "Password Reset Request",
+        "html": f"""
+            <p>Click below to reset your password:</p>
+            <a href="{reset_link}">{reset_link}</a>
+            <p>This link expires in 30 minutes.</p>
+        """
+    }
+
+    headers = {
+        "Authorization": f"Bearer {RESEND_API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post(
+        "https://api.resend.com/emails",
+        json=payload,
+        headers=headers
+    )
+
+    if response.status_code != 200:
+        print("Email failed:", response.text)
+    else:
+        print("Reset email sent successfully")
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -425,6 +463,93 @@ def calculator():
 
     return render_template("company_form.html", assumptions=company_assumptions)
 
+@app.route("/forgot-password", methods=["GET", "POST"])
+def forgot_password():
+    message = None
+
+    if request.method == "POST":
+        email = request.form.get("email")
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute("SELECT email FROM users WHERE email = %s", (email,))
+        user = cur.fetchone()
+
+        if user:
+            token = str(uuid.uuid4())
+            expires = datetime.now(pytz.timezone("Australia/Sydney")) + timedelta(minutes=30)
+
+            cur.execute("DELETE FROM password_resets WHERE email = %s", (email,))
+
+            cur.execute("""
+                INSERT INTO password_resets (id, email, token, expires_at)
+                VALUES (%s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()),
+                email,
+                token,
+                expires.isoformat()
+            ))
+
+            conn.commit()
+
+            send_reset_email(email, token)
+
+        cur.close()
+        conn.close()
+
+        message = "If that email exists, a reset link has been sent."
+
+    return render_template("forgot_password.html", message=message)
+
+@app.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT email, expires_at
+        FROM password_resets
+        WHERE token = %s
+    """, (token,))
+
+    row = cur.fetchone()
+
+    if not row:
+        return "Invalid or expired link"
+
+    email, expires_at = row
+
+    if datetime.now(pytz.timezone("Australia/Sydney")) > datetime.fromisoformat(expires_at):
+        return "Link expired"
+
+    if request.method == "POST":
+        new_password = request.form.get("password")
+        hashed = generate_password_hash(new_password)
+
+        cur.execute("""
+            UPDATE users
+            SET password = %s
+            WHERE email = %s
+        """, (hashed, email))
+
+        cur.execute("""
+            DELETE FROM password_resets WHERE token = %s
+        """, (token,))
+
+        conn.commit()
+
+        cur.close()
+        conn.close()
+
+        return redirect("/login")
+
+    cur.close()
+    conn.close()
+
+    return render_template("reset_password.html")
 
 @app.route("/download_ppa_pdf")
 def download_ppa_pdf():

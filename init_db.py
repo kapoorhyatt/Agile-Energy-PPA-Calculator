@@ -36,7 +36,6 @@ def create_tables():
     );
     """)
 
-    # SUBMISSIONS table
     cur.execute("""
     CREATE TABLE IF NOT EXISTS submissions (
         id TEXT PRIMARY KEY,
@@ -49,10 +48,20 @@ def create_tables():
     );
     """)
 
-# ADD MISSING COLUMN IF NEEDED
+# extra safety (can be removed since column already exists above)
     cur.execute("""
     ALTER TABLE submissions
     ADD COLUMN IF NOT EXISTS rates TEXT;
+    """)
+
+    # PASSWORD RESET TOKENS
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS password_resets (
+        id TEXT PRIMARY KEY,
+        email TEXT,
+        token TEXT,
+        expires_at TEXT
+    );
     """)
 
     conn.commit()
