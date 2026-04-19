@@ -273,10 +273,10 @@ def validate_abn():
     except Exception as e:
         return jsonify({"valid": False})
     
-    @app.route("/start-new-quote")
-    def start_new_quote():
-        session.clear()
-        return redirect(url_for("calculator"))
+@app.route("/start-new-quote")
+def start_new_quote():
+    session.clear()
+    return redirect(url_for("calculator"))
 
 @app.route("/sign_up_responses")
 def sign_up_responses():
