@@ -29,7 +29,7 @@ BLOCKED_EMAIL_DOMAINS = ["gmail.com", "outlook.com", "hotmail.com", "live.com"]
 APP_BASE_URL = os.environ.get("BASE_URL", "http://localhost:5000")
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
-FROM_EMAIL = "PPA App <noreply@yourdomain.com>"
+FROM_EMAIL = "PPA App <noreply@agileenergy.io>"
 
 
 
@@ -78,7 +78,7 @@ def send_reset_email(email, token):
         headers=headers
     )
 
-    if response.status_code != 200:
+    if response.status_code not in [200, 202]:
         print("Email failed:", response.text)
     else:
         print("Reset email sent successfully")
