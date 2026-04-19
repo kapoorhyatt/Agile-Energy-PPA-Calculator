@@ -219,7 +219,7 @@ button:hover {
 </header>
 
 <div class="form-container">
-    <h2>Calculator</h2>
+    <h2>Deal Desk</h2>
 
     <form method="POST" action="/calculator">
 
@@ -325,9 +325,7 @@ function calculateTotalCapex() {
     let type = document.querySelector('input[name="commission_type"]:checked').value;
     let hint = document.getElementById("commission_hint");
 
-    // 👇 ADD IT HERE
-    document.getElementById("commissions").value = "";
-
+    
     let commissionValue = 0;
 
     if (type === "percent") {
