@@ -117,9 +117,11 @@ def sign_up():
 
         if domain in BLOCKED_EMAIL_DOMAINS:
             return render_template(
-                "sign_up.html",
-                error="Please use your company email address (Gmail/Outlook not allowed)."
-            )
+            "sign_up.html",
+            error="Please use your company email address (Gmail/Outlook not allowed).",
+            form_data=request.form.to_dict()
+        )
+
         password = request.form.get("password") or ""
         name = request.form.get("name") or ""
         company = request.form.get("company") or ""
@@ -137,7 +139,11 @@ def sign_up():
         if cur.fetchone():
             cur.close()
             conn.close()
-            return render_template("sign_up.html", error="You already have an account created.")
+            return render_template(
+                "sign_up.html",
+                error="You already have an account created.",
+                form_data=request.form.to_dict()
+            )
 
         # =========================
         # ✅ ABN VALIDATION (ADDED)
