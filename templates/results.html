@@ -54,31 +54,37 @@
         }
 
     .btn {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 12px 28px;
-    background-color: #045174; /* clean corporate blue */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 20px;
+    background-color: #045174;
     color: white;
     text-decoration: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 600;
     font-size: 14px;
-    letter-spacing: 0.3px;
+
     transition: all 0.2s ease;
-    }
+    min-width: 200px; /* makes them even */
+    white-space: nowrap;
+}
 
-    .btn:hover {
+.btn:hover {
     background-color: #19123A;
-    transform: translateY(-1px);
-    }
+    transform: translateY(-2px);
+}
 
-    .button-group {
+/* BUTTON ROW */
+.button-group {
     margin-top: 30px;
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-    }
+    flex-direction: row;   /* 👈 THIS is the key change */
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;       /* keeps it responsive on small screens */
+}
 
     </style>
 {% endblock %}

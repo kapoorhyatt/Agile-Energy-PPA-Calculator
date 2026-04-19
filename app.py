@@ -275,7 +275,6 @@ def validate_abn():
     
 @app.route("/start-new-quote")
 def start_new_quote():
-    session.clear()
     return redirect(url_for("calculator"))
 
 @app.route("/sign_up_responses")
@@ -388,6 +387,10 @@ def calculator():
 
     row = cur.fetchone()
     company_assumptions = json.loads(row[0]) if row else DEFAULT_ASSUMPTIONS
+
+    if request.method == "GET":
+        clear = request.args.get("new") == "1"
+        return render_template("company_form.html", assumptions=company_assumptions, clear=clear)
 
     def safe_float(name, default=0.0):
         value = request.form.get(name)

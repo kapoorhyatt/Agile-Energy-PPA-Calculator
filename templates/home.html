@@ -210,36 +210,41 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 18px;
+    gap: 32px;
 
-    margin: 40px auto 40px;
-    
+    margin: 60px auto;
+
     font-size: 16px;
-    opacity: 0.95;
 
     background-color: #ffffff;
-    padding: 28px 32px;      /* BIGGER BOX */
-    
-    border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    padding: 40px 48px;
 
-    max-width: 85%;
-    min-width: 280px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 
-    flex-wrap: wrap;
+    max-width: 100%;
+    width: 100%;
 }
 
 .funding-strip span {
-    margin-right: 12px;  /* keep a nice gap after the text */
+    font-weight: 600;
+    color: #19123A;
+    margin-right: 10px;
 }
 
 .funding-strip img {
-    height: clamp(32px, 3.5vw, 56px);  /* responsive but controlled */
-    width: auto;                       /* keeps aspect ratio */
-    opacity: 0.95;
-    margin-left: 0;
+    height: clamp(40px, 5vw, 80px);
+    width: auto;
+    max-height: 90px;
     object-fit: contain;
+    opacity: 0.95;
 }
+
+.funding-strip img:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease;
+}
+
 
 @media (max-width: 900px) {
     .funding-strip {
