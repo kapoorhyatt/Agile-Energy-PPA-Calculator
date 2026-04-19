@@ -79,7 +79,7 @@
 
     .hero-feature-row .feature-box {
     background-color: white;
-    max-width: 340px;
+    max-width: 310px;
     border-radius: 16px;
     flex-direction: column;
     align-items: center;
@@ -209,17 +209,23 @@
 .funding-strip {
     display: flex;
     align-items: center;
-    justify-content: center;   /* keep everything centred */
-    gap: 12px;                 /* gap between text and first logo */
-    margin: 40px auto 24px;
+    justify-content: center;
+    gap: 18px;
+
+    margin: 40px auto 40px;
+    
     font-size: 16px;
     opacity: 0.95;
+
     background-color: #ffffff;
-    padding: 16px 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 80%;
+    padding: 28px 32px;      /* BIGGER BOX */
+    
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+
+    max-width: 85%;
     min-width: 280px;
+
     flex-wrap: wrap;
 }
 
@@ -228,11 +234,11 @@
 }
 
 .funding-strip img {
-    height: 6vw;          /* scale with screen width */
-    max-height: 50px;
-    min-height: 30px;
+    height: clamp(32px, 3.5vw, 56px);  /* responsive but controlled */
+    width: auto;                       /* keeps aspect ratio */
     opacity: 0.95;
-    margin-left: 0px;     /* smaller gap between logos */
+    margin-left: 0;
+    object-fit: contain;
 }
 
 @media (max-width: 900px) {

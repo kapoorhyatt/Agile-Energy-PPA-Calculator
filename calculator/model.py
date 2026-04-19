@@ -86,8 +86,8 @@ def run_model(submission_file='submissions.json', assumptions=None, inputs=None,
 
         term_results.append({
             "term": term,
-            "ppa_rate_cents": round(rate_cents, 2),
-            "ppa_rate_dollars": round(rate_dollars, 2),
+            "ppa_rate_cents": round(rate_cents, 1),
+            "ppa_rate_dollars": round(rate_dollars, 1),
             "b2": coeffs["b2"],
             "b1": coeffs["b1"],
             "a": coeffs["a"]

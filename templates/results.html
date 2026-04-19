@@ -68,18 +68,24 @@
     }
 
     .btn:hover {
-    background-color: #033e59;
+    background-color: #19123A;
     transform: translateY(-1px);
     }
+
+    .button-group {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    }
+
     </style>
 {% endblock %}
 
 {% block content %}
 
 <div class="page">
-
-    <img src="{{ url_for('static', filename='images/agile-logo.png') }}" class="logo">
-
     <div class="results-container">
         <h2>PPA Rates</h2>
 
@@ -96,10 +102,20 @@
             </tr>
             {% endfor %}
         </table>
-        <a href="{{ url_for('download_ppa_pdf') }}" class="btn">
-           Download One-Page Summary
-        </a>
-    </div>
+<div class="button-group">
+    <a href="{{ url_for('download_ppa_pdf') }}" class="btn">
+       Download One-Page Summary
+    </a>
+
+    <a href="{{ url_for('start_new_quote') }}" class="btn">
+        Start New Quote
+    </a>
+
+    <a href="{{ url_for('home') }}" class="btn">
+        Home
+    </a>
+    
+</div>
 
 </div>
 
