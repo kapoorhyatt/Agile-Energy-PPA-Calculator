@@ -5,7 +5,7 @@
 <title>PPA Offer</title>
 
 <style>
-@page { size: A4; margin: 12mm; }
+@page { size: A4; margin: 10mm; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -18,110 +18,137 @@ body {
 
 .page {
     width: 100%;
-    padding: 20px 24px;
+    padding: 10px 18px;
 }
 
 /* HEADER */
 .header-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 }
 
 .header-title {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 700;
     color: #045174;
 }
 
 /* SECTION TITLE */
 .section-title {
-    font-size: 18px;
-    margin: 16px 0 10px;
+    font-size: 16px;
+    margin: 10px 0 6px;
     color: #045174;
     font-weight: 700;
     text-transform: uppercase;
 }
 
-/* HOW IT WORKS — CLEAN VERSION */
+/* HOW IT WORKS — CLEAN DOCX STYLE */
 .info-block {
-    border-left: 5px solid #F6B836; /* gold accent */
-    padding: 8px 12px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .info-block-title {
     font-weight: 700;
-    font-size: 15px;
-    margin-bottom: 3px;
+    font-size: 14px;
+    margin-bottom: 1px;
     color: #19123A;
 }
 
 .info-block-text {
-    font-size: 13px;
-    line-height: 1.45;
+    font-size: 12px;
+    line-height: 1.35;
     color: #19123A;
 }
 
-/* PROJECT TABLE */
+/* PROJECT DETAILS — COMPACT PREMIUM DESIGN */
+.project-details-wrapper {
+    margin-top: 6px;
+    border: 1px solid #F1BFA9;
+    border-radius: 4px;
+}
+
+.project-details-header {
+    background: #045174;
+    color: #ffffff;
+    padding: 5px 8px;
+    font-size: 14px;
+    font-weight: 700;
+    border-bottom: 1px solid #F1BFA9;
+}
+
 .project-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 14px 0;
-}
-
-.project-table th {
-    background: #045174;
-    color: #ffffff;
-    padding: 6px 8px;
-    font-size: 13px;
-    font-weight: 600;
 }
 
 .project-table td {
-    border: 1px solid #F1BFA9;
     padding: 6px 8px;
-    font-size: 13px;
+    font-size: 12px;
+    border-bottom: 1px solid #F1BFA9;
 }
 
-/* RATE TABLE */
+.project-table td.label {
+    font-weight: 700;
+    width: 42%;
+    color: #19123A;
+}
+
+.project-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* RATE TABLE — COMPACT */
 .rate-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 .rate-table th {
     background: #19123A;
     color: #ffffff;
-    padding: 6px 8px;
-    font-size: 13px;
+    padding: 5px 6px;
+    font-size: 12px;
     text-align: left;
 }
 
 .rate-table td {
-    padding: 6px 8px;
-    font-size: 13px;
+    padding: 5px 6px;
+    font-size: 12px;
     border-bottom: 1px solid #F1BFA9;
 }
 
-/* BENEFITS */
-.benefits ul {
-    padding-left: 18px;
+/* KEY BENEFITS — NEW SLEEK DESIGN */
+.benefits-box {
+    border: 1px solid #F1BFA9;
+    border-radius: 4px;
+    padding: 8px 10px;
     margin-top: 6px;
 }
 
+.benefits-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #045174;
+    margin-bottom: 6px;
+}
+
+.benefits ul {
+    padding-left: 16px;
+}
+
 .benefits li {
-    font-size: 13px;
-    margin-bottom: 4px;
+    font-size: 12px;
+    margin-bottom: 3px;
     color: #19123A;
 }
 
 /* FOOTER */
 .footer {
-    margin-top: 18px;
+    margin-top: 10px;
     text-align: right;
-    font-size: 11px;
+    font-size: 10px;
     color: #045174;
 }
 </style>
@@ -137,7 +164,7 @@ body {
                 <div class="header-title">PPA Offer</div>
             </td>
             <td style="text-align: right; vertical-align: top;">
-                <img src="/static/images/agile-logo.png" style="width: 130px; height: auto;">
+                <img src="/static/images/agile-logo.png" style="width: 110px; height: auto;">
             </td>
         </tr>
     </table>
@@ -175,16 +202,28 @@ body {
     </div>
 
     <!-- PROJECT DETAILS -->
-    <div class="section-title">Project Details</div>
+    <div class="project-details-wrapper">
+        <div class="project-details-header">Project Details</div>
 
-    <table class="project-table">
-        <tr><th>Project Name</th><td>{{ inputs.project_name }}</td></tr>
-        <tr><th>Location</th><td>{{ inputs.suburb }}, {{ inputs.state }}</td></tr>
-        <tr><th>System Size (kW)</th><td>{{ inputs.solar_kw }}</td></tr>
-        <tr><th>Annual Solar Production (MWh)</th><td>{{ inputs.annual_generation_mwh }}</td></tr>
-        <tr><th>PPA Term Options</th><td></td></tr>
-        <tr><th>PPA Rate (cents/kWh)</th><td></td></tr>
-    </table>
+        <table class="project-table">
+            <tr>
+                <td class="label">Project Name</td>
+                <td>{{ inputs.project_name }}</td>
+            </tr>
+            <tr>
+                <td class="label">Location</td>
+                <td>{{ inputs.suburb }}, {{ inputs.state }}</td>
+            </tr>
+            <tr>
+                <td class="label">System Size (kW)</td>
+                <td>{{ inputs.solar_kw }}</td>
+            </tr>
+            <tr>
+                <td class="label">Annual Solar Production (MWh)</td>
+                <td>{{ inputs.annual_generation_mwh }}</td>
+            </tr>
+        </table>
+    </div>
 
     <!-- RATE OPTIONS -->
     <div class="section-title">PPA Rate Options</div>
@@ -202,20 +241,21 @@ body {
         {% endfor %}
     </table>
 
-    <!-- BENEFITS -->
-    <div class="section-title">Key Benefits</div>
-
-    <div class="benefits">
-        <ul>
-            <li>Guaranteed generation from the system</li>
-            <li>Site installation will be undertaken in line with site specific requirements</li>
-            <li>Reduced energy costs</li>
-            <li>No risk – install & performance covered</li>
-            <li>No fees at end of term</li>
-            <li>Option to add storage with no capital</li>
-            <li>No maintenance concerns</li>
-            <li>Supports sustainability targets</li>
-        </ul>
+    <!-- KEY BENEFITS — NEW DESIGN -->
+    <div class="benefits-box">
+        <div class="benefits-title">Key Benefits</div>
+        <div class="benefits">
+            <ul>
+                <li>Guaranteed generation from the system</li>
+                <li>Site installation aligned with site requirements</li>
+                <li>Reduced energy costs</li>
+                <li>No risk – install & performance covered</li>
+                <li>No fees at end of term</li>
+                <li>Option to add storage with no capital</li>
+                <li>No maintenance concerns</li>
+                <li>Supports sustainability targets</li>
+            </ul>
+        </div>
     </div>
 
     <!-- FOOTER -->
