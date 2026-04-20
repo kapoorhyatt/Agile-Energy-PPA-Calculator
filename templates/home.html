@@ -38,7 +38,7 @@
 .hero {
     position: relative;
     min-height: clamp(520px, 70vh, 820px);
-    overflow: hidden;
+    overflow: visible;
 }
 
 .hero-video,
@@ -97,7 +97,7 @@
     position: absolute;
     left: 50%;
     bottom: 0;
-    transform: translate(-50%, 50%);
+    transform: translate(-50%, 60%);
     display: flex;
     gap: 20px;
     z-index: 5;
@@ -366,6 +366,58 @@ main {
     font-size: 32px;
     margin-bottom: 32px;
     color: var(--primary);
+}
+
+.feature-box-image {
+    flex: 0.9;
+    display: flex;
+}
+
+.feature-box-image img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.feature-box-text {
+    flex: 1.1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px; /* controls spacing between title, text, button */
+}
+
+
+.feature-box-text h2 {
+    margin: 0;
+}
+
+.feature-box-text p {
+    margin: 0;
+    line-height: 1.5;
+    max-width: 480px; /* stops text stretching too wide */
+}
+
+.feature-box-text .btn-primary {
+    margin-top: 12px; /* clean spacing before button */
+    align-self: flex-start; /* keeps button left aligned */
+}
+
+@media (max-width: 900px) {
+    .feature-box-outline-horizontal {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+    }
+
+    .feature-box-text .btn-primary {
+        align-self: center;
+    }
+
+    .feature-box-image img {
+        height: 200px;
+    }
 }
 
     </style>
