@@ -123,28 +123,21 @@ body {
     border-bottom: 1px solid #F1BFA9;
 }
 
-/* KEY BENEFITS — CLEAN VERSION (NO YELLOW OUTLINES) */
-.benefits-box {
-    border: 1px solid #19123A; /* navy border instead of yellow */
-    border-radius: 4px;
-    padding: 8px 10px;
-    margin-top: 6px;
-}
-
+/* KEY BENEFITS — NO BOX, NO LINES */
 .benefits-title {
     font-size: 14px;
     font-weight: 700;
     color: #045174;
-    margin-bottom: 6px;
+    margin: 10px 0 6px;
 }
 
 .benefits ul {
-    padding-left: 16px;
+    padding-left: 18px;
 }
 
 .benefits li {
     font-size: 12px;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     color: #19123A;
 }
 
@@ -239,10 +232,10 @@ body {
         {% endfor %}
     </table>
 
-    <!-- KEY BENEFITS — CLEAN -->
-    <div class="benefits-box">
-        <div class="benefits-title">Key Benefits</div>
-        <div class="benefits">
+    <!-- KEY BENEFITS — CLEAN, NO LINES -->
+    <div class="benefits-title">Key Benefits</div>
+    <div class="benefits">
+        <ul>
             <ul>
                 <li>Guaranteed generation from the system</li>
                 <li>Site installation aligned with site requirements</li>
@@ -253,7 +246,7 @@ body {
                 <li>No maintenance concerns</li>
                 <li>Supports sustainability targets</li>
             </ul>
-        </div>
+        </ul>
     </div>
 
     <!-- FOOTER -->
