@@ -43,15 +43,34 @@ def create_tables():
         inputs TEXT,
         result TEXT,
         assumptions TEXT,
-        rates TEXT,
+        rates JSONB,
         submitted_at TEXT
     );
+    
+    """)
+
+    cur.execute("""
+    DO $$
+    BEGIN
+        IF EXISTS (
+            SELECT 1
+            FROM information_schema.columns
+            WHERE table_name='submissions'
+            AND column_name='rates'
+            AND data_type!='jsonb'
+        ) THEN
+            ALTER TABLE submissions
+            ALTER COLUMN rates TYPE JSONB
+            USING rates::jsonb;
+        END IF;
+    END $$;
     """)
 
 # extra safety (can be removed since column already exists above)
     cur.execute("""
     ALTER TABLE submissions
-    ADD COLUMN IF NOT EXISTS rates TEXT;
+    ALTER COLUMN rates TYPE JSONB
+    USING rates::jsonb;
     """)
 
     # PASSWORD RESET TOKENS

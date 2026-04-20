@@ -75,6 +75,7 @@
         <tr>
             <th>Date & Time</th>
             <th>Email</th>
+            <th>Company</th>
 
             <th>Project</th>
             <th>Customer</th>
@@ -114,8 +115,8 @@
                 <div class="rates-boxes">
                     {% for r in s.rates %}
                         <div class="rate-box">
-                            {{ r.term }}yr<br>
-                            ${{ r.ppa_rate }}
+                            <div><strong>{{ r.term }} yr</strong></div>
+                            <div>${{ r.ppa_rate }}</div>
                         </div>
                     {% endfor %}
                 </div>

@@ -660,25 +660,35 @@ def admin():
     # SUBMISSIONS
     # -------------------------
     cur.execute("""
-        SELECT id, email, inputs, result, assumptions, rates, submitted_at
-        FROM submissions
-        ORDER BY submitted_at DESC
+        SELECT 
+        s.id, 
+        s.email, 
+        s.inputs, 
+        s.result, 
+        s.assumptions, 
+        s.rates, 
+        s.submitted_at,
+        u.company
+    FROM submissions s
+    LEFT JOIN users u ON u.email = s.email
+    ORDER BY s.submitted_at DESC
     """)
 
     submission_rows = cur.fetchall()
 
+    
     submissions = []
     for r in submission_rows:
-
-        submissions.append({
-            "id": r[0],
-            "email": r[1],
-            "inputs": json.loads(r[2]) if r[2] else {},
-            "result": json.loads(r[3]) if r[3] else {},
-            "assumptions": json.loads(r[4]) if r[4] else {},
-            "rates": json.loads(r[5]) if r[5] else [],
-            "submitted_at": r[6]   # ✅ FIXED (was WRONG index)
-        })
+            submissions.append({
+                "id": r[0],
+                "email": r[1],
+                "inputs": json.loads(r[2]) if r[2] else {},
+                "result": json.loads(r[3]) if r[3] else {},
+                "assumptions": json.loads(r[4]) if r[4] else {},
+                "rates": r[5] if r[5] else [],
+                "submitted_at": r[6],
+                "company": r[7]
+            })
 
     # -------------------------
     # USERS
