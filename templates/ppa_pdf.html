@@ -43,21 +43,24 @@ body {
     text-transform: uppercase;
 }
 
-/* HOW IT WORKS */
-.info-block {
-    margin-bottom: 10px;
+/* HOW IT WORKS — BULLET VERSION */
+.hiw-list {
+    margin-top: 4px;
+    margin-bottom: 12px;
+    padding-left: 18px;
 }
 
-.info-block-title {
-    font-weight: 700;
-    font-size: 14px;
-    margin-bottom: 1px;
+.hiw-list li {
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 1.4;
     color: #19123A;
 }
 
-.info-block-text {
-    font-size: 12px;
-    line-height: 1.35;
+.hiw-title {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 2px;
     color: #19123A;
 }
 
@@ -69,8 +72,8 @@ body {
 }
 
 .project-details-header {
-    background: #F6B836;
-    color: #19123A;
+    background: #19123A;
+    color: #ffffff;
     padding: 6px 10px;
     font-size: 15px;
     font-weight: 700;
@@ -120,9 +123,9 @@ body {
     border-bottom: 1px solid #F1BFA9;
 }
 
-/* KEY BENEFITS — CLEAN VERSION */
+/* KEY BENEFITS — CLEAN VERSION (NO YELLOW OUTLINES) */
 .benefits-box {
-    border: 1px solid #F1BFA9;
+    border: 1px solid #19123A; /* navy border instead of yellow */
     border-radius: 4px;
     padding: 8px 10px;
     margin-top: 6px;
@@ -173,25 +176,28 @@ body {
     <!-- HOW IT WORKS -->
     <div class="section-title">How It Works</div>
 
-    <div class="info-block">
-        <div class="info-block-title">System Installation</div>
-        <div class="info-block-text">The solar system is installed on-site at no upfront cost.</div>
-    </div>
+    <ul class="hiw-list">
+        <li>
+            <div class="hiw-title">System Installation</div>
+            The solar system is installed on-site at no upfront cost.
+        </li>
 
-    <div class="info-block">
-        <div class="info-block-title">Energy Generation</div>
-        <div class="info-block-text">The system generates energy that is used on-site, reducing grid consumption.</div>
-    </div>
+        <li>
+            <div class="hiw-title">Energy Generation</div>
+            The system generates energy that is used on-site, reducing grid consumption.
+        </li>
 
-    <div class="info-block">
-        <div class="info-block-title">Pay for Solar Energy</div>
-        <div class="info-block-text">You will receive two bills: one from Agile Energy for solar generation (cents/kWh), and one from your existing retailer for the remaining grid electricity.</div>
-    </div>
+        <li>
+            <div class="hiw-title">Pay for Solar Energy</div>
+            You will receive two bills: one from Agile Energy for solar generation (cents/kWh),
+            and one from your existing retailer for the remaining grid electricity.
+        </li>
 
-    <div class="info-block">
-        <div class="info-block-title">Fully Managed Solution</div>
-        <div class="info-block-text">Agile Energy manages all monitoring, maintenance, insurance, and system performance.</div>
-    </div>
+        <li>
+            <div class="hiw-title">Fully Managed Solution</div>
+            Agile Energy manages all monitoring, maintenance, insurance, and system performance.
+        </li>
+    </ul>
 
     <!-- PROJECT DETAILS -->
     <div class="project-details-wrapper">
