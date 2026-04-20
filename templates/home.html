@@ -613,8 +613,12 @@ main {
                 Quickly see your site’s potential PPA rates. Just enter your system details in our simple form, and we’ll calculate projected energy output, costs, and possible savings — all in one place.
         </p>
         <div class="hero-buttons">
-            <a href="{{ url_for('login') }}" class="btn-primary">Try the Calculator</a>
-            <a href="{{ url_for('learn_more') }}" class="btn-secondary"> Learn How It Works </a>
+            {% if session.get('user') %}
+                <a href="{{ url_for('calculator') }}" class="btn-primary">Back to Calculator</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn-primary">Try the Calculator</a>
+            {% endif %}
+                <a href="{{ url_for('learn_more') }}" class="btn-secondary"> Learn How It Works </a>
         </div>
     </div>
 
