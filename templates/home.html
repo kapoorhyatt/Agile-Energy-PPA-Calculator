@@ -104,17 +104,14 @@
 }
 
 .hero-feature-box {
-    width: 220px;
-    height: 160px;
     background: #fff;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-md);
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     padding: 16px;
     text-align: center;
 }
@@ -125,12 +122,24 @@
 
 .hero-feature-box h3 {
     font-size: 14px;
-    margin-bottom: 4px;
+    font-weight: 600;
+    margin: 2px 0;
+    line-height: 1.1;
+    color: #19123A;
 }
 
 .hero-feature-box p {
     font-size: 12px;
     line-height: 1.2;
+    margin: 0;
+    color: #1f2937;
+    opacity: 0.85;
+}
+
+.hero-feature-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+    transition: 0.3s ease;
 }
 
 /* =========================
@@ -348,7 +357,8 @@ main {
 
 .feature-box-icon {
     font-size: 28px;
-    color: var(--primary);
+    color: #F07154;
+    margin-bottom: 10px;
 }
 
 .feature-box-content {
@@ -445,56 +455,37 @@ main {
         </div>
     </div>
 
-<!-- Floating feature boxes -->
-    <div class="hero-feature-row">
-        <div class="hero-feature-box hover-lift">
-            <div class="feature-box-icon"><i class="fas fa-calculator"></i></div>
-            <div class="feature-box-content">
-                <h3>Generate a PPA offer</h3>
-                <p>Get PPA rates for your site</p>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div class="hero-feature-row">
+    <div class="hero-feature-box hover-lift">
+        <div class="feature-box-icon">
+            <i class="fas fa-calculator"></i>
         </div>
-
-        <div class="hero-feature-box hover-lift">
-            <div class="feature-box-icon"><i class="fas fa-book-open"></i></div>
-            <div class="feature-box-content">
-                <h3>Learn about the Agile PPA</h3>
-                <p>Understand how it works</p>
-            </div>
-        </div>
-
-        <div class="hero-feature-box hover-lift">
-            <div class="feature-box-icon"><i class="fas fa-handshake"></i></div>
-            <div class="feature-box-content">
-                <h3>Win for You and Your Client</h3>
-                <p>Deliver customer savings and protect your margin.</p>
-            </div>
+        <div class="feature-box-content">
+            <h3>Generate a PPA offer</h3>
+            <p>Get PPA rates for your site</p>
         </div>
     </div>
+
+    <div class="hero-feature-box hover-lift">
+        <div class="feature-box-icon">
+            <i class="fas fa-book-open"></i>
+        </div>
+        <div class="feature-box-content">
+            <h3>Learn about the Agile PPA</h3>
+            <p>Understand how it works</p>
+        </div>
+    </div>
+
+    <div class="hero-feature-box hover-lift">
+        <div class="feature-box-icon">
+            <i class="fas fa-handshake"></i>
+        </div>
+        <div class="feature-box-content">
+            <h3>Win for You and Your Client</h3>
+            <p>Deliver customer savings and protect your margin.</p>
+        </div>
+    </div>
+</div>
 </section>
 
 <main>
