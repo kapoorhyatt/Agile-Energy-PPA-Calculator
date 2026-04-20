@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PPA Summary</title>
+<title>PPA Offer</title>
 
 <style>
 @page { size: A4; margin: 12mm; }
@@ -10,17 +10,15 @@
 
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: #F1BFA9;
+    background: #ffffff;
     color: #19123A;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
 }
 
 .page {
-    background: #ffffff;
-    max-width: 800px;
-    margin: auto;
-    padding: 28px 32px;
+    width: 100%;
+    padding: 20px 24px;
 }
 
 /* HEADER */
@@ -28,7 +26,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 28px;
+    margin-bottom: 18px;
 }
 
 .header-left h1 {
@@ -38,45 +36,49 @@ body {
     margin: 0;
 }
 
-/* HOW IT WORKS BLOCKS */
+.header-right img {
+    width: 130px;
+    height: auto;
+}
+
+/* SECTION TITLE */
 .section-title {
     font-size: 18px;
-    margin: 20px 0 10px;
+    margin: 16px 0 10px;
     color: #045174;
     font-weight: 700;
     text-transform: uppercase;
 }
 
+/* HOW IT WORKS BLOCKS */
 .info-block {
     background: #F5F5F5;
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 14px;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
 }
 
 .info-block-title {
     font-weight: 700;
-    font-size: 15px;
-    margin-bottom: 4px;
-    color: #19123A;
+    font-size: 14px;
+    margin-bottom: 3px;
 }
 
 .info-block-text {
-    font-size: 14px;
-    line-height: 1.45;
-    color: #19123A;
+    font-size: 13px;
+    line-height: 1.4;
 }
 
 /* PROJECT TABLE */
 .project-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 22px 0;
+    margin: 14px 0;
 }
 
 .project-table td, .project-table th {
     border: 1px solid #D9D9D9;
-    padding: 8px 10px;
+    padding: 6px 8px;
     font-size: 13px;
 }
 
@@ -89,40 +91,39 @@ body {
 .rate-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 22px;
+    margin-top: 10px;
 }
 
 .rate-table th {
     background: #19123A;
     color: #ffffff;
+    padding: 6px 8px;
     font-size: 13px;
-    padding: 8px 10px;
     text-align: left;
-    font-weight: 600;
 }
 
 .rate-table td {
-    padding: 6px 10px;
+    padding: 6px 8px;
     font-size: 13px;
-    border-bottom: 1px solid #F1BFA9;
-    color: #19123A;
+    border-bottom: 1px solid #E6E6E6;
 }
 
 /* BENEFITS */
 .benefits ul {
     padding-left: 18px;
+    margin-top: 6px;
 }
 
 .benefits li {
-    margin-bottom: 6px;
-    font-size: 14px;
+    font-size: 13px;
+    margin-bottom: 4px;
 }
 
 /* FOOTER */
 .footer {
-    font-size: 11px;
-    margin-top: 30px;
+    margin-top: 18px;
     text-align: right;
+    font-size: 11px;
     color: #045174;
 }
 </style>
@@ -137,9 +138,7 @@ body {
             <h1>PPA Offer</h1>
         </div>
         <div class="header-right">
-            {% if user_logo_url %}
-                <img src="{{ user_logo_url }}" style="width: 120px; height: auto;">
-            {% endif %}
+            <img src="/static/images/agile-logo.png">
         </div>
     </div>
 
@@ -175,37 +174,19 @@ body {
         </div>
     </div>
 
-    <!-- PROJECT DETAILS TABLE -->
+    <!-- PROJECT DETAILS -->
     <div class="section-title">Project Details</div>
 
     <table class="project-table">
-        <tr>
-            <th>Project Name</th>
-            <td colspan="3"></td>
-        </tr>
-        <tr>
-            <th>Location</th>
-            <td colspan="3"></td>
-        </tr>
-        <tr>
-            <th>System Size (kW)</th>
-            <td colspan="3"></td>
-        </tr>
-        <tr>
-            <th>Annual Solar Production (MWh)</th>
-            <td colspan="3"></td>
-        </tr>
-        <tr>
-            <th>PPA Term Options</th>
-            <td></td><td></td><td></td>
-        </tr>
-        <tr>
-            <th>PPA Rate (cents/kWh)</th>
-            <td></td><td></td><td></td>
-        </tr>
+        <tr><th>Project Name</th><td>{{ inputs.project_name }}</td></tr>
+        <tr><th>Location</th><td>{{ inputs.suburb }}, {{ inputs.state }}</td></tr>
+        <tr><th>System Size (kW)</th><td>{{ inputs.solar_kw }}</td></tr>
+        <tr><th>Annual Solar Production (MWh)</th><td>{{ inputs.annual_generation_mwh }}</td></tr>
+        <tr><th>PPA Term Options</th><td></td></tr>
+        <tr><th>PPA Rate (cents/kWh)</th><td></td></tr>
     </table>
 
-    <!-- PPA RATE OPTIONS -->
+    <!-- RATE OPTIONS -->
     <div class="section-title">PPA Rate Options</div>
 
     <table class="rate-table">
