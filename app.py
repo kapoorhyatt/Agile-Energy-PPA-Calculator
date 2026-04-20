@@ -573,62 +573,81 @@ def download_ppa_pdf():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # USER DATA
+    # -------------------------
+    # 1. USER DATA
+    # -------------------------
     cur.execute("""
         SELECT logo_filename, name, company
         FROM users
         WHERE email = %s
     """, (session["user"],))
-
     user = cur.fetchone()
 
     logo_filename = user[0] if user else None
-    user_name = user[1] if user else None
-    company_name = user[2] if user else None
+    user_name = user[1] if user else ""
+    company_name = user[2] if user else ""
 
-    user_logo_url = f"/static/uploads/{logo_filename}" if logo_filename else None
+    # Prefer fixed Agile logo path as requested
+    user_logo_url = "/static/images/agile-logo.png"
 
-    # LATEST SUBMISSION
+    # -------------------------
+    # 2. LATEST SUBMISSION (INPUTS + RESULT)
+    # -------------------------
     cur.execute("""
-        SELECT result
+        SELECT inputs, result
         FROM submissions
         WHERE email = %s
         ORDER BY submitted_at DESC
         LIMIT 1
     """, (session["user"],))
+    sub_row = cur.fetchone()
 
-    row = cur.fetchone()
+    inputs = {}
+    rates_data = {"rates": []}
+
+    if sub_row:
+        # inputs
+        try:
+            inputs = json.loads(sub_row[0]) if sub_row[0] else {}
+        except Exception:
+            inputs = {}
+
+        # result → build rates list
+        try:
+            result = json.loads(sub_row[1]) if sub_row[1] else {}
+            first_row = (result.get("results") or [{}])[0]
+            terms = first_row.get("terms") or []
+            rates_list = []
+            for term in terms:
+                rates_list.append({
+                    "term": term.get("term"),
+                    "ppa_rate": term.get("ppa_rate_dollars")
+                })
+            rates_data = {"rates": rates_list}
+        except Exception:
+            rates_data = {"rates": []}
 
     cur.close()
     conn.close()
 
-    rates_data = {}
-
-    if row:
-        result = json.loads(row[0])
-
-        rates_list = []
-        first_row = result["results"][0]
-
-        for term in first_row["terms"]:
-            rates_list.append({
-                "term": term["term"],
-                "ppa_rate": term["ppa_rate_dollars"]
-            })
-
-        rates_data = {"rates": rates_list}
-
+    # -------------------------
+    # 3. RENDER HTML
+    # -------------------------
     now = datetime.now()
 
     html = render_template(
         "ppa_pdf.html",
         rates=rates_data,
+        inputs=inputs,
         user_logo_url=user_logo_url,
         now=now,
         user_name=user_name,
         company_name=company_name
     )
 
+    # -------------------------
+    # 4. GENERATE PDF
+    # -------------------------
     PDF_FOLDER = os.path.join("static", "PDF")
     os.makedirs(PDF_FOLDER, exist_ok=True)
 
@@ -639,6 +658,7 @@ def download_ppa_pdf():
         pisa.CreatePDF(html, dest=f, link_callback=link_callback)
 
     return send_file(pdf_path, as_attachment=True)
+
 
 # --- ADMIN MENU ---
 @app.route("/admin_menu")
