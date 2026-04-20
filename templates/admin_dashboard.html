@@ -97,6 +97,7 @@
             <td>{{ s.submitted_at or '' }}</td>
             <td>{{ s.email or '' }}</td>
 
+            <td>{{ s.company or '' }}</td>
             <td>{{ s.inputs.project_name if s.inputs else '' }}</td>
             <td>{{ s.inputs.customer_name if s.inputs else '' }}</td>
 
@@ -113,10 +114,10 @@
             <td>
                 {% if s.rates and s.rates|length > 0 %}
                 <div class="rates-boxes">
-                    {% for r in s.rates %}
+                    {% for r in (s.rates if s.rates else []) %}
                         <div class="rate-box">
-                            <div><strong>{{ r.term }} yr</strong></div>
-                            <div>${{ r.ppa_rate }}</div>
+                            <div><strong>{{ r.get("term", "") }} yr</strong></div>
+                            <div>${{ r.get("ppa_rate", "") }}</div>
                         </div>
                     {% endfor %}
                 </div>

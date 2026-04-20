@@ -20,66 +20,72 @@ body {
     background: #ffffff;
     max-width: 800px;
     margin: auto;
-    padding: 20px;
+    padding: 28px 32px;
 }
 
-/* Header container remains flex for left text */
+/* HEADER */
 .header {
     display: flex;
-    align-items: flex-start;        /* align top edges */
-    margin-bottom: 12px;
-    position: relative;             /* needed for absolute logo */
-    padding-left: 10px;             /* left padding for text */
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
 }
 
 .header-left h1 {
-    font-size: 18px;           /* same as section titles */
-    color: #045174;            /* same color */
-    text-transform: uppercase; /* match section titles */
+    font-size: 26px;
     font-weight: 700;
-    letter-spacing: 0.06em;
-    line-height: 1.2;
+    color: #045174;
     margin: 0;
 }
 
-/* Logo absolutely top-right inside header */
-.header-right .logo {
-    position: absolute;
-    top: 0;           /* top of header */
-    right: 0;         /* right edge of header */
-    max-height: 50px; /* small enough for PDF */
-    width: auto;      /* maintain aspect ratio */
-}
-/* SHIFT PAGE CONTENT UP */
-.page {
-    padding-top: 10px;   /* less top padding so content moves up */
-}
-
-.kpi-image {
-    display: flex;
-    justify-content: center;
-    margin: 18px 0 20px;
-}
-
-.kpi-image img {
-    width: 100%;
-    max-width: 680px;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(25,18,58,0.12);
-}
-
-/* SECTION TITLE */
+/* HOW IT WORKS BLOCKS */
 .section-title {
     font-size: 18px;
-    margin-bottom: 10px;
+    margin: 20px 0 10px;
     color: #045174;
-    text-transform: uppercase;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
-/* TABLE */
+.info-block {
+    background: #F5F5F5;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+}
+
+.info-block-title {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: #19123A;
+}
+
+.info-block-text {
+    font-size: 14px;
+    line-height: 1.45;
+    color: #19123A;
+}
+
+/* PROJECT TABLE */
+.project-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 22px 0;
+}
+
+.project-table td, .project-table th {
+    border: 1px solid #D9D9D9;
+    padding: 8px 10px;
+    font-size: 13px;
+}
+
+.project-table th {
+    background: #EFEFEF;
+    font-weight: 600;
+}
+
+/* RATE TABLE */
 .rate-table {
     width: 100%;
     border-collapse: collapse;
@@ -103,34 +109,20 @@ body {
 }
 
 /* BENEFITS */
-.benefits {
-    background: transparent;   /* remove background */
-    padding: 0;                /* optional: remove extra padding */
-    border: none;              /* remove orange border */
-    margin-bottom: 22px;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
 .benefits ul {
-    column-count: 2;
-    column-gap: 24px;
-    padding-left: 16px;
+    padding-left: 18px;
 }
 
 .benefits li {
-    font-size: 14px;
     margin-bottom: 6px;
-    color: #19123A;
+    font-size: 14px;
 }
 
 /* FOOTER */
 .footer {
     font-size: 11px;
-    border-top: 1px solid #F1BFA9;
-    padding-top: 8px;
-    display: flex;
-    justify-content: flex-end;
+    margin-top: 30px;
+    text-align: right;
     color: #045174;
 }
 </style>
@@ -139,29 +131,83 @@ body {
 <body>
 <div class="page">
 
-<div class="header">
-    <table width="100%" style="border-collapse: collapse;">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-left">
+            <h1>PPA Offer</h1>
+        </div>
+        <div class="header-right">
+            {% if user_logo_url %}
+                <img src="{{ user_logo_url }}" style="width: 120px; height: auto;">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="section-title">How It Works</div>
+
+    <div class="info-block">
+        <div class="info-block-title">System Installation</div>
+        <div class="info-block-text">
+            The solar system is installed on-site at no upfront cost.
+        </div>
+    </div>
+
+    <div class="info-block">
+        <div class="info-block-title">Energy Generation</div>
+        <div class="info-block-text">
+            The system generates energy that is used on-site, reducing grid consumption.
+        </div>
+    </div>
+
+    <div class="info-block">
+        <div class="info-block-title">Pay for Solar Energy</div>
+        <div class="info-block-text">
+            You will receive two bills: one from Agile Energy for solar generation (cents/kWh),
+            and one from your existing retailer for the remaining grid electricity.
+        </div>
+    </div>
+
+    <div class="info-block">
+        <div class="info-block-title">Fully Managed Solution</div>
+        <div class="info-block-text">
+            Agile Energy manages all monitoring, maintenance, insurance, and system performance.
+        </div>
+    </div>
+
+    <!-- PROJECT DETAILS TABLE -->
+    <div class="section-title">Project Details</div>
+
+    <table class="project-table">
         <tr>
-        <td style="text-align: left; vertical-align: top;">
-            <div class="header-left">
-                <h1>PPA Offer</h1>
-            </div>
-        </td>
-            <td style="text-align: right; vertical-align: top; width: 160px;">
-                {% if user_logo_url %}
-                    <img src="{{ user_logo_url }}" style="width: 120px; height: auto;">
-                {% endif %}
-            </td>
+            <th>Project Name</th>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <th>System Size (kW)</th>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <th>Annual Solar Production (MWh)</th>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <th>PPA Term Options</th>
+            <td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <th>PPA Rate (cents/kWh)</th>
+            <td></td><td></td><td></td>
         </tr>
     </table>
-</div>
 
-<div class="kpi-image">
-    <img src="{{ screenshot_url }}" alt="KPI Screenshot">
-</div>
-
-    <!-- PPA Rates Table -->
+    <!-- PPA RATE OPTIONS -->
     <div class="section-title">PPA Rate Options</div>
+
     <table class="rate-table">
         <tr>
             <th>Term (Years)</th>
@@ -177,10 +223,11 @@ body {
 
     <!-- BENEFITS -->
     <div class="section-title">Key Benefits</div>
+
     <div class="benefits">
         <ul>
-            <li>Guranteed generation from the system</li>
-            <li>Site installtion will be undertaken in line with site specific requirments</li>
+            <li>Guaranteed generation from the system</li>
+            <li>Site installation will be undertaken in line with site specific requirements</li>
             <li>Reduced energy costs</li>
             <li>No risk – install & performance covered</li>
             <li>No fees at end of term</li>
@@ -192,7 +239,7 @@ body {
 
     <!-- FOOTER -->
     <div class="footer">
-        <span>agileenergy.com.au | 1800 512 194</span>
+        agileenergy.com.au | 1800 512 194
     </div>
 
 </div>
