@@ -760,7 +760,7 @@ def admin():
     )
 
 # --- ASSUMPTIONS PAGE ---
-app.route("/assumptions", methods=["GET", "POST"])
+@app.route("/assumptions", methods=["GET", "POST"])
 def assumptions():
     if "user" not in session or session.get("role") != "admin":
         return redirect("/login")
