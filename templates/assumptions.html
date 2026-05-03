@@ -83,7 +83,7 @@
 
 <tr>
     <th>Company</th>
-    {% set show_keys = ["om_cost", "degradation", "generation_derate", "ppa_meter_cost", "target_irr", "ppa_escalator", "construction_period"] %}
+    {% set show_keys = ["om_cost", "degradation", "generation_derate", "ppa_meter_cost", "irr", "ppa_escalator", "construction_period"] %}
     {% for key in show_keys %}
         <th>{{ key.replace("_", " ").title() }}</th>
     {% endfor %}
@@ -92,15 +92,27 @@
 {% for company, data in assumptions.items() %}
 <tr>
     <td>{{ company }}</td>
+
     {% for key in show_keys %}
         <td>
-            <input
-                type="text"
-                name="{{ company }}_{{ key }}"
-                value="{{ data.get(key, '') }}"
-            >
+
+            {% if key == "irr" %}
+                <select name="{{ company }}_{{ key }}">
+                    <option value="17.5" {% if data.get(key) == "17.5" %}selected{% endif %}>17.5%</option>
+                    <option value="18.5" {% if data.get(key) == "18.5" %}selected{% endif %}>18.5%</option>
+                </select>
+
+            {% else %}
+                <input
+                    type="text"
+                    name="{{ company }}_{{ key }}"
+                    value="{{ data.get(key, '') }}"
+                >
+            {% endif %}
+
         </td>
     {% endfor %}
+
 </tr>
 {% endfor %}
         </table>

@@ -427,7 +427,8 @@ def calculator():
             "annual_generation_mwh": annual_generation_mwh,
             "total_capex": total_capex,
             "bess_kwh": bess_kwh,
-            "specific_yield": specific_yield
+            "specific_yield": specific_yield,
+            "irr": company_assumptions.get("irr", "17.5")
         }
 
         result = run_model(
@@ -791,10 +792,17 @@ def assumptions():
                 value = request.form.get(form_key)
 
                 if value is not None:
-                    try:
-                        updated[key] = float(value)
-                    except:
+
+                    # SPECIAL CASE: IRR MUST REMAIN A STRING
+                    if key == "irr":
                         updated[key] = value
+
+                    else:
+                        # Try to convert to float, fallback to string
+                        try:
+                            updated[key] = float(value)
+                        except:
+                            updated[key] = value
 
             cur.execute("""
                 UPDATE assumptions

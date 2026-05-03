@@ -6,13 +6,24 @@ import json
 # -------------------------
 SUPPORTED_TERMS = [7, 10, 12, 15, 20, 25]
 
-TERM_COEFFICIENTS = {
-    7:  {"b2": -0.016400442, "b1": 18.25454545, "a": 23.00933706},
-    10: {"b2": -0.013899784, "b1": 15.05314685, "a": 19.9657958},
-    12: {"b2": -0.012903938, "b1": 13.90559441, "a": 18.60481119},
-    15: {"b2": -0.011958568, "b1": 12.83426573, "a": 17.3289958},
-    20: {"b2": -0.011188811, "b1": 11.92237762, "a": 16.27588252},
-    25: {"b2": -0.010799727, "b1": 11.48321678, "a": 15.75513846},
+TERM_COEFFICIENTS_BY_IRR = {
+    "17.5": {
+        7:  {"b2": -0.01825648, "b1": 18.74615385, "a": 25.49224895},
+        10: {"b2": -0.015500289, "b1": 15.60909091, "a": 22.0608028},
+        12: {"b2": -0.014458173, "b1": 14.45244755, "a": 20.68013706},
+        15: {"b2": -0.013487565, "b1": 13.43706294, "a": 19.33665734},
+        20: {"b2": -0.012652611, "b1": 12.56293706, "a": 18.21008392},
+        25: {"b2": -0.012289815, "b1": 12.15174825, "a": 17.73152168},
+    },
+
+    "18.5": {
+        7:  {"b2": -0.01723119, "b1": 19.26713287, "a": 24.11061259},
+        10: {"b2": -0.014789421, "b1": 16.13356643, "a": 21.12520839},
+        12: {"b2": -0.013844051, "b1": 15.03776224, "a": 19.83045594},
+        15: {"b2": -0.012973342, "b1": 14.02027972, "a": 18.6632951},
+        20: {"b2": -0.012235133, "b1": 13.1993007, "a": 17.66223776},
+        25: {"b2": -0.011942794, "b1": 12.83706294, "a": 17.24896224},
+    }
 }
 
 def run_model(submission_file='submissions.json', assumptions=None, inputs=None, debug=True):
@@ -49,6 +60,11 @@ def run_model(submission_file='submissions.json', assumptions=None, inputs=None,
     total_capex = safe_float(inputs.get("total_capex"), solar_kw * 600)
     ppa_meter_cost = safe_float(inputs.get("ppa_meter_cost"), 0.0)
 
+    selected_irr = str(inputs.get("irr", "17.5"))
+
+    if selected_irr not in TERM_COEFFICIENTS_BY_IRR:
+        selected_irr = "17.5"
+
     # -------------------------
     # Assumptions
     # -------------------------
@@ -73,7 +89,7 @@ def run_model(submission_file='submissions.json', assumptions=None, inputs=None,
     term_results = []
 
     for term in SUPPORTED_TERMS:
-        coeffs = TERM_COEFFICIENTS[term]
+        coeffs = TERM_COEFFICIENTS_BY_IRR[selected_irr][term]
 
         # ✅ Use net_dollar_per_watt directly
         rate_cents = (

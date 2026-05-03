@@ -3,7 +3,7 @@ DEFAULT_ASSUMPTIONS = {
     "degradation": 0.004,      
     "generation_derate": 0.05, 
     "ppa_meter_cost": 1200,     
-    "target_irr": 0.165,      
+    "irr": "17.5",      
     "ppa_escalator": 0.03,    
     "construction_period": 3
 }
