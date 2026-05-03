@@ -789,19 +789,16 @@ def assumptions():
 
             for key in updated.keys():
                 form_key = f"{email}_{key}"
-                value = request.form.get(form_key)
 
-                if value is not None:
+                if form_key in request.form:   # ✅ IMPORTANT CHANGE
+                    value = request.form.get(form_key)
 
-                    # SPECIAL CASE: IRR MUST REMAIN A STRING
                     if key == "irr":
                         updated[key] = value
-
                     else:
-                        # Try to convert to float, fallback to string
                         try:
                             updated[key] = float(value)
-                        except:
+                        except ValueError:
                             updated[key] = value
 
             cur.execute("""
