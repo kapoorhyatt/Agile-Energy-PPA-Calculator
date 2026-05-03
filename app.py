@@ -770,38 +770,37 @@ def assumptions():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    show_keys = ["om_cost", "degradation", "generation_derate",
-                 "ppa_meter_cost", "irr", "ppa_escalator", "construction_period"]
+    show_keys = [
+        "om_cost",
+        "degradation",
+        "generation_derate",
+        "ppa_meter_cost",
+        "irr",
+        "ppa_escalator",
+        "construction_period"
+    ]
 
     if request.method == "POST":
 
+        # Fetch all users' assumptions
         cur.execute("SELECT email, data FROM assumptions")
         rows = cur.fetchall()
 
         for email, data_json in rows:
-            data = json.loads(data_json) if data_json else {}
-            updated = data.copy()
-            print("\n========== ASSUMPTIONS SAVE ==========")
-            print("EMAIL:", email)
-            print("REQUEST FORM:", dict(request.form))
+            existing = json.loads(data_json) if data_json else {}
+            updated = existing.copy()
 
             for key in show_keys:
                 form_key = f"{email}_{key}"
                 value = request.form.get(form_key)
-                print("FORM KEY:", form_key)
-                print("VALUE RECEIVED:", value)
 
-                if value is not None:
-                    if key == "irr":
-                        try:
-                            updated[key] = float(value)
-                        except:
-                            updated[key] = float(data.get(key, 17.5))
-                    else:
-                        try:
-                            updated[key] = float(value)
-                        except:
-                            updated[key] = value
+                # Only update if the admin actually selected/typed something
+                if value is not None and value != "":
+                    try:
+                        updated[key] = float(value)
+                    except:
+                        updated[key] = value
+                # else: keep existing value (do nothing)
 
             cur.execute("""
                 UPDATE assumptions
@@ -814,7 +813,7 @@ def assumptions():
         conn.close()
         return redirect("/assumptions")
 
-    # GET request
+    # GET request → load assumptions for display
     cur.execute("SELECT email, data FROM assumptions")
     rows = cur.fetchall()
 
