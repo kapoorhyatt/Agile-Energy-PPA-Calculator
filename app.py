@@ -768,25 +768,28 @@ def assumptions():
     conn = get_db_connection()
     cur = conn.cursor()
 
+    show_keys = ["om_cost", "degradation", "generation_derate",
+                 "ppa_meter_cost", "irr", "ppa_escalator", "construction_period"]
+
     if request.method == "POST":
-        # Get current assumptions
-        cur.execute("""
-            SELECT email, data
-            FROM assumptions
-        """)
+
+        cur.execute("SELECT email, data FROM assumptions")
         rows = cur.fetchall()
 
         for email, data_json in rows:
             data = json.loads(data_json) if data_json else {}
             updated = data.copy()
 
-            for key in updated.keys():
+            for key in show_keys:
                 form_key = f"{email}_{key}"
                 value = request.form.get(form_key)
 
                 if value is not None:
                     if key == "irr":
-                        updated[key] = value
+                        try:
+                            updated[key] = float(value)
+                        except:
+                            updated[key] = value
                     else:
                         try:
                             updated[key] = float(value)
@@ -800,16 +803,12 @@ def assumptions():
             """, (json.dumps(updated), email))
 
         conn.commit()
-        # 🔁 redirect so we reload fresh data
         cur.close()
         conn.close()
         return redirect("/assumptions")
 
-    # GET: load fresh data
-    cur.execute("""
-        SELECT email, data
-        FROM assumptions
-    """)
+    # GET request
+    cur.execute("SELECT email, data FROM assumptions")
     rows = cur.fetchall()
 
     assumptions_data = {
@@ -821,35 +820,6 @@ def assumptions():
     conn.close()
 
     return render_template("assumptions.html", assumptions=assumptions_data)
-
-@app.route("/fix-irr")
-def fix_irr():
-    conn = get_db_connection()
-    cur = conn.cursor()
-
-    # Fetch all rows
-    cur.execute("SELECT email, data FROM assumptions")
-    rows = cur.fetchall()
-
-    for email, data_json in rows:
-        data = json.loads(data_json)
-
-        # Convert IRR to string if it exists
-        if "irr" in data:
-            data["irr"] = str(data["irr"])
-
-        # Save updated JSON
-        cur.execute("""
-            UPDATE assumptions
-            SET data = %s
-            WHERE email = %s
-        """, (json.dumps(data), email))
-
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    return "IRR fixed"
 
 
 @app.route("/logout")
