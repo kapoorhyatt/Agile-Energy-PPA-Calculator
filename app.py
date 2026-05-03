@@ -760,7 +760,7 @@ def admin():
     )
 
 # --- ASSUMPTIONS PAGE ---
-@app.route("/assumptions", methods=["GET", "POST"])
+app.route("/assumptions", methods=["GET", "POST"])
 def assumptions():
     if "user" not in session or session.get("role") != "admin":
         return redirect("/login")
@@ -789,17 +789,20 @@ def assumptions():
 
             for key in updated.keys():
                 form_key = f"{email}_{key}"
+                value = request.form.get(form_key)
 
-                if form_key in request.form:   # ✅ IMPORTANT CHANGE
-                    value = request.form.get(form_key)
+                if value is not None:
 
+                    # IRR MUST ALWAYS BE A STRING
                     if key == "irr":
                         updated[key] = value
-                    else:
-                        try:
-                            updated[key] = float(value)
-                        except ValueError:
-                            updated[key] = value
+                        continue
+
+                    # Everything else: try float, fallback to string
+                    try:
+                        updated[key] = float(value)
+                    except:
+                        updated[key] = value
 
             cur.execute("""
                 UPDATE assumptions
@@ -816,6 +819,22 @@ def assumptions():
     conn.close()
 
     return render_template("assumptions.html", assumptions=assumptions_data)
+
+@app.route("/fix-irr")
+def fix_irr():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE assumptions
+        SET data = jsonb_set(data::jsonb, '{irr}', to_jsonb((data->>'irr')))
+    """)
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return "IRR fixed"
 
 
 @app.route("/logout")
