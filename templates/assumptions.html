@@ -37,7 +37,7 @@
             background-color: #f9f9f9;
         }
 
-        input {
+        input, select {
             width: 80px;
             padding: 4px 6px;
             font-size: 13px;
@@ -64,7 +64,7 @@
         }
 
         @media(max-width: 900px) {
-            input {
+            input, select {
                 width: 60px;
             }
             table {
@@ -78,45 +78,42 @@
 
     <form method="POST">
         <table>
-            {% set first_company = assumptions | dictsort | first | last %}
-            {% set keys = first_company.keys() %}
 
-<tr>
-    <th>Company</th>
-    {% set show_keys = ["om_cost", "degradation", "generation_derate", "ppa_meter_cost", "irr", "ppa_escalator", "construction_period"] %}
-    {% for key in show_keys %}
-        <th>{{ key.replace("_", " ").title() }}</th>
-    {% endfor %}
-</tr>
+            <tr>
+                <th>Company</th>
+                {% set show_keys = ["om_cost", "degradation", "generation_derate", "ppa_meter_cost", "irr", "ppa_escalator", "construction_period"] %}
+                {% for key in show_keys %}
+                    <th>{{ key.replace("_", " ").title() }}</th>
+                {% endfor %}
+            </tr>
 
-{% for company, data in assumptions.items() %}
-<tr>
-    <td>{{ company }}</td>
+            {% for company, data in assumptions.items() %}
+            <tr>
+                <td>{{ company }}</td>
 
-    {% for key in show_keys %}
-        <td>
+                {% for key in show_keys %}
+                <td>
 
-            {% if key == "irr" %}
-                <select name="{{ company }}_{{ key }}">
-                    <select name="{{ company }}_{{ key }}">
-                        <option value="17.5" {% if data.get(key)|float == 17.5 %}selected{% endif %}>17.5%</option>
-                        <option value="18.5" {% if data.get(key)|float == 18.5 %}selected{% endif %}>18.5%</option>
-                    </select>
-                </select>
+                    {% if key == "irr" %}
+                        <select name="{{ company }}_{{ key }}">
+                            <option value="17.5" {% if data.get(key)|float == 17.5 %}selected{% endif %}>17.5%</option>
+                            <option value="18.5" {% if data.get(key)|float == 18.5 %}selected{% endif %}>18.5%</option>
+                        </select>
 
-            {% else %}
-                <input
-                    type="text"
-                    name="{{ company }}_{{ key }}"
-                    value="{{ data.get(key, '') }}"
-                >
-            {% endif %}
+                    {% else %}
+                        <input
+                            type="text"
+                            name="{{ company }}_{{ key }}"
+                            value="{{ data.get(key, '') }}"
+                        >
+                    {% endif %}
 
-        </td>
-    {% endfor %}
+                </td>
+                {% endfor %}
 
-</tr>
-{% endfor %}
+            </tr>
+            {% endfor %}
+
         </table>
 
         <button type="submit">Save Assumptions</button>
