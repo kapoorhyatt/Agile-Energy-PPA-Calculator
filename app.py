@@ -768,23 +768,16 @@ def assumptions():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # GET ALL ASSUMPTIONS
-    cur.execute("""
-        SELECT email, data
-        FROM assumptions
-    """)
-
-    rows = cur.fetchall()
-
-    assumptions_data = {
-        r[0]: json.loads(r[1]) if r[1] else {}
-        for r in rows
-    }
-
-    # UPDATE ASSUMPTIONS
     if request.method == "POST":
+        # Get current assumptions
+        cur.execute("""
+            SELECT email, data
+            FROM assumptions
+        """)
+        rows = cur.fetchall()
 
-        for email, data in assumptions_data.items():
+        for email, data_json in rows:
+            data = json.loads(data_json) if data_json else {}
             updated = data.copy()
 
             for key in updated.keys():
@@ -792,28 +785,37 @@ def assumptions():
                 value = request.form.get(form_key)
 
                 if value is not None:
-
-                    # IRR MUST ALWAYS BE A STRING
                     if key == "irr":
                         updated[key] = value
-                        continue
-
-                    # Everything else: try float, fallback to string
-                    try:
-                        updated[key] = float(value)
-                    except:
-                        updated[key] = value
+                    else:
+                        try:
+                            updated[key] = float(value)
+                        except:
+                            updated[key] = value
 
             cur.execute("""
                 UPDATE assumptions
                 SET data = %s
                 WHERE email = %s
-            """, (
-                json.dumps(updated),
-                email
-            ))
+            """, (json.dumps(updated), email))
 
         conn.commit()
+        # 🔁 redirect so we reload fresh data
+        cur.close()
+        conn.close()
+        return redirect("/assumptions")
+
+    # GET: load fresh data
+    cur.execute("""
+        SELECT email, data
+        FROM assumptions
+    """)
+    rows = cur.fetchall()
+
+    assumptions_data = {
+        r[0]: json.loads(r[1]) if r[1] else {}
+        for r in rows
+    }
 
     cur.close()
     conn.close()
