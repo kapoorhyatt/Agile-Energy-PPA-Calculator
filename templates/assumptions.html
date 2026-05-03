@@ -98,8 +98,10 @@
 
             {% if key == "irr" %}
                 <select name="{{ company }}_{{ key }}">
-                    <option value="17.5" {% if data.get(key) == "17.5" %}selected{% endif %}>17.5%</option>
-                    <option value="18.5" {% if data.get(key) == "18.5" %}selected{% endif %}>18.5%</option>
+                    <select name="{{ company }}_{{ key }}">
+                        <option value="17.5" {% if data.get(key)|float == 17.5 %}selected{% endif %}>17.5%</option>
+                        <option value="18.5" {% if data.get(key)|float == 18.5 %}selected{% endif %}>18.5%</option>
+                    </select>
                 </select>
 
             {% else %}
