@@ -139,6 +139,7 @@ def run_model(submission_file='submissions.json', assumptions=None, inputs=None,
         print(f"Net $/W installed (NO cents conversion): {net_dollar_per_watt}")
         print(f"Specific yield kWh/kW: {specific_yield}")
         print("Calculated PPA rates per term:")
+        print(f"Selected IRR: {selected_irr}")
         for term_info in term_results:
             print(f"  Term {term_info['term']}: "
                   f"{term_info['ppa_rate_cents']} c/kWh "

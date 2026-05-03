@@ -388,6 +388,8 @@ def calculator():
     row = cur.fetchone()
     company_assumptions = json.loads(row[0]) if row else DEFAULT_ASSUMPTIONS
 
+    company_assumptions["irr"] = float(company_assumptions.get("irr", "17.5"))
+
     if request.method == "GET":
         clear = request.args.get("new") == "1"
         return render_template("company_form.html", assumptions=company_assumptions, clear=clear)
@@ -428,7 +430,7 @@ def calculator():
             "total_capex": total_capex,
             "bess_kwh": bess_kwh,
             "specific_yield": specific_yield,
-            "irr": company_assumptions.get("irr", "17.5")
+            "irr": float(company_assumptions.get("irr", 17.5))
         }
 
         result = run_model(
@@ -779,17 +781,22 @@ def assumptions():
         for email, data_json in rows:
             data = json.loads(data_json) if data_json else {}
             updated = data.copy()
+            print("\n========== ASSUMPTIONS SAVE ==========")
+            print("EMAIL:", email)
+            print("REQUEST FORM:", dict(request.form))
 
             for key in show_keys:
                 form_key = f"{email}_{key}"
                 value = request.form.get(form_key)
+                print("FORM KEY:", form_key)
+                print("VALUE RECEIVED:", value)
 
                 if value is not None:
                     if key == "irr":
                         try:
                             updated[key] = float(value)
                         except:
-                            updated[key] = value
+                            updated[key] = float(data.get(key, 17.5))
                     else:
                         try:
                             updated[key] = float(value)
