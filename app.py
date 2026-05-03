@@ -825,11 +825,14 @@ def fix_irr():
     conn = get_db_connection()
     cur = conn.cursor()
 
+    # Convert IRR to string safely for all rows
     cur.execute("""
         UPDATE assumptions
-        SET data = jsonb_set(data::jsonb, '{irr}', to_jsonb((data->>'irr')))
+        SET data = (
+            data::jsonb || jsonb_build_object('irr', (data->>'irr'))
+        )::json
     """)
-
+    
     conn.commit()
     cur.close()
     conn.close()
