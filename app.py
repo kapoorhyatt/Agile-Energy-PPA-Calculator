@@ -825,14 +825,24 @@ def fix_irr():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # Convert IRR to string safely for all rows
-    cur.execute("""
-        UPDATE assumptions
-        SET data = (
-            data::jsonb || jsonb_build_object('irr', (data->>'irr'))
-        )::json
-    """)
-    
+    # Fetch all rows
+    cur.execute("SELECT email, data FROM assumptions")
+    rows = cur.fetchall()
+
+    for email, data_json in rows:
+        data = json.loads(data_json)
+
+        # Convert IRR to string if it exists
+        if "irr" in data:
+            data["irr"] = str(data["irr"])
+
+        # Save updated JSON
+        cur.execute("""
+            UPDATE assumptions
+            SET data = %s
+            WHERE email = %s
+        """, (json.dumps(data), email))
+
     conn.commit()
     cur.close()
     conn.close()
