@@ -571,7 +571,7 @@ main {
         <div class="feature-box-outline-horizontal">
             <div class="feature-box-text">
                 <h2>Solar Made Simple</h2>
-                <p>Power your business with a simple PPA. Use our tool to see if a PPA could work for your site.</p>
+                <p>Power your business with a simple PPA. Use our tool to see different PPA term and rate options.</p>
                 <a href="{{ url_for('sign_up') }}" class="btn-primary" style="margin-top:16px;">Sign Up</a>
             </div>
             <div class="feature-box-image">
@@ -595,7 +595,7 @@ main {
         <div class="feature-box-outline-horizontal">
             <div class="feature-box-text">
                 <h2>How it works</h2>
-                <p>Understand PPAs and our calculation process.</p>
+                <p>Understand PPAs, inputs and value delievered in case studies.</p>
                 <a href="{{ url_for('learn_more') }}#about" class="btn-primary" style="margin-top:16px;"> Learn More </a>
             </div>
             <div class="feature-box-image">
@@ -610,8 +610,7 @@ main {
     <div class="big-box">
         <h1>Agile Energy Calculator</h1>
         <p style="font-size: 18px; max-width: 800px; margin: 0 auto 24px; opacity: 0.95;">
-                Quickly see your site’s potential PPA rates. Just enter your system details in our simple form, and we’ll calculate projected energy output, costs, and possible savings — all in one place.
-        </p>
+                Quickly see your site’s potential PPA rates. Just enter your system details in our simple form, and we’ll calculate PPA terms and rates - all in one place. 
         <div class="hero-buttons">
             {% if session.get('user') %}
                 <a href="{{ url_for('calculator') }}" class="btn-primary">Back to Calculator</a>
