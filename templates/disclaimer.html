@@ -5,6 +5,10 @@
 {% block style %}
 <style>
 
+.site-footer {
+    display: none !important;
+}
+
 .container {
     max-width: 950px;
     margin: 60px auto;
@@ -30,7 +34,6 @@ h1 {
     margin: 0 0 24px 0;
 }
 
-
 .disclaimer-content {
     flex: 1;
     overflow-y: auto;
@@ -52,6 +55,8 @@ h1 {
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
+
+
 /* BUTTON */
 button {
     padding: 14px 34px;
@@ -70,9 +75,6 @@ button:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 28px rgba(240,113,84,0.35);
 }
-
-
-
 
 </style>
 {% endblock %}
@@ -157,15 +159,14 @@ button:hover {
 
         </div>
         
-</div>
-        <div class="footer">
-            <form method="POST" action="/disclaimer">
-                <button type="submit">Accept and Continue</button>
-            </form>
-        </div>
+    </div>
+
+    <div class="footer">
+        <form method="POST" action="/disclaimer">
+            <button type="submit">Accept and Continue</button>
+        </form>
+    </div>
 
 </div>
-
-
 
 {% endblock %}
