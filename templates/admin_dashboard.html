@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,6 +62,21 @@
         .empty {
             color: #999;
         }
+
+        .export-btn {
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .export-btn:hover {
+            background: #005ecb;
+        }
     </style>
 </head>
 
@@ -68,6 +84,10 @@
 
 <div class="container">
     <h2>Master Dashboard</h2>
+
+    <button class="export-btn" onclick="exportTableToCSV()">
+        Export to CSV
+    </button>
 
     {% if submissions and submissions|length > 0 %}
 
@@ -114,15 +134,15 @@
             <td>
                 {% if s.rates and s.rates|length > 0 %}
                 <div class="rates-boxes">
-                    {% for r in (s.rates if s.rates else []) %}
-                        <div class="rate-box">
-                            <div><strong>{{ r.get("term", "") }} yr</strong></div>
-                            <div>${{ r.get("ppa_rate", "") }}</div>
-                        </div>
+                    {% for r in s.rates %}
+                    <div class="rate-box">
+                        <div><strong>{{ r.get("term", "") }} yr</strong></div>
+                        <div>${{ r.get("ppa_rate", "") }}</div>
+                    </div>
                     {% endfor %}
                 </div>
                 {% else %}
-                    <span class="empty">No rates</span>
+                <span class="empty">No rates</span>
                 {% endif %}
             </td>
 
@@ -135,5 +155,79 @@
     {% endif %}
 </div>
 
+<script>
+function exportTableToCSV() {
+
+    const table = document.querySelector("table");
+
+    if (!table) {
+        alert("No data to export.");
+        return;
+    }
+
+    let csv = [];
+
+    for (const row of table.rows) {
+
+        let rowData = [];
+
+        for (const cell of row.cells) {
+
+            let text = "";
+
+            if (cell.querySelector(".rates-boxes")) {
+
+                let rates = [];
+
+                cell.querySelectorAll(".rate-box").forEach(function(box) {
+
+                    const lines = box.innerText
+                        .split("\n")
+                        .map(function(x) {
+                            return x.trim();
+                        })
+                        .filter(function(x) {
+                            return x;
+                        });
+
+                    if (lines.length >= 2) {
+                        rates.push(lines[0] + ": " + lines[1]);
+                    }
+
+                });
+
+                text = rates.join(" | ");
+
+            } else {
+
+                text = cell.innerText.replace(/\n/g, " ");
+
+            }
+
+            text = '"' + text.replace(/"/g, '""') + '"';
+            rowData.push(text);
+        }
+
+        csv.push(rowData.join(","));
+    }
+
+    const csvContent = csv.join("\n");
+    const blob = new Blob([csvContent], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "MasterDashboard.csv";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(link.href);
+}
+</script>
+
 </body>
 </html>
+```
